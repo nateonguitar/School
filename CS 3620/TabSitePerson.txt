@@ -1,0 +1,5 @@
+|nate|brooks||1|0|2907 Adams Ave|Ogden|UT|84403
+|joe|brooks||0|0|2906 Adams Ave|West Jordan|UT|84405
+|steve|brooks||0|1|2905 Adams Ave|West Haven|UT|84405
+|becky|green||0|0|2904 Adams Ave|Kearns|UT|84405
+|matthew|brooks||0|0|2903 Adams Ave|George Town|ID|84405
