@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;Tiles&apos; to &apos;Renderer&apos;&#x0D;&#x0A;- Original project: &apos;Tiles&apos;&#x0D;&#x0A;- Original element: &apos;Tiles&apos;&#x0D;&#x0A;- Renamed element: &apos;Renderer&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;Tiles&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;{Tiles.java[Tiles" matchStrategy="1" name="Renderer" qualified="false" references="true" similarDeclarations="false" stamp="1407903225694" textual="false" version="1.0"/>
+</session>

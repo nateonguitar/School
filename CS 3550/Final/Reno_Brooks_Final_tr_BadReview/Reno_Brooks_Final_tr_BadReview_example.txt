@@ -1,0 +1,103 @@
+--Doesn't change this. 
+INSERT 
+INTO Review
+VALUES('Very nice staff, respectful', 5, 'X')
+
+
+--Changes X to L for staff to look into 
+INSERT 
+INTO Review
+VALUES('I don''t know why this place is still in business...', 1, 'X')
+
+
+--Changes X to L for staff to look into 
+INSERT 
+INTO Review
+VALUES('Very difficult to find', 2, 'X')
+
+
+--No change, shows off the ability for handling Spanish reviews
+--"the employee spoke Spanish to help me"
+INSERT 
+INTO Review
+VALUES('El empleado podría hablar español para ayudarme.', 5, 'X')
+
+
+--Changes L to X for a good review (in case of accidental entry.
+--Also shows off special character capability
+--"I loved their bilingual staff."
+INSERT 
+INTO Review
+VALUES('Me encantó su personal bilingüe.', 5, 'L')
+
+
+--Show results. 
+SELECT *
+FROM REVIEW
+
+
+======================================================
+                       RESULTS
+======================================================
+
+
+(1 row(s) affected)
+
+(1 row(s) affected)
+
+(1 row(s) affected)
+
+(1 row(s) affected)
+
+(1 row(s) affected)
+
+(1 row(s) affected)
+
+(1 row(s) affected)
+
+(1 row(s) affected)
+
+(1 row(s) affected)
+
+(1 row(s) affected)
+ReviewID    ReviewText                                                                                                                                                                                                                                                       ReviewRating Flag
+----------- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- ------------ ----
+1           Excellent Service                                                                                                                                                                                                                                                5            X
+2           Friendly Staff                                                                                                                                                                                                                                                   5            X
+3           Car came back with damage                                                                                                                                                                                                                                        1            L
+4           I was charged twice                                                                                                                                                                                                                                              1            V
+5           Car came back with 20 more miles on it                                                                                                                                                                                                                           2            L
+6           Waited for over 15 minutes                                                                                                                                                                                                                                       3            X
+7           Short wait, friendly staff                                                                                                                                                                                                                                       4            X
+8           Exactly what I wanted                                                                                                                                                                                                                                            5            X
+9           Excessive convenience charges                                                                                                                                                                                                                                    3            X
+10          Employee was texting, everything else was good.                                                                                                                                                                                                                  4            X
+11          Employee was very friendly                                                                                                                                                                                                                                       5            X
+12          Employee was too friendly                                                                                                                                                                                                                                        1            L
+13          Let a drunk guy pick up his car!                                                                                                                                                                                                                                 1            V
+14          Forgot part of my car care package                                                                                                                                                                                                                               3            X
+15          Expensive                                                                                                                                                                                                                                                        3            X
+16          No place to sit and wait                                                                                                                                                                                                                                         2            X
+17          Unlit, scary waiting area                                                                                                                                                                                                                                        1            V
+18          Nice, friendly people. Car looked great.                                                                                                                                                                                                                         5            X
+19          They forgot to turn off my lights and my battery died                                                                                                                                                                                                            1            L
+20          Best valet service I've ever experienced.                                                                                                                                                                                                                        5            X
+21          They fixed my double charge                                                                                                                                                                                                                                      5            X
+22          Very nice staff, respectful                                                                                                                                                                                                                                      5            X
+23          I don't know why this place is still in business...                                                                                                                                                                                                              1            L
+24          Very difficult to find                                                                                                                                                                                                                                           2            L
+25          El empleado podría hablar español para ayudarme.                                                                                                                                                                                                                 5            X
+26          Me encantó su personal bilingüe.                                                                                                                                                                                                                                 5            X
+27          Very nice staff, respectful                                                                                                                                                                                                                                      5            X
+28          I don't know why this place is still in business...                                                                                                                                                                                                              1            L
+29          Very difficult to find                                                                                                                                                                                                                                           2            L
+30          El empleado podría hablar español para ayudarme.                                                                                                                                                                                                                 5            X
+31          Me encantó su personal bilingüe.                                                                                                                                                                                                                                 5            X
+32          Very nice staff, respectful                                                                                                                                                                                                                                      5            X
+33          I don't know why this place is still in business...                                                                                                                                                                                                              1            L
+34          Very difficult to find                                                                                                                                                                                                                                           2            L
+35          El empleado podría hablar español para ayudarme.                                                                                                                                                                                                                 5            X
+36          Me encantó su personal bilingüe.                                                                                                                                                                                                                                 5            X
+
+(36 row(s) affected)
+

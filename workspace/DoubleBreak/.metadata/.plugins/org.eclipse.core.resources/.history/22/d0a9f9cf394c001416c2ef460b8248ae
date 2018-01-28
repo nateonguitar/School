@@ -1,0 +1,22 @@
+package com.natebrooks.doublebreaker;
+
+import com.natebrooks.framework.Game;
+import com.natebrooks.framework.Graphics;
+import com.natebrooks.framework.Screen;
+import com.natebrooks.framework.Graphics.ImageFormat;
+
+public class SplashLoadingScreen extends Screen{
+	
+	long s = System.currentTimeMillis();
+	
+	public SplashLoadingScreen(Game game){
+		super(game);
+	}
+	
+	@Override
+	public void update(float deltaTime){
+		Graphics g = game.getGraphics();
+		Assets.splash = g.newImage("splash.jpg", ImageFormat.RGB565)
+	}
+	
+}

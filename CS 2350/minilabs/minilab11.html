@@ -1,0 +1,37 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+<title>Page title</title>
+<script type="text/javascript">
+function roll(myref){
+  var path = myref.src;
+
+  if ( path.indexOf('jadams' ) > 0) {
+  	 myref.src='http://icarus.cs.weber.edu/~lfernandez/images/washington.gif';
+  }else{
+  			myref.src='http://icarus.cs.weber.edu/~lfernandez/images/jadams.gif';
+  }
+}
+
+function enlargeImages(){
+	for (var i=0; i<document.images.length; i++)
+	{
+		document.images[i].style.height = '360px';
+		document.images[i].style.width = '300px';
+	}
+}
+</script>
+
+</head>
+<body>
+
+<img src="http://icarus.cs.weber.edu/~lfernandez/images/jadams.gif" width="150" height="180" onmouseover="roll(this)"  />
+
+
+<img src="http://icarus.cs.weber.edu/~lfernandez/images/jadams.gif" width="150" height="180" onmouseover="roll(this)"  />
+
+<a href="#enlargeThis" onclick="enlargeImages()">Enlarge Images</a>
+</body>
+</html>

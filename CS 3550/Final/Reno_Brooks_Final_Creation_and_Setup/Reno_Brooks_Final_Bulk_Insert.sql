@@ -1,0 +1,26 @@
+USE SUPRA
+
+GO
+
+-- !!!!!! Populate Tables !!!!!!
+BULK INSERT ValetReview			FROM 'C:\Stage\SUPRAValetReview.txt'		WITH (FIELDTERMINATOR='|')
+BULK INSERT ValetDiscount		FROM 'C:\Stage\SUPRAValetDiscount.txt'		WITH (FIELDTERMINATOR='|')
+BULK INSERT Valet				FROM 'C:\Stage\SUPRAValet.txt'				WITH (FIELDTERMINATOR='|')
+BULK INSERT SpotAmenityLookup	FROM 'C:\Stage\SUPRASpotAmenityLookup.txt'	WITH (FIELDTERMINATOR='|')
+BULK INSERT SpotAmenity			FROM 'C:\Stage\SUPRASpotAmenity.txt'		WITH (FIELDTERMINATOR='|')
+BULK INSERT Review				FROM 'C:\Stage\SUPRAReview.txt'				WITH (FIELDTERMINATOR='|')
+BULK INSERT LotParkingSpots		FROM 'C:\Stage\SUPRALotParkingSpots.txt'	WITH (FIELDTERMINATOR='|')
+BULK INSERT Lot					FROM 'C:\Stage\SUPRALot.txt'				WITH (FIELDTERMINATOR='|')
+BULK INSERT Discount			FROM 'C:\Stage\SUPRADiscount.txt'			WITH (FIELDTERMINATOR='|')
+BULK INSERT Customer			FROM 'C:\Stage\SUPRACustomer.txt'			WITH (FIELDTERMINATOR='|')
+BULK INSERT CCPackageAmenity	FROM 'C:\Stage\SUPRACCPackageAmenity.txt'	WITH (FIELDTERMINATOR='|')
+BULK INSERT CCAmenity			FROM 'C:\Stage\SUPRACCAmenity.txt'			WITH (FIELDTERMINATOR='|')
+BULK INSERT CarCarePackage		FROM 'C:\Stage\SUPRACarCarePackage.txt'		WITH (FIELDTERMINATOR='|')
+
+GO
+
+USE master
+
+
+
+

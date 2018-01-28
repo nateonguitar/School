@@ -1,0 +1,38 @@
+/*******************************************
+* Dean and Dean
+*
+* This class creates an ArrayList of tributes.
+* It randomly chooses one tribute and removes him/her.
+*******************************************/
+
+import java.util.ArrayList;
+
+public class HungerGames
+{
+   public static void main (String[] args)
+   {
+      int deceasedIndex;   // index of deceased tribute
+      String deceased;     // name of deceased tribute
+      ArrayList<String> tributes = new ArrayList<>();
+      String tributesString = "";
+      
+      tributes.add("Cato");
+      tributes.add("Katniss");
+      tributes.add("Peeta");
+      tributes.add("Rue");
+      tributes.add(1, "Finnick");
+      tributes.add("Joanna");
+      
+      deceasedIndex = (int) (Math.random() * tributes.size());
+      deceased = tributes.remove(deceasedIndex);
+      
+      for (int i=0; i<tributes.size(); i++)
+      {
+         tributesString += tributes.get(i) + ", ";
+      }
+      
+      System.out.println(deceased + " is no longer in the game.");
+      System.out.println("Remaining: " + tributesString);
+   } // end main
+} // end class HungerGames
+

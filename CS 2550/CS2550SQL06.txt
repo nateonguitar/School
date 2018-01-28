@@ -1,0 +1,156 @@
+-- 1.
+SELECT st.student_id
+FROM student st INNER JOIN enrollment en
+  ON st.student_id = en.student_id
+    INNER JOIN section se
+    ON en.section_id = se.section_id
+WHERE se.course_no >= 100
+  AND se.course_no < 200
+GROUP BY st.student_id
+HAVING count(*) = 
+  (SELECT MAX(courses_taken)
+   FROM
+    (SELECT count(course_no) AS courses_taken
+     FROM enrollment en INNER JOIN section se
+       ON en.section_id = se.section_id
+       WHERE course_no >= 100
+       AND course_no < 200
+     GROUP BY student_ID));
+
+-- 2.
+SELECT distinct st.student_id, st.last_name, st.first_name
+FROM student st INNER JOIN enrollment en
+  ON st.student_id = en.student_id
+  INNER JOIN grade gr
+  ON en.student_id = gr.student_id
+  INNER JOIN section se
+  ON en.section_id = se.section_id
+WHERE en.section_id = 100
+  AND se.course_no = 230
+  AND gr.numeric_grade = 
+    (SELECT MAX(numeric_grade)
+    FROM grade gr INNER JOIN enrollment en
+      ON gr.student_id = en.student_id
+      INNER JOIN section se
+      ON en.section_ID = se.section_ID
+    WHERE gr.grade_type_code = 'FI'
+      AND gr.section_id = 100);
+
+-- 3.
+SELECT salutation, first_name, last_name, zip
+FROM instructor
+WHERE instructor_id NOT IN 
+  (SELECT instructor_id
+  FROM section)
+ORDER BY last_name, first_name;
+
+-- 4.
+SELECT st.last_name, gr.numeric_grade
+FROM grade gr INNER JOIN enrollment en
+  ON gr.student_id = en.student_id
+  INNER JOIN student st
+  ON en.student_id = st.student_id
+WHERE gr.grade_type_code = 'FI'
+  AND gr.section_id = 90
+  AND gr.numeric_grade > 
+    (SELECT avg(numeric_grade)
+      FROM grade
+      WHERE grade_type_code = 'FI'
+        AND section_id = 90)
+ORDER BY st.last_name, st.first_name;
+
+-- 5.
+SELECT course_no, description
+FROM course
+WHERE course_no = 
+  (SELECT course_no
+  FROM enrollment e INNER JOIN section s
+    ON e.section_id = s.section_ID
+  GROUP BY course_no
+  HAVING COUNT(*) = 
+    (SELECT MAX(students)
+      FROM
+      (SELECT COUNT(*) AS students
+      FROM enrollment e INNER JOIN section s
+        ON e.section_id = s.section_id
+      GROUP BY course_no)));
+
+-- 6.
+SELECT co.course_no, description
+FROM course co INNER JOIN section se
+  ON co.course_no = se.course_no
+WHERE to_char(start_date_time, 'HH:MIAM') = '10:30AM'
+ORDER BY co.course_no;
+
+-- 7.
+SELECT distinct st.student_id, st.last_name
+FROM student st INNER JOIN enrollment en
+  ON st.student_id = en.student_id
+  INNER JOIN grade gr
+  ON en.student_id = gr.student_id
+  WHERE gr.section_id = 135
+    AND gr.grade_type_code = 'QZ'
+    AND gr.grade_code_occurrence = 3
+    AND gr.numeric_grade < 
+      (SELECT avg(gr.numeric_grade)
+      FROM grade gr
+      WHERE gr.grade_type_code = 'QZ'
+        AND gr.grade_code_occurrence = 3
+        AND gr.section_id = 135)
+ORDER BY st.last_name;
+
+-- 8.
+SELECT distinct st.first_name, st.last_name, st.phone
+FROM student st INNER JOIN enrollment en
+  ON st.student_id = en.student_id
+  INNER JOIN section se
+  ON en.section_id = se.section_id
+  INNER JOIN course co
+  ON se.course_no = co.course_no
+WHERE st.student_id 
+  IN (SELECT st.student_id
+    FROM student st INNER JOIN enrollment en
+      ON st.student_id = en.student_id
+      INNER JOIN section se
+      ON en.section_id = se.section_id
+      INNER JOIN course co
+      ON se.course_no = co.course_no
+    WHERE co.description LIKE '%Systems Analysis%')
+  AND st.student_id
+  IN (SELECT st.student_id
+    FROM student st INNER JOIN enrollment en
+      ON st.student_id = en.student_id
+      INNER JOIN section se
+      ON en.section_id = se.section_id
+      INNER JOIN course co
+      ON se.course_no = co.course_no
+    WHERE co.description LIKE '%Project Management%')
+ORDER BY st.last_name, st.first_name;
+
+-- 9.
+SELECT i.first_name, i.last_name, s.course_no, description
+FROM course c INNER JOIN section s
+  ON c.course_no = s.course_no
+  INNER JOIN instructor i
+  ON s.instructor_id = i.instructor_id
+WHERE upper(description) LIKE '%JAVA%'
+  AND s.instructor_id = 
+  (SELECT i.instructor_id
+  FROM course c INNER JOIN section s
+    ON c.course_no = s.course_no
+    INNER JOIN instructor i
+    ON s.instructor_id = i.instructor_id
+  WHERE upper(description) LIKE '%JAVA%'
+  GROUP BY i.instructor_id, i.last_name, i.first_name
+  HAVING count(*) = 
+    (SELECT MAX(courses)
+    FROM
+      (SELECT COUNT(*) AS courses
+      from course c INNER JOIN section s
+        ON c.course_no = s.course_no
+        INNER JOIN instructor i
+        ON s.instructor_id = i.instructor_id
+      WHERE upper(description) LIKE '%JAVA%'
+      GROUP BY i.instructor_id)))
+ORDER BY i.last_name, i.first_name, c.description;
+

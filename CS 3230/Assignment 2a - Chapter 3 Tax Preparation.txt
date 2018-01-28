@@ -1,0 +1,61 @@
+// variables needed
+done boolean
+filing status
+gross income
+number of exemptions
+tax rate
+taxable income
+taxes owed
+
+print ("J O H N ' S   T A X   P R E P A R E R");
+
+do{
+	ask user "Are you (s)ingle, (m)arried, or (c)ohabiting?	Enter s, m, or c ==>";
+	check for valid user input
+	ask again if not valid
+	set filing status
+	
+	ask user "Gross income ==>";
+	check for valid user input
+	ask again if not valid
+	set gross income
+	
+	ask user "Number of exemptions ==>";
+	check for valid user input
+	ask again if not valid
+	set number of exemptions
+	
+
+	depending on filing status, set tax rate
+	//use a switch
+	single{
+		tax rate = 0.2
+	}
+	married{
+		tax rate = 0.25
+	}
+	cohabiting{
+		set rate based on income
+		less than $20,000 = 0.1   
+		$20,000 - $50,000 = 0.15   
+		more than $50,000 = 0.3
+	}
+	
+	figure out taxable income
+	taxable income = (gross income) - (exemptions * 1000);
+	
+	figure out taxes owed
+	taxes owed = taxable income * (1 - tax rate);
+	
+	display results
+	something like:
+		INCOME TAX SUMMARY
+		tax rate: 15.0%
+		taxable income: $50000.0
+		taxes owed: $7500.0
+	
+	ask user "Process another customer? (y/n):";
+	if(yes){
+		done = true;
+	}
+}while(user is not done);

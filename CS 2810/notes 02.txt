@@ -1,0 +1,41 @@
+-- Translate the following expression to assembly
+-- Rval = Xval - (-Yval + Zval)
+
+ -- -Yval
+MOV eax, Yval
+NEG eax
+
+ -- (-Yval + Zval)
+ADD eax, Zval
+
+ -- Xval - (-Yval + Zval)
+MOV ebx Xval
+SUB ebx, eax
+
+MOV Rval, ebx
+
+--------------------------------------------------------
+
+MOV ax, 00FFh
+ADD ax, 1		; AX=0100h	SF=0 ZF=0 CF=0
+SUB ax, 1		; AX=00FFh	SF=0 ZF=0 CF=0
+ADD al, 1		; AL=  00h      SF=0 ZF=1 CF=1
+MOV bh, 6Ch
+ADD bh, 95h		; BH=  01h      SF=0 ZF=0 CF=1
+
+MOV al, 2
+SUB al, 3		; AL=  FFh	SF=1 ZF=0 CF=1
+
+--------------------------------------------------------
+
+varB BYTE 65h, 31h, 02h, 05h		;05 02 31 65
+varW WORD 6543h, 1202h			;1202 6543
+varD DWORD 12345678h			;12345678
+
+
+
+a. 0502
+b. 12
+c. 65
+d. 1234
+e. 12026543

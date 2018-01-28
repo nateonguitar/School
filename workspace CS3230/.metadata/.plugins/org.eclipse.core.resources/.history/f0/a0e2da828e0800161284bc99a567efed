@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane id="CardGameMainAnchorPane" fx:id="CardGameMainAnchorPane" prefHeight="600.0" prefWidth="800.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cardgame.BlackjackController">
+   <children>
+      <MenuBar styleClass="menubar" AnchorPane.bottomAnchor="571.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <menus>
+            <Menu mnemonicParsing="false" text="File">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#backToSetup" text="Back to Setup" />
+                  <MenuItem mnemonicParsing="false" onAction="#backToMenu" text="Back to Menu" />
+                  <MenuItem mnemonicParsing="false" onAction="#closeProgram" text="Exit" />
+               </items>
+            </Menu>
+         </menus>
+      </MenuBar>
+      <Pane id="pane" fx:id="scoresPane" layoutX="586.0" layoutY="68.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="70.0">
+         <children>
+            <Label layoutX="58.0" layoutY="20.0" style="-fx-font-size: 20pt;" text="Scores" />
+            <Label id="label_Dealer" fx:id="label_Dealer" layoutX="30.0" layoutY="104.0" text="Dealer: " />
+            <Label id="label_Player1" fx:id="label_Player1" layoutX="30.0" layoutY="181.0" />
+            <Label id="label_Player2" fx:id="label_Player2" layoutX="30.0" layoutY="235.0" />
+            <Label id="label_Player3" fx:id="label_Player3" layoutX="30.0" layoutY="286.0" />
+            <Label id="label_Player4" fx:id="label_Player4" layoutX="30.0" layoutY="335.0" />
+         </children>
+      </Pane>
+      <Button fx:id="readyButton" layoutX="270.0" layoutY="287.0" mnemonicParsing="false" onAction="#startBlackjack" text="Ready?" />
+      <Label fx:id="label_DealerOnBoard" layoutX="50.0" layoutY="110.0" />
+      <Label fx:id="label_PlayerOnBoard" layoutX="62.0" layoutY="435.0" />
+   </children>
+</AnchorPane>

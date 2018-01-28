@@ -1,0 +1,145 @@
+-- 1.
+------------------------------
+-- CREATE TABLES
+------------------------------
+CREATE TABLE school_table
+(school             VARCHAR2(50)        NOT NULL,
+ city               VARCHAR2(50)        NOT NULL,
+ coach              VARCHAR2(50)        NULL,
+ team_name          VARCHAR2(50)        NULL,
+ win_record         NUMBER              NULL,
+ loss_record        NUMBER              NULL,
+ CONSTRAINT pk_school_table PRIMARY KEY(school));
+ 
+CREATE TABLE game_table
+ (school            VARCHAR2(50)        NOT NULL,
+  game_number       NUMBER              NOT NULL,
+  game_date         DATE                NULL,
+  game_score        VARCHAR(20)         NULL,
+  CONSTRAINT pk_game_table PRIMARY KEY(school, game_number));
+  
+CREATE TABLE player_table
+(school             VARCHAR2(50)        NOT NULL,
+ player_number      NUMBER              NOT NULL,
+ player_name        VARCHAR(100)        NULL,
+ CONSTRAINT pk_player_table PRIMARY KEY(school, player_number)); 
+  
+CREATE TABLE player_game
+(school             VARCHAR2(50)        NOT NULL,
+ player_number      NUMBER              NOT NULL,
+ game_number        NUMBER              NOT NULL,
+ CONSTRAINT pk_player_game PRIMARY KEY(school, player_number, game_number),
+ CONSTRAINT fk_school_table FOREIGN KEY(school) REFERENCES school_table(school),
+ CONSTRAINT fk_game_table FOREIGN KEY(school, game_number) REFERENCES game_table(school, game_number),
+ CONSTRAINT fk_player_table FOREIGN KEY(school, player_number) REFERENCES player_table(school, player_number));
+ 
+ 
+-- 2.
+---------------------------
+-- POPULATE TABLES
+---------------------------
+ 
+INSERT ALL
+  INTO school_table(school, city, coach, team_name, win_record, loss_record)
+    VALUES ('Weber', 'North Ogden', 'Corbridge', 'Warriors', 3, 6)
+  INTO school_table(school, city, coach, team_name, win_record, loss_record)
+    VALUES ('Northridge', 'Layton', 'Thompson', 'Knights', 9, 3)
+  INTO school_table(school, city, coach, team_name, win_record, loss_record)
+    VALUES ('Davis', 'Kaysville', 'Bishop', 'Darts', 8, 2)
+SELECT * FROM dual;
+
+ 
+INSERT ALL
+  INTO game_table(school, game_number, game_date, game_score)
+    VALUES('Weber',      1, to_date('05/20/10', 'mm/dd/yy'), '3 - 7(L)')
+  INTO game_table(school, game_number, game_date, game_score)
+    VALUES('Weber',      2, to_date('08/27/10', 'mm/dd/yy'), '0 0 31(L)')
+  INTO game_table(school, game_number, game_date, game_score)
+    VALUES('Northridge', 1, to_date('08/20/10', 'mm/dd/yy'), '21 - 14(W)')
+  INTO game_table(school, game_number, game_date, game_score)
+    VALUES('Northridge', 2, to_date('09/03/10', 'mm/dd/yy'), '18 - 54(L)')
+  INTO game_table(school, game_number, game_date, game_score)
+    VALUES('Davis',      1, to_date('09/03/10', 'mm/dd/yy'), '27 - 20(W)')
+  INTO game_table(school, game_number, game_date, game_score)
+    VALUES('Davis',      2, TO_DATE('09/27/10', 'mm/dd/yy'), '8 - 14(L)')
+SELECT * FROM dual;
+ 
+ 
+INSERT ALL
+  INTO player_table(school, player_number, player_name)
+    VALUES('Weber', 42, 'Locke')
+  INTO player_table(school, player_number, player_name)
+    VALUES('Weber', 18, 'Reyes')
+  INTO player_table(school, player_number, player_name)
+    VALUES('Northridge', 6, 'Austin')
+  INTO player_table(school, player_number, player_name)
+    VALUES('Davis', 23, 'Shepherd')
+SELECT * FROM dual;
+    
+    
+INSERT ALL
+  INTO player_game(school, player_number, game_number)
+    VALUES('Weber', 42, 1)
+  INTO player_game(school, player_number, game_number)
+    VALUES('Weber', 42, 2)
+  INTO player_game(school, player_number, game_number)
+    VALUES('Weber', 18, 1)
+  INTO player_game(school, player_number, game_number)
+    VALUES('Weber', 18, 2)
+  INTO player_game(school, player_number, game_number)
+    VALUES('Northridge', 6, 1)
+  INTO player_game(school, player_number, game_number)
+    VALUES('Northridge', 6, 2)
+  INTO player_game(school, player_number, game_number)
+    VALUES('Davis', 23, 1)
+  INTO player_game(school, player_number, game_number)
+    VALUES('Davis', 23, 2)
+SELECT * FROM dual;
+
+
+-----------------------------------------------------
+-- QUERIES
+-----------------------------------------------------
+-- 3.
+SELECT 'Table school has ' || count(*) || ' rows.' AS num_rows 
+FROM school_table
+UNION ALL
+(SELECT 'Table game has ' || count(*) || ' rows.' AS num_rows  
+FROM game_table)
+UNION ALL
+(SELECT 'Table player has ' || count(*) || ' rows.' AS num_rows 
+FROM player_table)
+UNION ALL
+(SELECT 'Table player_game has ' || count(*) || ' rows.' AS num_rows 
+FROM player_game);
+
+-- 4.
+SELECT game_score
+FROM game_table
+WHERE school = 'Weber'
+  AND game_number = 1;
+  
+-- 5.
+SELECT pt.school, player_number, player_name, game_date, game_score
+FROM player_table pt INNER JOIN game_table gt
+  ON pt.school = gt.school;
+  
+-- 6.
+SELECT school, count(*) AS num_students
+FROM
+  (SELECT school, player_number
+  FROM player_game
+  GROUP BY school, player_number)
+GROUP BY school;
+
+   
+-- 7.
+SELECT coach, win_record, loss_record
+FROM school_table
+ORDER BY loss_record;
+
+DROP TABLE player_game;
+DROP TABLE school_table;
+DROP TABLE game_table;
+DROP TABLE player_table;
+rollback;

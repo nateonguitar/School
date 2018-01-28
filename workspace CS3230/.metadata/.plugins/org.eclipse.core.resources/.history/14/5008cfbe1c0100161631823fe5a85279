@@ -1,0 +1,44 @@
+package cardgame;
+
+import cardgame.cards.Card;
+import cardgame.cards.Numbers;
+import cardgame.cards.Suits;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+
+public class StartCardGame extends Application{
+	
+	private AnchorPane rootLayout;
+	
+	public static void main(String[] args) {
+		launch(args);
+	}
+
+	@Override
+	public void start(Stage primaryStage) throws Exception{
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/cardgame/view/StartCardGame.fxml"));
+		rootLayout = (AnchorPane) loader.load();
+		
+		// create a new scene and set it's aspect ratio
+		Scene scene = new Scene(rootLayout, 600, 400);
+		
+		Card card = new Card(Numbers.ACE, Suits.DIAMONDS);
+		
+		rootLayout.getChildren().add(card.get);
+		// import style sheet
+		scene.getStylesheets().add("cardgame/view/style.css");
+		
+		primaryStage.initStyle(StageStyle.DECORATED);
+		primaryStage.setScene(scene);
+		primaryStage.setTitle("CardGame");
+		primaryStage.show();
+		
+		
+		
+	}
+
+}

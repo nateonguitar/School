@@ -1,0 +1,5 @@
+INDEX VERSION 1.126+C:\Users\Nates\workspace\garbage01\.metadata\.plugins\org.eclipse.jdt.core
+1284074322.index
+4165919758.index
+2672568473.index
+1901592321.index

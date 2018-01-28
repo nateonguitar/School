@@ -1,0 +1,121 @@
+.data
+  bVal  BYTE  100
+  bVal2 BYTE  ?
+  wVal  WORD  2
+  dVal  dWord 5
+
+.code
+  mov ds,45       ; cannot move to ds
+  mov esi,wVal    ; size mismatch esi is 32 wVal is 16
+  mov eip, dVal   ; cannot move to instruction pointer
+  mov 25, bVal    ; cannot redefine 25
+  mov vBal2, bVal ; must use registers as a middle man
+
+-------------------------------------------------------------
+
+  movzx ax, bl ; ax = 16, bl = 8
+               ; movzx: move and pad extra bits with 0's
+               ; source 00001111 destination 00000000|00001111
+               ; source 10001111 destination 00000000|10001111
+
+
+  movsx ax, bl ; ax = 16, bl = 8
+               ; movsx pad with whatever the first bit is
+               ; source 00001111 destination 00000000|00001111
+               ; source 10001111 destination 11111111|10001111
+
+.data
+  var1 BYTE 10001111b
+.code
+  movzx ax, var1     ; AX = 0000000010001111b
+  movsx ax, var1     ; AX = 1111111110001111b
+
+-------------------------------------------------------------
+
+.data
+  var1 WORD 1000h
+  var2 WORD 2000h
+.code
+  xchg ax, bx        ; exchange 16 bit regs
+  xchg ah, al        ; exchange 8  bit regs
+  xchg var1,bx       ; exchange mem, reg
+  xchg eax,ebx       ; exchange 32 bit regs
+
+  xchg var1, var2    ; error: two memory operands
+
+-------------------------------------------------------------
+; direct offset operands
+
+.data
+  arrayB BYTE 10h, 20h, 30h, 40h
+.code
+  mov al, arrayB+1   ; AL = 20h
+  mov al,[arrayB+1]  ; alternative notation
+
+     --------
+
+.data
+  arrayW WORD 1000h, 2000h, 3000h
+  arrayD DWORD 1, 2, 3, 4
+.code
+  mov ax,  [arrayW+2]   ; AX  = 2000h
+  mov ax,  [arrayW+4]   ; AX  = 3000h
+  mov eax, [arrayD+4]   ; EAX = 00000002h
+                        ; +1 means shift 1 byte
+
+
+  ; will these work?
+  mov ax, [arrayW-2]     ; this system, no
+  mov eax, [arrayD+16]   ; is out of range
+
+-------------------------------------------------------------
+; write a program that rearranges the values of three double
+; values in the following array as 3, 1, 2
+
+.data
+  arrayD DWORD 1, 2, 3
+
+; step 1: copy the first value into EAX and exchange it with the alue in the second position
+.code
+  mov  eax, arrayD
+  xchg eax, [arrayD+4]    ; 1, 1, 3
+  xchg eax, [arrayD+8]    ; 1, 1, 2
+  mov arrayD, eax         ; 3, 1, 2
+
+------------------------------------------------------------
+; write a progrram that adds the following three bytes
+
+.data
+  myBytes BYTE 80h, 66h, 0A5h
+
+.code
+  MOV al, myBytes
+  ADD al, [myBytes+1]
+  ADD a1, [myBytes+2]
+
+; what is the evaluation of this code?
+
+  MOV ax, myBytes
+  ADD ax, [myBytes+1]
+  ADD ax, [myBytes+2]
+
+; won't work because ax = 16 bits and each member of the array is 8 bytes
+
+------------------------------------------------------------
+
+.data
+  myBytes BYTE 80h, 66h, 0A5h
+
+.code
+    ; is anything missing from this code?
+
+  MOVZX ax, myBytes
+  mov b1, [myBytes+1]
+  add ax, bx
+  mov b1, [myBytes+2]
+  add ax, bx
+
+    ; What's in the bx register? it was never initialized to anything we know
+    ; we should have said
+  mov bx, 0
+    ; as the first step

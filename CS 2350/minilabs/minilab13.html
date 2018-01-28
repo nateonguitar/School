@@ -1,0 +1,289 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+<title>Page title</title>
+<style type="text/css">
+
+body, #header{
+text-align:center;
+font-family:arial;
+font-size:1em;
+background-color: silver;
+}
+
+.frame{
+padding:25px;
+background-color:white;
+border:solid 1px black;
+display:inline-block;
+
+}
+
+#prompt{
+background-color:aqua;
+padding:10px;
+display:none;
+}
+
+img{
+cursor:pointer;
+}
+
+.opClass {
+    opacity:0.4;
+    filter:alpha(opacity=40); /* For IE8 and earlier */
+    cursor:default;
+}
+
+</style>
+
+<script language="JavaScript" type="text/javascript">
+
+/* This is an alternative way to create the array of person objects instead of using the literal which I use below 
+commented out section
+
+function person(firstname,url){
+this.firstname = firstname;
+this.url = url;
+}
+
+personArray = new Array();
+
+urlArray = [
+'https://portalapps.weber.edu/wcpictures/01JN8ZBR.JPG',
+'https://portalapps.weber.edu/wcpictures/00M1KEIV.JPG',
+'https://portalapps.weber.edu/wcpictures/00L5V30P.JPG',
+'https://portalapps.weber.edu/wcpictures/00KODGTC.JPG'
+]
+
+nameArray =[
+'Ken','Callan','Christopher','Anthony'
+]
+
+for (i=0;i<urlArray.length;i++){
+ //console.log(nameArray[i],urlArray[i]);
+ var student = new person(  nameArray[i],urlArray[i] );
+ personArray.push(student);
+}
+*/
+
+var currentId = "";
+var x = 0;
+var y = 0;
+
+var personArray = [
+    {
+        "firstname": "Anthony",
+        "url": "https://portalapps.weber.edu/wcpictures/00MC20LK.JPG"
+    },
+    {
+        "firstname": "Raymond",
+        "url": "https://portalapps.weber.edu/wcpictures/00MSES3C.JPG"
+    },
+    {
+        "firstname": "Moselle",
+        "url": "https://portalapps.weber.edu/wcpictures/00LVUQVR.JPG"
+    },
+    {
+        "firstname": "Nathan",
+        "url": "https://portalapps.weber.edu/wcpictures/00MOAV6X.JPG"
+    },
+    {
+        "firstname": "Chia",
+        "url": "https://portalapps.weber.edu/wcpictures/00LO8NHW.JPG"
+    },
+    {
+        "firstname": "Yirun",
+        "url": "https://portalapps.weber.edu/wcpictures/00KOVVSG.JPG"
+    },
+    {
+        "firstname": "Joshua",
+        "url": "https://portalapps.weber.edu/wcpictures/00M9JBWV.JPG"
+    },    
+        {
+        "firstname": "Burak",
+        "url": "https://portalapps.weber.edu/wcpictures/00LP41TN.JPG"
+    },
+    {
+        "firstname": "Darci",
+        "url": "https://portalapps.weber.edu/wcpictures/D1MAX06S.JPG"
+    },
+    {
+        "firstname": "Jeff",
+        "url": "https://portalapps.weber.edu/wcpictures/C3HM1A6C.JPG"
+    },
+    {
+        "firstname": "Jacob",
+        "url": "https://portalapps.weber.edu/wcpictures/00LPZO4K.JPG"
+    }, 
+    {
+        "firstname": "Nicholas",
+        "url": "https://portalapps.weber.edu/wcpictures/00MPBFJ3.JPG"
+    }, 
+    {
+        "firstname": "Theodore",
+        "url": "https://portalapps.weber.edu/wcpictures/00M4DSB1.JPG"
+    }, 
+        {
+        "firstname": "Levi",
+        "url": "https://portalapps.weber.edu/wcpictures/01I2WW56.JPG"
+    }, 
+        {
+        "firstname": "Michael",
+        "url": "https://portalapps.weber.edu/wcpictures/01JSA45E.JPG"
+    }, 
+        {
+        "firstname": "Alex",
+        "url": "https://portalapps.weber.edu/wcpictures/00LMUFPM.JPG"
+    }, 
+    {
+        "firstname": "Kevin",
+        "url": "https://portalapps.weber.edu/wcpictures/00JSUWIW.JPG"
+    },
+        {
+        "firstname": "Joshua",
+        "url": "https://portalapps.weber.edu/wcpictures/00MXAIO9.JPG"
+    },
+            {
+        "firstname": "Ricardo",
+        "url": "https://portalapps.weber.edu/wcpictures/00M68UKG.JPG"
+    }, 
+        {
+        "firstname": "Alex",
+        "url": "https://portalapps.weber.edu/wcpictures/00M6R0GJ.JPG"
+    }, 
+        {
+        "firstname": "Jeremy",
+        "url": "https://portalapps.weber.edu/wcpictures/00MDT7NQ.JPG"
+    }, 
+    {
+        "firstname": "Jason",
+        "url": "https://portalapps.weber.edu/wcpictures/00LNB3ZQ.JPG"
+    },
+        {
+        "firstname": "Austin",
+        "url": "https://portalapps.weber.edu/wcpictures/00MDT82O.JPG"
+    },
+        {
+        "firstname": "Collin",
+        "url": "https://portalapps.weber.edu/wcpictures/00LX38F7.JPG"
+    },
+        {
+        "firstname": "Lane",
+        "url": "https://portalapps.weber.edu/wcpictures/00MXRL7X.JPG"
+    },
+        {
+        "firstname": "Bryan",
+        "url": "https://portalapps.weber.edu/wcpictures/00MDT91J.JPG"
+    }
+];
+
+
+function populateImages(){
+
+  for (i=0;i<personArray.length;i++){
+	var divVar = document.createElement('div');
+	divVar.setAttribute('class', 'frame');
+	
+	document.getElementById('myDivId').appendChild(divVar);
+	
+	var imageVar = document.createElement('img');
+	imageVar.setAttribute('src', personArray[i].url);
+	imageVar.setAttribute('onclick', 'promptForName(this)');
+	imageVar.setAttribute('onmouseover', 'styleIt(this)');
+	imageVar.setAttribute('onmouseout', 'unStyleIt(this)');
+	imageVar.setAttribute('id', i);
+	imageVar.setAttribute('width', '250px');
+	//imageVar.setAttribute();
+	divVar.appendChild(imageVar);
+  }
+  
+  
+
+}
+
+function promptForName(element){
+	document.getElementById('prompt').style.display = "block";
+	currentId = element.id;
+	x = element.offsetLeft;
+	y = element.offsetTop
+	
+	document.getElementById('prompt').style.position = "absolute";
+	document.getElementById('prompt').style.top = y + 20;
+	document.getElementById('prompt').style.left = x + 20;
+	
+	document.getElementById('response').focus();
+}
+
+function styleIt(element){
+    element.parentNode.style.backgroundColor='aqua';
+}
+
+function unStyleIt(element){
+    element.parentNode.style.backgroundColor='white';
+}
+
+function checkAnswer(){
+    //alert(document.getElementById('response').value + "  " + currentId);
+    //if (document.getElementById('response').value == currentId){
+    if (document.getElementById('response').value == personArray[currentId].firstname){
+       //document.getElementById(currentId).style.visibility='hidden';
+       
+       //apply the class to reduce the opacity of the image, takeout the mouse events because they shouldn't be there anymore
+       document.getElementById(currentId).className = "opClass";
+       document.getElementById(currentId).removeAttribute("onclick");
+       document.getElementById(currentId).removeAttribute("onmouseover");
+       
+       //superimpose name on image
+       var divVar =document.createElement('div');
+       divVar.setAttribute('id',currentId + 'name' );
+       document.getElementById('myDivId').appendChild(divVar);
+       var textNode = document.createTextNode(personArray[currentId].firstname);
+       divVar.appendChild(textNode);
+       document.getElementById(currentId + 'name').style.position="absolute";
+       document.getElementById(currentId + 'name').style.top=y;
+       document.getElementById(currentId + 'name').style.left=x;
+       
+       //clean up loose ends: hide the prompt, turn the frame white so it doesn't change to aqua on the rollover, erase the response and message
+       document.getElementById('prompt').style.display='none';
+       document.getElementById(currentId).parentNode.style.backgroundColor='white';
+       document.getElementById('response').value = "";
+       document.getElementById('message').innerHTML = "";
+    }else{
+        if (document.getElementById('message').innerHTML == "Wrong!"){
+          document.getElementById('message').innerHTML = "Incorrect answer!"
+        }else{
+          document.getElementById('message').innerHTML = "Wrong!"
+        }
+    }
+    return false;
+}
+</script>
+
+
+
+</head>
+<body onload="populateImages()">
+
+  <div id="Header">
+  <h2>Class Flashcards</h2>
+  <h3>Click on a student to guess their name</h3>
+  <h4>Concepts: Rollovers, Opacity, Showing and Hiding Elements, Arrays of Objects, Adding and Removing Elements/Attributes Dynamically to the DOM,
+  Accessing Elements using parentnode</h4>
+  </div>
+
+  <div id="myDivId">
+  </div>
+  
+  <div id="prompt" >
+    What is this student's name?<br />
+    <form onsubmit="return checkAnswer()">
+    <input type="text" id="response" name="quizInput">
+    </form>
+    <div id="message"></div>
+  </div>
+
+
+</body>
+</html>

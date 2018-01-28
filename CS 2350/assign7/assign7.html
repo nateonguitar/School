@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+     <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+	 <link rel="icon" href="../favicon.ico" type="image/x-icon" />
+    <title>Positioning</title>
+    <style type="text/css">
+        		
+        #greenbox {
+		display:block;
+		position:relative;
+        background-color:green;
+        height:100px;
+        width:100px;
+		left:0;
+		top:0;
+		z-index:10;
+        }
+		
+        #bluebox {
+		display:block;
+		position:relative;
+        background-color:blue;
+        height:100px;
+        width:100px;
+		left:50px;
+		top:-50px;
+        z-index:5;
+        }
+		
+        #redbox {
+		display:block;
+		position:absolute;
+        background-color:red;
+        height:100px;
+        width:100px;
+		left:100px;
+		top:100px;
+		z-index:10;
+        }		
+        		
+        		
+        #greenbox2 {
+		display:block;
+		position:relative;
+        background-color:green;
+        height:100px;
+        width:100px;
+		left:0;
+		top:0px;
+		z-index:10;
+        }
+		
+        #bluebox2 {
+		display:block;
+		position:relative;
+        background-color:blue;
+        height:100px;
+        width:100px;
+		left:50px;
+		top:-50px;
+        z-index:5;
+        }
+		
+        #redbox2 {
+		display:block;
+		position:relative;
+        background-color:red;
+        height:100px;
+        width:100px;
+		left:100px;
+		top:-100px;
+		z-index:10;
+        }
+        
+        
+        hr{
+        color: #000;
+        background-color: black;
+        height: 5px;
+        }
+        
+        body{
+        /*by default a body has a margin of 1px
+        I set it to 0 here.  Otherwise the absolutely positioned elements
+        cant be correctly placed with simple units of 50px*/
+        margin:0; 
+        }
+        
+    </style>
+</head>
+<body>
+	<div id="greenbox"></div>
+	<div id="bluebox"></div>
+	<div id="redbox"></div>
+	<hr>
+	<div id="greenbox2"></div>
+	<div id="bluebox2"></div>
+	<div id="redbox2"></div>
+	<hr>
+	<p>
+		<a href="http://jigsaw.w3.org/css-validator/check/referer">
+			<img style="border:0;width:88px;height:31px"
+				src="http://jigsaw.w3.org/css-validator/images/vcss-blue"
+				alt="Valid CSS!" />
+		</a>
+	</p>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/blackBackground"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#000000"
+    android:keepScreenOn="true"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/flashLiteMainLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#000000"
+        android:orientation="vertical"
+        android:weightSum="8" >
+        
+        <SurfaceView
+            android:id="@+id/PREVIEW"
+            android:layout_width="1dp"
+            android:layout_height="1dp" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="100dp"
+            android:layout_marginLeft="80dp"
+            android:layout_marginRight="80dp"
+            android:layout_marginTop="100dp"
+            android:orientation="vertical"
+            android:weightSum="3" >
+
+            <ImageButton
+                android:id="@+id/buttonFlashlight"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/flashlight_on"
+                android:gravity="center" />
+
+        </LinearLayout>
+
+        <SeekBar
+            android:id="@+id/brightnessSlider"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/buttonYellow"
+            android:layout_centerHorizontal="true"
+            android:max="255"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:progress="128"
+            android:progressDrawable="@drawable/seekbar_progress_bg"
+            android:thumb="@drawable/seek_thumb" />
+
+        <ImageButton
+            android:id="@+id/buttonRed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/buttonYellow"
+            android:layout_alignBottom="@+id/buttonYellow"
+            android:layout_alignLeft="@+id/brightnessSlider"
+            android:background="@null"
+            android:src="@drawable/red_off" />
+
+        <ImageButton
+            android:id="@+id/buttonYellow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="14dp"
+            android:background="@null"
+            android:src="@drawable/yellow_off" />
+
+        <ImageButton
+            android:id="@+id/buttonBlue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/brightnessSlider"
+            android:layout_alignTop="@+id/buttonYellow"
+            android:background="@null"
+            android:src="@drawable/blue_off" />
+
+        <TextView
+            android:id="@+id/brightnessText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:textColor="#88888888"
+            android:text="50%" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

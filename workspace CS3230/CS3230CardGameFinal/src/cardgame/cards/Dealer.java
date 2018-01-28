@@ -1,0 +1,58 @@
+package cardgame.cards;
+
+public class Dealer extends Player{
+	int numDecks;
+	
+	// filled with 1 full deck by default
+	Deck deck;
+	
+	
+	//-----------------------------------------------------------------------------
+	
+	// if no arguments given
+	// dealer gets 1 deck
+	public Dealer(){
+		super();
+		
+		deck = new Deck();
+		numDecks = 1;
+	}
+	
+	//-----------------------------------------------------------------------------
+	
+	// can specify how many decks
+	public Dealer(int numDecks){
+		super();
+		
+		deck = new Deck();
+		this.numDecks = numDecks;
+		
+		// give the dealer the given number of decks
+		// starts at 1 because by default the dealer already has one
+		for(int i=1; i<this.numDecks; i++){
+			deck.fillDeck();
+		}
+	}
+	
+	//-----------------------------------------------------------------------------
+	
+	public Deck getDeck(){
+		return this.deck;
+	}
+	
+	//-----------------------------------------------------------------------------
+	
+	// so I can say dealer.dealCard(player1);
+	// instead of   dealer.getDeck().dealCard(player1.getHand());
+	public void dealCard(Player player){
+		deck.dealCard(player.getHand());
+	}
+	
+	public void dealCard(Player player, Numbers number){
+		deck.dealCard(player.getHand(), number);
+	}
+	
+	public void dealCard(Player player, int index){
+		deck.dealCard(player.getHand(), index);
+	}
+}

@@ -1,0 +1,141 @@
+USE SUPRA
+
+IF EXISTS(SELECT * FROM INFORMATION_SCHEMA.ROUTINES WHERE SPECIFIC_NAME = 'sp_GenerateTotalBill')
+	DROP PROCEDURE sp_GenerateTotalBill;
+GO
+
+--Create sp_AverageReviews with no inputs
+CREATE PROCEDURE sp_GenerateTotalBill
+	@CustomerID   	    int
+AS
+BEGIN
+	DECLARE @PropertyID smallint;
+	DECLARE @LotPrice smallmoney;
+	DECLARE @CCPackagePrice smallmoney;
+	DECLARE @ValetStatus char(1);
+	DECLARE @CancellationFee smallmoney;
+	DECLARE @GrossFee smallmoney;
+	DECLARE @NetFee smallmoney;
+	DECLARE @CalculatedTax smallmoney;        -- will use fn_CalculateTax       takes PropertyID (smallint), Price (smallmoney)
+	DECLARE @CalculatedGratuity smallmoney;   -- will use fn_GenerateGratuity   takes CustomerID (int)
+	DECLARE @CalculatedDiscount decimal(5,3); -- will use fn_GenerateDiscount   takes CustomerID (int)
+	DECLARE @CalculatedDiscountAsPercent smallint;
+	DECLARE @NumberOfDays smallint;
+	DECLARE @ValetTimeIn smalldatetime
+	DECLARE @ValetTimeOut smalldatetime
+
+	SET @ValetStatus = (SELECT ValetStatus FROM Valet WHERE CustomerID = @CustomerID);
+	
+	DECLARE @Name varchar(100) = (SELECT CustomerFirst + ' ' + CustomerLast FROM Customer WHERE CustomerID = @CustomerID);
+
+	PRINT 'CustomerID: ' + CAST(@CustomerID AS varchar(100));
+	PRINT 'Name: ' + @Name;
+
+	IF @ValetStatus = 'C' OR @ValetStatus IS NULL -- completed or null, no money owed
+	BEGIN
+		IF @ValetStatus IS NULL
+		BEGIN
+			PRINT '';
+			PRINT 'Cannot find this person in our database.';
+		END
+		ELSE
+		BEGIN
+			PRINT 'Valet Status: ' + @ValetStatus;
+			PRINT '';
+			PRINT 'No payment required at this time.';
+		END
+	END
+
+	ELSE IF @ValetStatus = 'X' -- cancelled their valet, needs to pay.  Should be flipped to 'C' when they pay it.
+	BEGIN
+		-- generate cancellation fee
+		PRINT 'ValetStatus: ' + @ValetStatus;
+		PRINT '';
+		PRINT 'This customer cancelled their valet and has not paid their fee yet.  $5 is owed.';
+	END
+
+	ELSE
+	BEGIN -- active status, needs to pay
+		PRINT '';
+
+		SET @PropertyID = (	SELECT TOP 1 PropertyID 
+							FROM Valet v
+							JOIN Lot l
+							ON v.LotID = l.LotID
+							WHERE CustomerID = @CustomerID
+								AND ValetStatus = 'A');
+						
+		-- find out how much their lot costs
+		SET @LotPrice = (	SELECT TOP 1 LotPrice
+							FROM Valet v
+							JOIN Lot l
+							ON v.LotID = l.LotID
+							WHERE CustomerID = @CustomerID
+								AND ValetStatus = 'A');
+
+		SET @CCPackagePrice = (	SELECT SUM(CCAmenityPrice)
+								FROM Valet v
+									JOIN CarCarePackage ccp
+									ON v.CCPackageID = ccp.CCPackageID
+									JOIN CCPackageAmenity ccpa
+									ON ccp.CCPackageID = ccpa.CCPackageID
+									JOIN CCAmenity cca
+									ON ccpa.CCAmenityID = cca.CCAmenityID
+								WHERE CustomerID = @CustomerID
+									AND ValetStatus = 'A'
+								GROUP BY ccp.CCPackageID);
+		
+		SET @ValetTimeIn = (SELECT TOP 1 ValetTimeIn
+							FROM Valet
+							WHERE ValetStatus = 'A');
+
+		SET @ValetTimeOut = (SELECT TOP 1 ValetTimeOut
+							FROM Valet
+							WHERE ValetStatus = 'A');
+		
+		IF @ValetTimeOut IS NOT NULL
+		BEGIN
+			SET @NumberOfDays = (SELECT DATEDIFF(day, @ValetTimeIn, @ValetTimeOut));
+		END
+		ELSE
+		BEGIN
+			SET @NumberOFDays = 1;
+		END
+		
+
+		SET @CalculatedGratuity = DBO.fn_GenerateGratuity(@CustomerID);
+
+		SET @GrossFee = ((@CCPackagePrice + @LotPrice + @CalculatedGratuity) * @NumberOfDays);
+
+		SET @CalculatedDiscount = DBO.fn_GenerateDiscount(@CustomerID);
+
+		SET @CalculatedDiscountAsPercent = @CalculatedDiscount * 100;
+
+		SET @NetFee = @GrossFee - (@GrossFee * @CalculatedDiscount);
+
+		SET @CalculatedTax = DBO.fn_CalculateTax(@PropertyID, @GrossFee);
+
+		SET @NetFee = @NetFee + @CalculatedTax;
+
+		
+
+		PRINT 'CHARGES';
+		PRINT '--------------------------------';
+		PRINT 'Car Care Package: $' + CAST(@CCPackagePrice AS varchar(6));
+		PRINT 'Lot Price: $' + CAST(@LotPrice AS varchar(6));
+		PRINT 'Gratuity: $' + CAST(@CalculatedGratuity AS varchar(6));
+		PRINT '';
+		PRINT 'TOTAL BEFORE TAXES AND DISCOUNTS';
+		PRINT '--------------------------------';
+		PRINT 'Discount: ' + CAST(@CalculatedDiscountAsPercent AS varchar(6)) + '%';
+		PRINT 'Tax: $' + CAST(@CalculatedTax AS varchar(6));
+		PRINT '';
+		PRINT '--------------------------------';
+		PRINT 'TOTAL: $' + CAST(@NetFee AS varchar(6));;
+	END
+END
+
+GO
+
+EXEC sp_GenerateTotalBill
+	@CustomerID = 22

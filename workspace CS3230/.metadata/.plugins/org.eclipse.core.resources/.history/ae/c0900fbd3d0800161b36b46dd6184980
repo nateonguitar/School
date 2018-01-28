@@ -1,0 +1,226 @@
+package cardgame.cards;
+
+import java.util.Collections;
+import java.util.LinkedList;
+
+public class GroupOfCards{
+	protected LinkedList<Card> cards = new LinkedList<>();
+	
+	//---------------------------------------------------------------
+	
+	public void shuffle(){
+		int toPull = 0;
+		
+		for(int i=0; i<(cards.size()*4); i++){
+			// pick a random card
+			toPull = (int) ( Math.random() * (cards.size() - 1) );
+			
+			// pull the card
+			Card temp = cards.get(toPull);
+			cards.remove(toPull);
+
+			// put the card at the top of the deck
+			cards.add(0, temp);
+		}
+	}
+	
+	//---------------------------------------------------------------
+	
+	public void orderHand(){
+		// this happens in one iteration of the for loop:
+		
+		// Given
+		// :2-------5----1-3----8Q--------4-----------9------:
+		
+		// pulls all the cards of the given suit and puts them at the start
+		// it also counts how many of this suit got moved
+		// :25138Q49-----------------------------------------:
+	
+	
+		// sort the ones that got moved between 0 and count
+		// :1234589Q-----------------------------------------:
+	
+	
+		// this will happen on the next iteration with the next suit
+		// :############25138Q49-----------------------------:
+		
+		int numCardsInSuit 	= 0;
+		
+		Card temp;
+		
+		Suits currentSuit;
+		
+		for(int k=0; k<4; k++){
+			switch (k){
+			case 0:
+				currentSuit = Suits.SPADES;
+				break;
+			case 1:
+				currentSuit = Suits.CLUBS;
+				break;
+			case 2:
+				currentSuit = Suits.DIAMONDS;
+				break;
+			default:
+				currentSuit = Suits.HEARTS;
+			}
+			
+			// push all of "currentSuit" to the start
+			// shifting all others to the right
+			for(int i=0; i<cards.size(); i++){
+				if(cards.get(i).getSuit() == currentSuit){
+					temp = cards.get(i);
+					cards.remove(i);
+					cards.add(0, temp);
+					numCardsInSuit++;
+				}
+			}
+			// sort all the "currentSuit" at the start
+			for(int i=0; i<numCardsInSuit; i++){
+				for(int j=0; j<numCardsInSuit; j++){
+					if(cards.get(j).getNumber().number() < cards.get(i).getNumber().number()){
+						Collections.swap(cards, j,  i);
+					}
+				}
+			}
+			numCardsInSuit = 0;
+		}
+	}
+	
+	//-------------------------------------------------------------------
+	
+	public String toString(){
+		String suit = "";
+		String output = "";
+		
+		for(Card e : cards){
+			switch(e.getSuit()){
+			case HEARTS:
+				suit = "Hearts";
+				break;
+			case DIAMONDS:
+				suit = "Diamonds";
+				break;
+			case CLUBS:
+				suit = "Clubs";
+				break;
+			default:
+				suit = "Spades";
+			}
+			
+			switch(e.getNumber().number()){
+			case 13:
+				output += "King" + " \tof " + suit + "\n";
+				break;
+			case 12:
+				output += "Queen" + " \tof " + suit + "\n";
+				break;
+			case 11:
+				output += "Jack" + " \tof " + suit + "\n";
+				break;
+			case 1:
+				output += "Ace" + " \tof " + suit + "\n";
+				break;
+			default:
+				output += e.getNumber() + " \tof " + suit + "\n";
+			}
+			
+			
+		}
+		return output;
+	}
+	
+	//-------------------------------------------------------------------
+	
+	// helper method for the orderHand()
+	public void addFirst(Card card){
+		cards.addFirst(card);
+	}
+	
+	//-------------------------------------------------------------------
+	
+	public void addLast(Card card){
+		cards.addLast(card);
+	}
+	
+	//-------------------------------------------------------------------
+	
+	public void removeFirst(){
+		cards.removeFirst();
+	}
+	
+	public void removeLast(){
+		cards.removeLast();
+	}
+	
+	//-------------------------------------------------------------------
+	
+	// will help with future games
+	// allows you to remove a specific face value / suit combination
+	
+	// removes the first occurrence of the specified card
+	public boolean remove(Suits suit, Numbers number){
+		for(Card c : cards){
+			if(c.getSuit() == suit && c.getNumber() == number){
+				cards.remove(c);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	//-------------------------------------------------------------------
+	
+	// overloaded method
+		// this one pulls the top card
+		// and gives it to the other GroupOfCards
+	public void dealCard(GroupOfCards group){
+		group.addLast(cards.get(0));
+		cards.remove(cards.size() - 1);
+	}
+	
+	//-------------------------------------------------------------------
+	
+	// overloaded method
+		// this one pulls the selected card
+		// and gives it to the other GroupOfCards
+	public void dealCard(GroupOfCards group, int index){
+		group.addLast(cards.get(index));
+		cards.remove(index);
+	}
+	
+	//-------------------------------------------------------------------
+	
+	// overloaded method	
+	// this is only used for testing, don't use in practice or it
+	// might crash if it doesn't find a card
+	public void dealCard(GroupOfCards group, Numbers number){
+		for(Card card : cards){
+			if(card.getNumber() == number){
+				group.addLast(card);
+				cards.remove(card);
+				break;
+			}
+		}
+
+	}
+	
+	//------------------------------------------------------------------
+	
+	public int getSize(){
+		return this.cards.size();
+	}
+	
+	//------------------------------------------------------------------
+	
+	public Numbers getTop(){
+		return this.cards.get(0).getNumber();
+	}
+	
+	//------------------------------------------------------------------
+	
+	public LinkedList<Card> getCards(){
+		return this.cards;
+		
+	}
+}

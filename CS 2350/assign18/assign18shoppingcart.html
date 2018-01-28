@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+	<title>Shopping Cart</title>
+  <style type="text/css">
+    #div1 {width:600px;height:175px;padding:10px;}
+    #jadams:hover, #madison:hover, #washington:hover {cursor:move;}
+    fieldset{width:472px;}
+  </style>
+  <script type="text/JavaScript">
+    sessionStorage.setItem('myPresidents','');
+    function allowDrop(ev)
+    {
+		ev.preventDefault();
+    }
+    
+    function drag(ev)
+    {
+		ev.dataTransfer.setData("Text",ev.target.id);
+    }
+    
+	var presidents = "";
+	
+    function drop(ev)
+    {
+		ev.preventDefault();
+		var data = ev.dataTransfer.getData("Text");
+		
+		presidents = presidents + ", " + data;
+		
+		ev.target.appendChild(document.getElementById(data));
+    }
+    
+    function checkout(){
+	localStorage.setItem("presidents", presidents);
+    window.location = "assign18checkout.html";
+    }
+    function cancel(){
+    window.location = "assign18shoppingcart.html";
+    }
+  </script>
+  </head>
+  <body>
+  
+  <p>Drag the images that you would like to order into your shopping cart.</p>
+  <fieldset>
+    <legend>Shopping Cart</legend>
+    <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+  </fieldset>
+  <br />
+  <img id="jadams" src="images/jadams.gif" draggable="true" ondragstart="drag(event)" alt="president image" />
+  <img id="madison" src="images/madison.gif" draggable="true" ondragstart="drag(event)" alt="president image" />
+  <img id="washington" src="images/washington.gif" draggable="true" ondragstart="drag(event)" alt="president image" />
+  <img id="jefferson" src="images/jefferson.gif" draggable="true" ondragstart="drag(event)" alt="president image" />
+  <br />
+  <input type="button" value="Cancel" onclick="cancel()" />
+  <input type="button" value="Check Out Your Order" onclick="checkout()" />
+  </body>
+</html>

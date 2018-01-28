@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane id="CardGameMainAnchorPane" fx:id="CardGameMainAnchorPane" prefHeight="600.0" prefWidth="800.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cardgame.WarController">
+   <children>
+      <Pane id="pane" fx:id="scoresPane" layoutX="495.0" layoutY="68.0" prefWidth="200.0" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="70.0">
+         <children>
+            <Label id="bigHeader" layoutX="32.0" layoutY="14.0" text="Scores" />
+            <Label id="playerOrOpponent" fx:id="label_OpponentName" alignment="CENTER" layoutX="5.0" layoutY="166.0" prefWidth="190.0" text="Opponent" textAlignment="CENTER" />
+            <Label id="playerOrOpponent" fx:id="label_PlayerName" alignment="CENTER" layoutX="5.0" layoutY="285.0" prefWidth="190.0" text="Player" textAlignment="CENTER" />
+            <Label fx:id="label_OpponentCards" layoutX="69.0" layoutY="217.0" text="Cards: 30" />
+            <Label fx:id="label_PlayerCards" layoutX="69.0" layoutY="337.0" text="Cards: 30" />
+         </children></Pane>
+      <Button fx:id="button_Play" layoutX="217.0" layoutY="504.0" mnemonicParsing="false" onAction="#play" text="Play" />
+      <Button fx:id="button_Ready" layoutX="202.0" layoutY="272.0" mnemonicParsing="false" onAction="#startWar" text="Ready?" />
+      <Pane id="pane" fx:id="gameOverPane" layoutX="117.0" layoutY="132.0" prefHeight="251.0" prefWidth="300.0">
+         <children>
+            <Button fx:id="button_PlayAgain" layoutX="64.0" layoutY="142.0" mnemonicParsing="false" onAction="#playAgain" text="Play Again?" />
+            <Label fx:id="label_GameOverDisplayWinner" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="34.0" maxWidth="280.0" minWidth="280.0" prefWidth="280.0" style="-fx-font-size: 20pt;" text="Player 1 wins" textAlignment="CENTER" wrapText="true" />
+         </children>
+      </Pane>
+      <Label fx:id="label_HoldingPile" layoutX="442.0" layoutY="208.0" text="Holding pile: ">
+         <effect>
+            <DropShadow blurType="GAUSSIAN" height="17.0" offsetX="5.0" offsetY="2.0" radius="7.75" width="16.0" />
+         </effect>
+      </Label>
+      <MenuBar styleClass="menubar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <menus>
+            <Menu mnemonicParsing="false" text="File">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#backToMenu" text="Back to Menu" />
+                  <MenuItem mnemonicParsing="false" onAction="#closeProgram" text="Exit" />
+               </items>
+            </Menu>
+         </menus>
+      </MenuBar>
+   </children>
+</AnchorPane>

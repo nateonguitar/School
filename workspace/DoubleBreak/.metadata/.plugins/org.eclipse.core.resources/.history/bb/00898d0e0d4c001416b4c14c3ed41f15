@@ -1,0 +1,9 @@
+package com.natebrooks.doublebreak;
+
+import com.natebrooks.framework.Image;
+import com.natebrooks.framework.Sound;
+
+public class Assets {
+	public static Image menu;
+	public static Sound click;
+}

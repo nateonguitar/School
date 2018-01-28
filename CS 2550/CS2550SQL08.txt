@@ -1,0 +1,81 @@
+-- 1.
+SELECT student_id, first_name, last_name
+FROM student
+WHERE student_id IN
+  (SELECT st.student_id
+    FROM student st INNER JOIN enrollment en
+      ON st.student_id = en.student_id
+      INNER JOIN section se
+      ON en.section_id = se.section_id
+    GROUP BY st.student_id
+    HAVING count(*) = 
+      (SELECT MAX(num_courses)
+        FROM 
+          (SELECT COUNT(*) AS num_courses, st.student_id
+            FROM student st INNER JOIN enrollment en
+              ON st.student_id = en.student_id
+              INNER JOIN section se
+              ON en.section_id = se.section_id
+            GROUP BY st.student_id)))
+ORDER BY last_name, first_name;
+
+-- 2.
+SELECT inst.first_name, inst.last_name, inst.phone
+FROM instructor inst
+  JOIN zipcode zi 
+    ON zi.zip = inst.zip
+  JOIN student st
+    ON zi.zip = st.zip
+  JOIN section se
+    ON inst.instructor_id = se.instructor_id
+  JOIN enrollment en
+    ON st.student_id = en.student_id
+    WHERE en.section_id = se.section_id
+       AND inst.zip =
+        (SELECT st.zip
+          FROM student st
+          INTERSECT
+          SELECT zi.zip
+          FROM zipcode zi
+          INTERSECT
+            SELECT inst.zip
+            FROM instructor inst)
+ORDER BY inst.last_name, inst.first_name;
+
+-- 3.
+SELECT first_name, last_name, city, 'instructor' "role"
+FROM instructor inst INNER JOIN zipcode zi
+  ON inst.zip = zi.zip
+WHERE zi.zip = 10025  
+UNION
+SELECT first_name, last_name, city, 'student'
+FROM student st INNER JOIN zipcode zi
+  ON st.zip = zi.zip
+WHERE zi.zip = 10025
+ORDER BY "role", last_name, first_name;
+
+-- 4.
+SELECT t1.LOCATION, t1.sections, t2.students
+FROM 
+  (SELECT  location, COUNT(*) AS sections
+  FROM section
+  GROUP BY LOCATION) t1 
+    INNER JOIN
+    (SELECT se.location, COUNT(*) AS students
+    FROM section se INNER JOIN enrollment en
+      ON se.section_id = en.section_id
+    GROUP BY se.LOCATION) t2
+    ON t1.LOCATION = t2.LOCATION
+ORDER BY location;
+
+-- 5.
+SELECT g1.grade_type_code, TO_CHAR(g1.numeric_grade, 99.99) AS grade
+  FROM grade g1
+  WHERE g1.student_id = '127'
+    AND g1.section_id = '95'
+    UNION ALL
+SELECT 'Average for student 127' as grade_type_code, TO_CHAR(AVG(g2.numeric_grade),99.99)
+  FROM grade g2
+  WHERE g2.student_id = '127'
+    AND g2.section_id = '95'
+  ORDER BY grade_type_code DESC;

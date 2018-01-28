@@ -1,0 +1,6 @@
+import android.opengl.GLSurfaceView;
+
+
+public class MainSurfaceView extends GLSurfaceView {
+
+}

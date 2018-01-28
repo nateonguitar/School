@@ -1,0 +1,70 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head> 
+ <meta http-equiv="content-type" content="text/html;charset=utf-8">
+ <title>jQuery Proctor Example</title>
+ <style type="text/css">
+      body {text-align:center;}
+      table {border:2px solid black;padding:2px; margin:2px;width:600px;}
+      td{text-align:center;border:2px solid black;padding:2px; margin:2px}
+      .odd{background-color:aqua;}
+      #proctors{width:600px;margin:auto;}
+  </style>
+
+ 
+ <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+ <script type="text/javascript">
+		function getProctors(zip){
+				$.ajax({
+					//the url is the address of the page that will return the json object
+					url: "minilab18proctorsServer.html",
+
+					//type is either post or get
+					type: "POST",
+
+					dataType: "json",
+
+					//in this example I am posting a parameter called 'zipcode' with the value that is referenced by zip. zip is equal to 843 as passed in by the onclick event
+					data: ({
+						zipcode: zip
+					}),
+
+					//when the ajax request is sent to the url, this ajax function waits for a response, when one is returned either the error or success code executes
+					error: function(XMLHttpRequest, textStatus, errorThrown){
+					     alert("Request failed: " + textStatus);
+					},
+					success: function(response){
+        				     var isIE = /msie/gi.test(navigator.userAgent);
+					     //this conditional is just lookingfor IE, if IE isn't present than the response is outputted to the console to show you what the response looks like
+        	                          if (isIE == false){
+        				         console.log(response);
+        				     }
+					     //since the json was successfully returned, the following function is called to parse thru the object and display it in a table	
+        				     parseAndOutputResponse(response);
+					}
+				});
+		}
+		
+		//parse through the json object and build a table that is populated with attributes of the json object (in this case first name, last name and institution)
+		function parseAndOutputResponse(proctors){
+		    var proctorString = "";
+		    for(x=0;x<proctors.email.length;x++){
+                       if (x%2 == 0){
+                          proctorString = proctorString + "<tr class=\"even\"><td class=col1>" + proctors.email[x] + "</td><td class=col2> " + proctors.institution[x] + "</td></tr>";
+                       }else
+                       {
+                          proctorString = proctorString + "<tr class=\"odd\"><td class=col1>" + proctors.email[x] + "</td><td class=col2> " + proctors.institution[x] + "</td></tr>";
+                       }
+            
+		    }		
+		    document.getElementById('proctors').innerHTML="<table>" + proctorString + "</table>";
+		}
+ </script>
+</head>
+<body bgcolor="white" >
+ 
+<input type="button" value="Get Proctors In 843 Area Code" onclick="getProctors(843)">
+<div id="proctors"></div>
+</body>
+</html>

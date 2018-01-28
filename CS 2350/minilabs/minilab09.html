@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Minilab 9</title>
+	<script type="text/javascript">
+<!--
+//////////////////////////////////////////////////////////////////////
+function myFunc()
+{
+     document.getElementById('myoutput').innerHTML = document.getElementById('myinput').value;   
+}
+
+function myFunc2()
+{
+     document.getElementById('mysecondfield').innerHTML = document.getElementById("myinput").value;   
+}
+//-->
+</script>
+</head>
+<body>
+<input id="myinput" type="text" />
+<input type="button" onclick="myFunc()" value="Go" />
+
+<div id="myoutput">
+	My first field
+</div>
+
+<br />
+<br />
+
+<input type="button" onclick="myFunc2()" value="write to second field" />
+
+<div id="mysecondfield">
+	My second field
+</div>
+
+</body>
+</html>

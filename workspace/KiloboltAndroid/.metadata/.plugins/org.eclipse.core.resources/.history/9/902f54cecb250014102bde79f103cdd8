@@ -1,0 +1,5 @@
+package com.natebrooks.framework.implementation;
+
+public class SingleTouchHandler {
+
+}

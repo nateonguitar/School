@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+<link rel="stylesheet" type="text/css" href="assign5_style.css" />
+<link rel="stylesheet" type="text/css" href="../style.css" />
+<link rel="icon" href="../favicon.ico" type="image/x-icon" />
+<title>Elements,IDs,Classes - Nate Brooks</title>
+<style type="text/css">
+	h1 {
+		font-size:1.2em;
+		color:red;
+		font-family: Arial Black;
+	}
+	
+	h2 {
+		font-size:40px;
+		color:green;
+		font-family: Georgia;
+	}
+	
+	h3 {
+		font-size:75%;
+		color:purple;
+		font-family: Courier New;
+	}
+	
+	h4 {
+		font-size:14pt;
+		color:blue;
+		font-family: Palatino Linotype;
+	}
+	
+	a {
+		text-decoration:none;
+		display:block;
+		padding-left:20px;
+	}
+	
+		a:hover {
+			color:white;
+			background-color:black;
+			-webkit-box-shadow: 0 8px 6px -6px black;
+			-moz-box-shadow: 	0 8px 6px -6px black;
+	        box-shadow: 		0 8px 6px -6px black;
+			-moz-border-radius: 15px;
+			border-radius: 15px;
+		}
+	
+	.error {
+		color:red;
+		font-size:115%;
+		font-weight:bold;
+		text-decoration:underline;
+	}
+	
+	#hulk {
+		border:5px solid purple;
+		background-color:green;
+		color:white;
+	}
+	
+	#superman {
+		border:5px solid red;
+		background-color:blue;
+		color:white;
+		margin-left:10%;
+		padding:40px;
+	}
+</style>
+</head>
+  
+<body>
+	<div id="wrapper">
+	
+		<!-- box for the title section -->
+		<div id="title"> 
+			<h1 style="text-align:center; font-size:2em; color:black;">Nate Brooks</h1>
+				<hr />
+			<h2 style="text-align:center; font-size:1.5em;">Elements, IDs, Classes</h2>
+		</div> <!-- close title -->
+		
+		
+		<!-- This separates the content from the title in its own box -->
+		<div id="content"> 
+			<h1>This is H1 with changed size using em</h1>
+			<h2>This is H2 with changed size using pixels</h2>
+			<h3>This is H3 with changed size using percentages</h3>
+			<h4>This is H4 with changed size using pts</h4>
+			
+			<p>This is to demonstrate the use of a span to display <span class="error">error text</span></p>
+			
+			<br />
+			<hr style="width:45%;" />
+			<br />
+			
+			<p id="hulk">This is to demonstrate the use of an ID to display a background color and border to this paragraph.<br />
+			Oh, and the hulk rocks.</p>
+			
+			<p id="superman">This one is dedicated to Superman, his colors aren't better than the hulks, 
+			but they sure are bigger with this padding.<br />
+			He's also "set aside" from the left side of this page because he's not an earthling and he's different from the rest of us.<br />
+			Very deep...</p>
+			
+			<h2><a href="../index.html">Home</a></h2>
+			<h2><a href="../assignments.html">Assignments</a></h2>
+			
+				<!-- Validator link -->
+			<p>
+				<a href="http://validator.w3.org/check?uri=referer">
+					<img src="http://www.w3.org/Icons/valid-xhtml10" alt="Valid XHTML 1.0 Transitional" height="31" width="88" />
+				</a>
+			</p>
+		</div> <!-- end content -->
+	</div> <!-- end wrapper -->
+</body>
+</html>

@@ -1,0 +1,64 @@
+-- 1.
+SELECT TO_CHAR(AVG(cost), '99999.99')
+FROM COURSE;
+
+-- 2.
+SELECT COUNT(*) AS "January_Registrations"
+FROM student
+WHERE registration_date >= TO_DATE('01/01/2007', 'MM/DD/YYYY')
+    AND registration_date < TO_DATE('02/01/2007', 'MM/DD/YYYY');
+
+-- 3.
+SELECT AVG(numeric_grade) AS average, MAX(numeric_grade) AS highest, MIN(numeric_grade) AS lowest
+FROM grade
+WHERE grade_type_code = 'FI' AND section_ID = 152;
+
+-- 4.
+SELECT city, state, COUNT(*)
+FROM zipcode
+GROUP BY city, state
+HAVING COUNT(*) > 3
+ORDER BY state, city;
+
+-- 5.
+SELECT section_ID, COUNT(*) AS enrolled
+FROM enrollment
+WHERE TO_CHAR(enroll_date, 'MM/DD/YYYY') = '02/21/2007'
+GROUP BY section_ID
+ORDER BY enrolled DESC;
+
+-- 6.
+SELECT student_ID, section_ID, TO_CHAR(AVG(numeric_grade), '9999.9999') AS AVERAGEGRADE
+FROM grade
+WHERE section_ID = 86
+GROUP BY student_ID, section_ID
+ORDER BY student_ID;
+
+-- 7.
+SElECT student_ID, COUNT(*) AS SECTIONS
+FROM enrollment
+WHERE student_ID = 250
+GROUP BY student_ID;
+
+-- 8.
+SELECT section_ID, MIN(numeric_grade) AS LOWSCORE
+FROM grade
+WHERE grade_type_code = 'QZ'
+GROUP BY section_ID
+HAVING MIN(numeric_grade) >= 80
+ORDER BY section_ID;
+
+-- 9.
+SELECT employer, COUNT(*) AS employees
+FROM student
+GROUP BY employer
+HAVING COUNT(*) > 5
+ORDER BY COUNT(*);
+
+-- 10.
+SELECT section_ID, COUNT(*) AS participation_grades, MIN(numeric_grade)
+FROM grade
+WHERE grade_type_code = 'PA'
+GROUP BY section_ID
+HAVING COUNT(*) > 15
+ORDER BY section_ID;

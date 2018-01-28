@@ -1,0 +1,114 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+<title>Minilab 3</title>
+<link rel="icon" href="../favicon.ico" type="image/x-icon" />
+<style>
+h1 {
+	text-align:center;
+	text-decoration:underline;
+}
+#wrapper {
+	position:relative;
+	margin-right:auto;
+	margin-left:auto;
+	border:1px solid #aaa;
+	background-color:beige;
+	width:80%;
+	height:100%;
+	padding:1%;
+}
+
+#thumbs {
+	display:block;
+	width: 300px; 
+}
+
+#thumbs a {
+	display: block; 
+	float: left; 
+	margin: 1px; 
+	width: 100px; 
+	height: 100px; 
+	border: 2px solid #40403E;
+}
+
+#thumbs a img {
+	width: 99px; 
+	height: 99px; 
+	border: 0;
+}
+
+#thumbs a:hover {
+	border-color: #ddd;
+}
+
+#thumbs a:hover img {
+	position: absolute; 
+	width: auto; 
+	height: auto; 
+	left: 300px; 
+	top: 100px; 
+	padding: 2px;
+	border: 2px solid #40403E;
+	width:400px;
+	height:400px;
+	z-index:10;
+}
+
+#display-box {
+	position: absolute; 
+	width: auto; 
+	height: auto; 
+	left: 300px; 
+	top: 100px; 
+	padding: 2px;
+	border: 2px solid #40403E;
+	width:400px;
+	height:252px;
+	z-index:5;
+	text-align:center;
+	padding-top:150px;
+	background-color:white;
+}
+
+</style>
+</head>
+<body>
+<div id="wrapper">
+	<h1>Pictures that move into the display area when hovered over</h1>
+	<div id="thumbs">
+		<a href="##">
+			<img src="http://www.petmd.com/sites/default/files/puppy_in_grass_worms_162.jpg" />
+		</a>
+		<a href="##">
+			<img src="http://images.spoof-media.com/thespoof/pdi/5807-0016puppy.jpg" />
+		</a>
+		<a href="##">
+			<img src="http://dier-en-natuur.infonu.nl/artikel-foto-upload/dieren/49445-problemen-met-puppys-en-de-mogelijke-oplossingen.jpg" />
+		</a>
+		<a href="##">
+			<img src="http://dogbreedsinfo.org/images/Chihuahua_Puppy.jpg" />
+		</a>
+		<a href="##">
+			<img src="http://dogbreedsinfo.org/images/Papillon_Puppy.jpg" />
+		</a>
+		<a href="##">
+			<img src="http://o.b5z.net/i/u/10021010/i/240376_boston_terrier_175.jpg" />
+		</a>
+		<a href="##">
+			<img src="http://www.pedigree.com.au/breeds/images/papillon_03.jpg" />
+		</a>
+		<a href="##">
+			<img src="http://www.americanpuppyclub.com/images/corgi_vet.jpg" />
+		</a>
+	</div><!-- close thumbs -->
+
+	<div id="display-box">
+		<h2>Display area</h2>
+	</div><!-- close display-box -->
+</div><!-- close wrapper -->
+</body>
+</html>

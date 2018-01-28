@@ -1,0 +1,153 @@
+package cardgame;
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
+
+import cardgame.cards.Dealer;
+import cardgame.cards.Player;
+import javafx.application.Platform;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+
+public class BlackjackNamePlayersController implements Initializable, ControlledScreen {
+	ScreensController myController;
+	ArrayList<TextField> names;
+	boolean readyToSave = false;
+	
+	@FXML
+	AnchorPane CardGameMainAnchorPane;
+	
+	@FXML
+	TextField blackJackName1;
+	
+	@FXML
+	TextField blackJackName2;
+	
+	@FXML
+	TextField blackJackName3;
+	
+	@FXML
+	TextField blackJackName4;
+	
+	@FXML
+	Button btn_blackjackStart;
+	
+	@FXML
+	Button btn_blackjackSaveNames;
+	
+	
+	@Override
+	public void setScreenParent(ScreensController screenParent){
+        myController = screenParent;
+    }
+
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		names = new ArrayList<>();
+	}
+	
+	public void closeProgram(){
+		Platform.exit();
+	}
+	
+	public void nameYourPlayers(){
+		btn_blackjackStart.setDisable(true);
+		btn_blackjackSaveNames.setDisable(false);
+		addPlayers();
+		// name your players
+		// testIfReadyToSave() will be called on every keypress
+		for(int i=0; i<Game.blackjackPlayers; i++){
+			names.get(i).setText("Player " + (i+1));
+		}
+		
+		for(int i=0; i<Game.blackjackPlayers; i++){
+			names.get(i).setDisable(false);
+		}
+	}
+	
+	public void useDefaultNames(){
+		Game.players.clear();
+		
+		addPlayers();
+		saveNames();
+		btn_blackjackSaveNames.setDisable(true);
+		
+		for(int i=0; i<Game.blackjackPlayers; i++){
+			names.get(i).setText("Player " + (i+1));
+			names.get(i).setDisable(true);
+		}
+		
+		btn_blackjackStart.setDisable(false);
+	}
+	
+	public void testIfReadyToSave(){
+		// once it's ready to save, this method will flip the Save button to not disabled
+		// and the save button will instantiate the players and give them names
+		
+		// .replaceAll("\\s+","") removes white space: spaces, tabs, etc.
+		for(int i=0; i<Game.blackjackPlayers; i++){
+			if(names.get(i).getText().replaceAll("\\s+","").equals("")){
+				readyToSave = false;
+				btn_blackjackStart.setDisable(true);
+				break;
+			}
+			else{
+				readyToSave = true;
+			}
+		}
+		
+		if(readyToSave){
+			btn_blackjackSaveNames.setDisable(false);
+		}
+	}
+	
+	public void saveNames(){
+		Game.players.clear();
+
+		// give the Game.players ArrayList the correct number of players and name them appropriately
+		for(int i=0; i<Game.blackjackPlayers; i++){
+			Game.players.add(new Player(names.get(i).getText()));
+		}
+		
+		testIfReadyToSave();
+		
+		if(readyToSave){
+			btn_blackjackStart.setDisable(false);
+		}
+		
+	}
+	
+	public void startBlackjack(){
+		myController.setScreen(ScreensFramework.screen5ID);
+	}
+	
+	public void backToMenu(){
+		myController.setScreen(ScreensFramework.screen2ID);
+	}
+	
+	public void backToSetup(){
+		myController.setScreen(ScreensFramework.screen3ID);
+	}
+	
+	public void addPlayers(){
+		// addPlayers() will delete all elements from names arraylist and fill with new names
+		// this ensures that pressing the buttons back and forth doesn't add more than just the
+		// right amount of players
+		
+		names.clear();
+		
+		names.add(0, blackJackName1);
+		names.add(1, blackJackName2);
+		names.add(2, blackJackName3);
+		names.add(3, blackJackName4);
+	}
+	
+	public void disableStartOnKeyPress(){
+		//You must press "save" if you want to start the game
+		btn_blackjackStart.setDisable(true);
+	}
+}

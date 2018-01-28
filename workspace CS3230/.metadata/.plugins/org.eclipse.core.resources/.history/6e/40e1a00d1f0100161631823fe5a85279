@@ -1,0 +1,64 @@
+package cardgame;
+
+import cardgame.cards.Card;
+import cardgame.cards.Numbers;
+import cardgame.cards.Suits;
+import javafx.animation.PathTransition;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.CubicCurveTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.util.Duration;
+
+public class StartCardGame extends Application{
+	
+	private AnchorPane rootLayout;
+	
+	public static void main(String[] args) {
+		launch(args);
+	}
+
+	@Override
+	public void start(Stage primaryStage) throws Exception{
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/cardgame/view/StartCardGame.fxml"));
+		rootLayout = (AnchorPane) loader.load();
+		
+		// create a new scene and set it's aspect ratio
+		Scene scene = new Scene(rootLayout, 600, 400);
+		
+		Card card = new Card(Numbers.ACE, Suits.DIAMONDS);
+
+		// import style sheet
+		scene.getStylesheets().add("cardgame/view/style.css");
+		
+		Path path = new Path();
+        path.getElements().add(new MoveTo(20, 120));
+        path.getElements().add(new CubicCurveTo(180, 60, 250, 340, 420, 240));
+        
+        PathTransition ptr = new PathTransition();
+
+        ptr.setDuration(Duration.seconds(6));
+        ptr.setDelay(Duration.seconds(2));
+        ptr.setPath(path);
+        ptr.setNode(card.getBox());
+        ptr.setCycleCount(2);
+        ptr.setAutoReverse(true);
+        ptr.play();     
+
+        rootLayout.getChildren().addAll(path, card.getBox());
+		
+		primaryStage.initStyle(StageStyle.DECORATED);
+		primaryStage.setScene(scene);
+		primaryStage.setTitle("CardGame");
+		primaryStage.show();
+		
+	    
+        
+	}
+
+}

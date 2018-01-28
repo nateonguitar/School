@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/IVdisplay"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:src="@drawable/jesussuperpower" />
+
+    <Button
+        android:id="@+id/BsetWallpaper"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Set Image to Background" />
+
+    <HorizontalScrollView
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/IVimage1"
+                android:layout_width="125dp"
+                android:layout_height="125dp"
+                android:padding="15dp"
+                android:src="@drawable/jesussuperpower" />
+
+            <ImageView
+                android:id="@+id/IVimage2"
+                android:layout_width="125dp"
+                android:layout_height="125dp"
+                android:padding="15dp"
+                android:src="@drawable/cloud" />
+
+            <ImageView
+                android:id="@+id/IVimage3"
+                android:layout_width="125dp"
+                android:layout_height="125dp"
+                android:padding="15dp"
+                android:src="@drawable/auron" />
+
+            <ImageView
+                android:id="@+id/IVimage4"
+                android:layout_width="125dp"
+                android:layout_height="125dp"
+                android:padding="15dp"
+                android:src="@drawable/splash_background" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+</LinearLayout>

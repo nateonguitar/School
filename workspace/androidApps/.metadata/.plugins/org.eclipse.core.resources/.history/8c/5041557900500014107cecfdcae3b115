@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/flashLiteMainLayout"
+    android:layout_width="fill_parent"
+    android:background="#000000"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:weightSum="2" >
+
+    <Button
+        android:id="@+id/buttonFlashlight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="#DDDDDD"
+        android:textColor="#333333"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:text="Torch" />
+
+    <Button
+        android:id="@+id/buttonScreenToggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#333333"
+        android:gravity="center"
+        android:text="Screen"
+        android:layout_weight="1"
+        android:textColor="#DDDDDD" />
+ 
+</LinearLayout>

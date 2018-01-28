@@ -1,0 +1,111 @@
+Chapter 5
+
+IPv4 address space 2^32
+	32 bits long
+
+10000000 000010111 00000011 00011111
+128.11.3.31
+
+
+
+128 64 32 16 8 4 2 1 slots
+
+1   0  1  0  1 1 0 0 
+
+we add up 128 + 32 + 8 + 4 = 172
+
+
+
+
+01101001 = 64 + 32 + 8 + 1 = 105
+
+
+
+
+
+
+
+
+how to go from decimal to binary
+
+222
+
+start at the largest and work your way down,
+we can subtract a 128, so we know the first slot is a 1
+
+10000000 = 128
+
+we have 94 left
+
+we can fit a 64
+
+11000000
+
+we have 30 left, 32 isn't big enough
+11010000
+
+that 1 was the 16 slot, now we have 14
+
+we can fit an 8 so another 1
+11011000
+
+6 left
+
+11011100 added in the 4 we have 2 left
+11011110 that's the end
+
+
+
+
+
+
+10000001 = 129
+00001011 = 11
+00001011 = 11
+11101111 = 239
+
+10000001 00001011 00001011 11101111 = 129.11.11.239
+
+
+
+
+
+other way around
+lets convert 75
+
+0 at the start
+64 fits so we have a 1 in the second slot
+
+01
+
+can't fit a 32
+
+010
+
+can't fit a 16, that would make it 80
+
+0100
+can fit an 8, that makes it 72
+0101
+
+can't fit a 4, that would make it 76
+01010
+
+need 3 more, so the last 2
+01010011
+
+
+
+
+
+how about 129
+
+1 for 128 and we need 1 more, so just the final 1
+
+10000001
+
+
+
+
+
+

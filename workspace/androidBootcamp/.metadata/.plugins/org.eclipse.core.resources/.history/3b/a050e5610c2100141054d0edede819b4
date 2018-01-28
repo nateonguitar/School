@@ -1,0 +1,17 @@
+public class SarahsFirst
+{
+	public static void main(String args[])
+	{
+		System.out.print("hi " + 1 + 2 + " dog");
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	}
+}

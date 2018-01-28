@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Shopping Cart</title>
+    <title>Page title</title>
+    <script language="JavaScript" type="text/javascript">
+        function loadPictures(){
+			var presidentsImages = localStorage.getItem("presidents");
+			
+			presidentsImages = presidentsImages.split(", ");
+			
+			for(var i=1; i<presidentsImages.length; i++)
+			{
+				document.getElementById('portraits').innerHTML += "<img src=\"images/" + presidentsImages[i] + ".gif\" />";
+			}
+			
+        }
+    </script>
+    
+  
+  </head>
+  <body onload="loadPictures()">
+    <p>Here are the portraits that are in your shopping cart:</p>
+    <div id="portraits"></div>
+    <p>Are you ready to <a href="" > place your order?</a>  Or do you want to <a href="assign18shoppingcart.html" > modify it?</a></p>
+  </body>
+</html>

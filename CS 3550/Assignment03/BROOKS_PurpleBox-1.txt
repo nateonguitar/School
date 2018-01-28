@@ -1,0 +1,291 @@
+--PurpleBox creation script
+--Nathan Brooks January 27, 2016
+--This generates the Brooks_PurpleBox database
+-- and fills it
+
+
+USE Master
+
+IF EXISTS (SELECT * FROM sysdatabases WHERE name='Brooks_PurpleBox')
+DROP DATABASE Brooks_PurpleBox
+
+GO   
+
+CREATE DATABASE Brooks_PurpleBox
+
+ON PRIMARY
+
+(
+NAME = 'Brooks_PurpleBox',
+FILENAME = 'C:\Stage\Brooks_PurpleBox.mdf', 
+--FILENAME LOCAL
+SIZE = 12MB, --500 kb, 500, TB, GB
+MAXSIZE = 50MB,
+FILEGROWTH = 10% -- 5MB 
+)
+
+LOG ON
+
+(
+NAME = 'Brooks_PurpleBox_log',
+FILENAME = 'C:\Stage\Brooks_PurpleBox.ldf',
+SIZE = 1200KB, --10% for Read, otherwise 25%
+MAXSIZE= 5MB,
+FILEGROWTH = 500KB
+) 
+
+GO
+
+-- With the Brooks_PurpleBox database now created, switch to it and begin 
+-- creating the individual tables for the database
+
+USE Brooks_PurpleBox
+
+--!!!!!! Create Tables !!!!!!
+-- tables without FKs
+-- for some reason User was not a valid table name
+-- it forced me to use another name
+CREATE TABLE UserTable
+(
+	userID				int				NOT NULL		IDENTITY(1,1),
+	userFirstName		varchar(30)		NOT NULL,
+	userLastName		varchar(30)		NOT NULL,
+	userPassword		varchar(30)		NULL,
+	userPremium			bit				NOT NULL,
+	userAdmin			bit				NOT NULL,
+	userBanned			bit				NOT NULL,
+	userAddr			varchar(50)		NULL,
+	userCity			varchar(50)		NULL,
+	userState			char(2)			NULL,
+	userZip				char(5)			NULL
+)
+
+CREATE TABLE Question
+(
+	userID				int				NOT NULL,
+	questionID			smallint		NOT NULL		IDENTITY(1,1),
+	question			varchar(100)	NOT NULL,
+	questionAnswer		varchar(100)	NOT NULL
+)
+
+CREATE TABLE Request
+(
+	userID				int				NOT NULL,
+	requestID			int				NOT NULL		IDENTITY(1,1),
+	movieID				int				NOT NULL
+)
+
+CREATE TABLE Phone
+(
+	userID				int				NOT NULL,
+	phoneID				int				NOT NULL		IDENTITY(1,1),
+	phoneNum			varchar(50)		NOT NULL,
+	phoneType			varchar(20)		NOT NULL
+)
+
+CREATE TABLE Director
+(
+	directorID			int				NOT NULL		IDENTITY(1,1),
+	directorName		varchar(100)	NOT NULL
+)
+
+CREATE TABLE Keyword
+(
+	keywordID			int				NOT NULL		IDENTITY(1,1),
+	keyword				varchar(100)	NOT NULL
+)
+
+CREATE TABLE Genre
+(
+	genreID				int				NOT NULL		IDENTITY(1,1),
+	genre				varchar(30)		NOT NULL
+)
+
+
+-- tables WITH FKs
+CREATE TABLE Rental
+(
+	rentalID			int				NOT NULL		IDENTITY(1,1),
+	userID				int				NOT NULL,
+	copyID				int				NOT NULL,
+	rentalDate			dateTime		NOT NULL,
+	rentalReturned		dateTime		NULL,
+	rentalFees			bit				NOT NULL
+)
+
+CREATE TABLE CopyOfItem
+(
+	copyID				int				NOT NULL		IDENTITY(1,1),
+	movieID				int				NOT NULL,
+	itemRental			bit				NOT NULL,
+	itemLocation		varchar(100)	NULL,
+	itemLostOrPurchased	bit				NOT NULL
+)
+
+CREATE TABLE Item
+(
+	movieID				int				NOT NULL		IDENTITY(1,1),
+	itemFormat			varchar(100)	NOT NULL,
+	itemTitle			varchar(100)	NOT NULL
+)
+
+CREATE TABLE ItemDirector
+(
+	movieDirectorID		int				NOT NULL		IDENTITY(1,1),
+	movieID				int				NOT NULL,
+	directorID			int				NOT NULL
+)
+
+CREATE TABLE ItemKeyword
+(
+	itemKeywordID		int				NOT NULL		IDENTITY(1,1),
+	movieID				int				NOT NULL,
+	keywordID			int				NOT NULL
+)
+
+CREATE TABLE ItemGenre
+(
+	itemGenreID			int				NOT NULL		IDENTITY(1,1),
+	movieID				int				NOT NULL,
+	genreID				int				NOT NULL
+)
+
+-- !!!!!! constraints !!!!!!
+-- Primary Keys
+ALTER TABLE UserTable
+	ADD CONSTRAINT PK_UserID
+	PRIMARY KEY(userID)
+
+ALTER TABLE Question
+	ADD CONSTRAINT PK_QuestionID
+	PRIMARY KEY(userID, questionID)
+
+ALTER TABLE Request
+	ADD CONSTRAINT PK_RequestID
+	PRIMARY KEY(userID, requestID)
+
+ALTER TABLE Phone
+	ADD CONSTRAINT PK_PhoneID
+	PRIMARY KEY(userID, phoneID)
+
+ALTER TABLE Director
+	ADD CONSTRAINT PK_Director
+	PRIMARY KEY(directorID)
+
+ALTER TABLE Keyword
+	ADD CONSTRAINT PK_Keyword
+	PRIMARY KEY(keywordID)
+
+ALTER TABLE Genre
+	ADD CONSTRAINT PK_Genre
+	PRIMARY KEY(genreID)
+
+ALTER TABLE Rental
+	ADD CONSTRAINT PK_Rental
+	PRIMARY KEY(rentalID, userID)
+
+ALTER TABLE CopyOfItem
+	ADD CONSTRAINT PK_CopyOfItem
+	PRIMARY KEY(copyID)
+
+ALTER TABLE Item
+	ADD CONSTRAINT PK_Item
+	PRIMARY KEY(movieID)
+
+ALTER TABLE ItemDirector
+	ADD CONSTRAINT PK_ItemDirector
+	PRIMARY KEY(movieDirectorID)
+
+ALTER TABLE ItemKeyword
+	ADD CONSTRAINT PK_ItemKeyword
+	PRIMARY KEY(itemKeywordID)
+
+ALTER TABLE ItemGenre
+	ADD CONSTRAINT PK_ItemGenre
+	PRIMARY KEY(itemGenreID)
+
+
+
+-- Foreign Keys
+ALTER TABLE Question
+	ADD
+	CONSTRAINT FK_UserHasSecurityQuestion
+	FOREIGN KEY(userID) REFERENCES UserTable(userID)
+	ON UPDATE Cascade
+	ON DELETE Cascade
+
+ALTER TABLE Request
+	ADD
+	CONSTRAINT FK_UserMakesRequests
+	FOREIGN KEY(userID) REFERENCES UserTable(userID)
+	ON UPDATE Cascade
+	ON DELETE Cascade
+
+ALTER TABLE Phone
+	ADD
+	CONSTRAINT FK_UserHasPhoneNumbers
+	FOREIGN KEY(userID) REFERENCES UserTable(userID)
+	ON UPDATE Cascade
+	ON DELETE Cascade
+
+ALTER TABLE Rental
+	ADD
+	CONSTRAINT FK_UserHasRental
+	FOREIGN KEY(userID) REFERENCES UserTable(userID)
+	ON UPDATE Cascade
+	ON DELETE Cascade,
+
+	CONSTRAINT FK_RentalContainsCopy
+	FOREIGN KEY(copyID) REFERENCES CopyOfItem(copyID)
+	ON UPDATE Cascade
+	ON DELETE Cascade
+	
+ALTER TABLE ItemKeyword
+	ADD
+	CONSTRAINT FK_ItemHasItemKeywords
+	FOREIGN KEY(movieID) REFERENCES Item(movieID)
+	ON UPDATE Cascade
+	ON DELETE Cascade,
+
+	CONSTRAINT FK_KeywordHasItemKeywords
+	FOREIGN KEY(keywordID) REFERENCES Keyword(keywordID)
+	ON UPDATE Cascade
+	ON DELETE Cascade
+
+ALTER TABLE ItemGenre
+	ADD
+	CONSTRAINT FK_ItemHasItemGenre
+	FOREIGN KEY(movieID) REFERENCES Item(movieID)
+	ON UPDATE Cascade
+	ON DELETE Cascade,
+
+	CONSTRAINT FK_GenreHasItemGenre
+	FOREIGN KEY(genreID) REFERENCES Genre(genreID)
+	ON UPDATE Cascade
+	ON DELETE Cascade
+
+	
+ALTER TABLE ItemDirector
+	ADD
+	CONSTRAINT FK_ItemHasItemDirector
+	FOREIGN KEY(movieID) REFERENCES Item(movieID)
+	ON UPDATE Cascade
+	ON DELETE Cascade ,
+
+	CONSTRAINT FK_DirectorHasItemDirector
+	FOREIGN KEY(directorID) REFERENCES Director(directorID)
+	ON UPDATE Cascade
+	ON DELETE Cascade
+
+
+-- ensure that foreign keys are set up, then move on to check constraints
+GO
+
+ALTER TABLE Item
+	ADD CONSTRAINT CK_ItemFormat
+	CHECK(LOWER(itemFormat) IN ('bluray', 'blueray', 'blue-ray'))
+	-- will also force all itemFormats to be LOWER when added
+
+ALTER TABLE UserTable
+	ADD CONSTRAINT CK_UserZip
+	CHECK(LEN(userZip) = 5)

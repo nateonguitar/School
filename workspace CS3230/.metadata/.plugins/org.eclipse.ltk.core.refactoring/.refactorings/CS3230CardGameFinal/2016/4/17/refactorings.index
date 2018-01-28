@@ -1,0 +1,12 @@
+1461122291586	Delete element
+1461158344135	Rename method 'moveRelativeTo'
+1461158358158	Rename method 'moveRelativeTo'
+1461331539145	Rename field 'label_dealerOnBoard'
+1461331549765	Rename field 'label_playerOnBoard'
+1461343523835	Rename field 'PlayerGoButton'
+1461343540508	Rename field 'readyButton'
+1461343602501	Rename field 'button_ready'
+1461343613781	Rename field 'button_startPlayerTurn'
+1461344227103	Rename method 'dealToAPlayer'
+1461356507960	Rename method 'getScore'
+1461357861698	Rename method 'setImageToFront'

@@ -1,0 +1,22 @@
+CloseFile – Closes an open disk file Clrscr - Clears console, locates cursor at upper left corner CreateOutputFile - Creates new disk file for writing in output mode Crlf - Writes end of line sequence to standard output Delay - Pauses program execution for n millisecond interval DumpMem - Writes block of memory to standard output in hex
+DumpRegs – Displays general-purpose registers and flags (hex) GetCommandtail - Copies command-line args into array of bytes GetDateTime – Gets the current date and time from the system GetMaxXY - Gets number of cols, rows in console window buffer GetMseconds - Returns milliseconds elapsed since midnight
+
+GetTextColor - Returns active foreground and background text colors in the console window
+Gotoxy - Locates cursor at row and column on the console IsDigit - Sets Zero flag if AL contains ASCII code for decimal digit (0–9) MsgBox, MsgBoxAsk – Display popup message boxes OpenInputFile – Opens existing file for input ParseDecimal32 – Converts unsigned integer string to binary ParseInteger32 - Converts signed integer string to binary Random32 - Generates 32-bit pseudorandom integer in the range 0 to
+FFFFFFFFh Randomize - Seeds the random number generator RandomRange - Generates a pseudorandom integer within a specified
+range ReadChar - Reads a single character from standard input
+
+ReadDec - Reads 32-bit unsigned decimal integer from keyboard ReadFromFile – Reads input disk file into buffer ReadHex - Reads 32-bit hexadecimal integer from keyboard ReadInt - Reads 32-bit signed decimal integer from keyboard ReadKey – Reads character from keyboard input buffer
+ReadString - Reads string from stdin, terminated by [Enter]
+SetTextColor - Sets foreground/background colors of all subsequent text output to the console
+Str_compare – Compares two strings
+Str_copy – Copies a source string to a destination string Str_length – Returns the length of a string in EAX Str_trim - Removes unwanted characters from a string.
+
+Str_ucase - Converts a string to uppercase letters. WaitMsg - Displays message, waits for Enter key to be pressed WriteBin - Writes unsigned 32-bit integer in ASCII binary format.
+WriteBinB – Writes binary integer in byte, word, or doubleword format WriteChar - Writes a single character to standard output
+WriteDec - Writes unsigned 32-bit integer in decimal format WriteHex - Writes an unsigned 32-bit integer in hexadecimal format WriteHexB – Writes byte, word, or doubleword in hexadecimal format WriteInt - Writes signed 32-bit integer in decimal format
+
+WriteStackFrame - Writes the current procedure’s stack frame to the console.
+WriteStackFrameName - Writes the current procedure’s name and stack frame to the console.
+WriteString - Writes null-terminated string to console window WriteToFile - Writes buffer to output file WriteWindowsMsg - Displays most recent error message generated
+by MS-Windows

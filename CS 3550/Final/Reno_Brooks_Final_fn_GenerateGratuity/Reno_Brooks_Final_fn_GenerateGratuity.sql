@@ -1,0 +1,104 @@
+USE SUPRA
+
+/*
+Name: fn_GenerateGratuity
+
+Description: 
+Based on the charges accrued by a customer, a progressive gratuity will be added. 
+If the total cost is between 0 and $20, the gratuity will be 5% of the total bill, 
+between $20 and $40, the gratuity will be 10%, between $40 and $60, the gratuity 
+will be 15%, greater than $60, gratuity is 20%.
+
+Input Parameters:	CustomerID (int)
+
+Returns: Gratuity (smallmoney)
+*/
+
+IF OBJECT_ID (N'dbo.fn_GenerateGratuity', N'FN') IS NOT NULL
+DROP FUNCTION dbo.fn_GenerateGratuity;
+
+GO
+
+CREATE FUNCTION dbo.fn_GenerateGratuity
+(
+	@CustomerID int
+)
+RETURNS smallmoney
+AS
+	BEGIN
+		DECLARE @TotalLotPrices smallmoney;
+		SET @TotalLotPrices = (		SELECT SUM(LotPrice) AS TotalLotPrice
+									FROM Valet v
+										JOIN Lot l
+										ON v.lotID = l.lotID
+									WHERE CustomerID = @CustomerID
+										-- only get the Active valets
+										AND ValetStatus = 'A');
+
+		DECLARE @CarCarePackageCost smallmoney;
+		SET @CarCarePackageCost = (	SELECT SUM(CCAmenityPrice) as TotalCCAmenityPrice
+									FROM Valet v
+										JOIN CarCarePackage ccp
+										ON v.CCPackageID = ccp.CCPackageID
+										JOIN CCPackageAmenity ccpa
+										ON ccp.CCPackageID = ccpa.CCPackageID
+										JOIN CCAmenity cca
+										ON ccpa.CCAmenityID = cca.CCAmenityID
+										WHERE CustomerID = @CustomerID
+											AND ValetStatus = 'A');
+
+		-- if we input a customer that isn't active these will be null, 
+		-- so we set them to 0
+		IF @TotalLotPrices IS NULL SET @TotalLotPrices = 0;
+		IF @CarCarePackageCost IS NULL SET @CarCarePackageCost = 0;
+
+		-- add up all costs
+		DECLARE @TotalCharges smallmoney = @CarCarePackageCost + @TotalLotPrices;
+
+		-- figure out gratuity according to buisiness rules:
+		/*
+			If the total cost is 
+			exactly 0, gratuity will be 0,
+			between 0 and $20, the gratuity will be 5% of the total bill, 
+			between $20 and $40, the gratuity will be 10%, 
+			between $40 and $60, the gratuity will be 15%, 
+			greater than $60, gratuity is 20%.
+		*/
+
+		DECLARE @Gratuity smallmoney = 0;
+
+		IF @TotalCharges > 0 AND @TotalCharges < 20
+		BEGIN
+			SET @Gratuity = @TotalCharges * 0.05;	-- 5%
+		END
+		ELSE IF @TotalCharges >= 20 AND @TotalCharges < 40
+		BEGIN
+			SET @Gratuity = @TotalCharges * 0.1;	-- 10%
+		END
+		ELSE IF @TotalCharges >= 40 AND @TotalCharges < 60
+		BEGIN
+			SET @Gratuity = @TotalCharges * 0.15;	-- 15%
+		END
+		ELSE -- @TotalCharges was >= to 60
+		BEGIN
+			SET @Gratuity = @TotalCharges * 0.2;	-- 20%
+		END
+
+		--RETURN @TotalCharges
+		RETURN @Gratuity;
+	END
+GO
+
+--------------------------
+-- TRY IT OUT
+--------------------------
+
+SELECT 
+	c.CustomerID, 
+	'$' + CAST(DBO.fn_GenerateGratuity(c.CustomerID) AS varchar(20)) AS Gratuity_for_Valet, 
+	c.CustomerFirst + ' ' + c.CustomerLast AS Name
+FROM Customer c
+	JOIN Valet v
+	ON c.CustomerID = v.CustomerID
+WHERE ValetStatus = 'A' 
+ORDER BY CustomerID

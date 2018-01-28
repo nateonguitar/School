@@ -1,0 +1,141 @@
+-- 1.
+INSERT INTO instructor
+  (instructor_id, salutation, first_name, last_name, street_address, 
+   zip, phone, created_by, created_date, modified_by, modified_date)
+VALUES
+  ('815', 'Mr', 'Hugo', 'Reyes', '2342 Oceanic Way', 
+   '07002', NULL, 'Nathan Brooks', SYSDATE, 'Nathan Brooks', SYSDATE);
+
+-- 2.
+INSERT INTO section
+  (section_id, course_no, section_no, start_date_time, location, 
+   instructor_id, capacity, created_by, created_date, modified_by, modified_date)
+VALUES
+  ('48', '142', '4', TO_DATE('09-22-2011 08:15AM', 'MM-DD-YYYY HH:MIAM'), 'L211', 
+   '815', '15', 'Nathan Brooks', SYSDATE, 'Nathan Brooks', SYSDATE);
+
+-- 3.
+INSERT INTO enrollment 
+  (student_id, section_id, enroll_date, final_grade, created_by, 
+    created_date, modified_by, modified_date)
+  SELECT student_id, 48, SYSDATE, NULL, 'Nathan Brooks', 
+    SYSDATE, 'Nathan Brooks', SYSDATE
+  FROM student
+  WHERE student_id = 375 OR student_id = 137 OR student_id = 266 OR student_id = 382;
+
+-- 4.
+DELETE FROM grade
+WHERE student_id = 147
+  AND section_id = 120;
+DELETE FROM enrollment
+WHERE student_id = 147
+  AND section_id = 120;
+
+-- 5.
+DELETE FROM grade
+WHERE student_id = 180
+  AND section_id = 119;
+DELETE FROM enrollment
+WHERE student_id = 180
+  AND section_id = 119;
+
+-- 6.
+UPDATE instructor
+SET phone = 4815162342
+WHERE instructor_id = 815;
+
+-- 7.
+UPDATE grade
+SET numeric_grade = 100
+WHERE section_id = 119
+  AND grade_type_code = 'HM'
+  AND grade_code_occurrence = 1;
+
+-- 8.
+UPDATE grade
+SET numeric_grade = (numeric_grade * 1.1)
+WHERE section_id = 119
+  AND grade_type_code = 'FI';
+
+-- 9.
+SELECT t1.section_id, location, NVL(t2.enrolled, 0)
+FROM 
+  (SELECT course_no, section_id, location
+  FROM section se
+  WHERE course_no = 
+    (SELECT course_no
+    FROM course
+    WHERE description = 'Project Management')) t1
+left join
+  (SELECT section_id, COUNT(*) AS enrolled
+  FROM enrollment
+  GROUP BY section_id) t2
+ON t1.section_id = t2.section_id
+ORDER BY section_id;
+
+-- 10.
+SELECT first_name, last_name, phone
+FROM instructor inst
+INNER JOIN section se
+ON inst.instructor_id = se.instructor_id
+INNER JOIN course co
+ON se.course_no = co.course_no
+WHERE description = 'Project Management'
+ORDER BY inst.last_name, inst.first_name;
+
+-- 11.
+SELECT st.student_id, first_name, last_name, TO_CHAR(AVG(numeric_grade), '999.99') AS average
+FROM section se INNER JOIN enrollment en
+  ON se.section_id = en.section_id
+  INNER JOIN grade gr
+  ON en.student_id = gr.student_id
+  AND en.section_id = gr.section_id
+  INNER JOIN student st
+  ON en.student_id = st.student_id
+WHERE se.section_id = 119
+GROUP BY st.student_id, first_name, last_name
+ORDER BY st.student_id;
+
+-- 12.
+SELECT count(*) AS numberofinstructors
+FROM
+(SELECT se.section_id, COUNT(*) AS student_count
+FROM section se INNER JOIN enrollment en
+ON se.section_id = en.section_id
+WHERE LOCATION = 'L211'
+GROUP BY se.section_id
+HAVING COUNT(*) > 3);
+
+-- 13.
+SELECT salutation||'. '||first_name||' '||last_name AS instructor, SUBSTR(TO_CHAR(phone), 1, 3)||'-'||SUBSTR(TO_CHAR(phone), 4, 3)||'-'||SUBSTR(TO_CHAR(phone), 7, 4) AS phone
+FROM instructor
+WHERE instructor_id = 
+  (SELECT instructor_id
+  FROM section se
+  WHERE course_no = 142
+    AND instructor_id NOT IN(
+    SELECT instructor_id
+    FROM section
+    GROUP BY instructor_id
+    HAVING COUNT(*) > 1));
+
+-- 14.
+SELECT first_name, last_name, en.section_id, course_no
+FROM student st INNER JOIN enrollment en
+  ON st.student_id = en.student_id
+  INNER JOIN section se
+  ON en.section_id = se.section_id
+WHERE en.section_id NOT IN
+  (SELECT section_id
+   FROM grade)
+ORDER BY first_name;
+
+-- 15.
+SELECT t1.starttime, count(*) AS number_of_courses
+FROM
+  (SELECT TO_CHAR(start_date_time, 'HH:MIAM') AS starttime, count(*) AS number_of_classes
+    FROM course co INNER JOIN section se
+      ON co.course_no = se.course_no
+    GROUP BY start_date_time) t1
+GROUP BY t1.starttime
+ORDER BY t1.starttime;

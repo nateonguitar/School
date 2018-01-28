@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;brooksNathan.DeckDriver&apos; to &apos;GameDriver&apos;&#x0D;&#x0A;- Original project: &apos;DeckOfCards&apos;&#x0D;&#x0A;- Original element: &apos;brooksNathan.DeckDriver&apos;&#x0D;&#x0A;- Renamed element: &apos;brooksNathan.GameDriver&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;DeckDriver&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;brooksNathan{DeckDriver.java[DeckDriver" matchStrategy="1" name="GameDriver" qualified="false" references="true" similarDeclarations="false" stamp="1455162678078" textual="false" version="1.0"/>
+</session>

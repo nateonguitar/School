@@ -1,0 +1,8 @@
+INDEX VERSION 1.126+C:\Users\Nates\workspace\OpenGLES2Practice01\.metadata\.plugins\org.eclipse.jdt.core
+1284074322.index
+2453536293.index
+3077532006.index
+3724914389.index
+2662774580.index
+1153893830.index
+1055736314.index

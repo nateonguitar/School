@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;JavaFXwithSceneBuilder01/src/ch/makery/address/view/NewFile.css&apos; to &apos;DarkTheme.css&apos;" description="Rename resource &apos;NewFile.css&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/ch/makery/address/view/NewFile.css" name="DarkTheme.css" stamp="1459915036890" updateReferences="true"/>
+</session>

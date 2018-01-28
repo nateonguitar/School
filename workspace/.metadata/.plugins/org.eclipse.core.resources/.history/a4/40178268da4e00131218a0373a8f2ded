@@ -1,0 +1,47 @@
+/*****************************************************
+* Nathan Brooks
+* CS 1400
+* 
+* 
+* 
+*
+*****************************************************/
+
+import java.util.Scanner;
+
+public class BookstoreDriver
+{
+   public static void main(String[] args)
+   {
+      Scanner stdIn = new Scanner(System.in);
+      String query;
+      boolean done = false;
+      Bookstore bookstore = new Bookstore();
+      
+      	// build the book store
+      bookstore.fillTheStore();
+      System.out.print("Please enter a title to search for a book (or 'q' to quit):");
+      query = stdIn.nextLine();
+      
+      while (done == false)
+      {
+	      	// use entered information to query the bookstore for book's existence
+	      //if (bookstore.getBook(query) == )
+	      //{
+	    	  System.out.println(query);
+	    	  System.out.print("\nPlease enter a title to search for a book (or 'q' to quit):");
+	    	  query = stdIn.nextLine();
+	    	  
+	    	  if (query == "q" || query == "Q")
+	          {
+	      	    	done = true;
+	          }
+	      //}
+	      //else
+	      //{
+	    	  //System.out.println("That book does not exist! \nPlease enter a title to search for a book (or 'q' to quit):");
+	    	  //query = stdIn.nextLine();
+	      //}
+      } // end while
+   } // end main
+} // end class BookstoreDriver

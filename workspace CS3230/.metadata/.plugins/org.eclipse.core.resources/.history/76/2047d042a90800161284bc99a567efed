@@ -1,0 +1,50 @@
+package cardgame.cards;
+
+public class Deck extends GroupOfCards {
+	
+	int x = 50;
+	int y = 250;
+	public Deck(){
+		super();
+		
+		// fill the deck
+		fillDeck();
+	}
+	
+	//-----------------------------------------------------------------------------
+	
+	public void fillDeck(){
+		Suits suit;
+		
+		for(int i=0; i<4; i++){
+			switch(i){
+			case 0:
+				suit = Suits.HEARTS;
+				break;
+			case 1:
+				suit = Suits.DIAMONDS;
+				break;
+			case 2:
+				suit = Suits.CLUBS;
+				break;
+			default:
+				suit = Suits.SPADES;
+				break;
+			}
+			
+			cards.add(new Card(Numbers.ACE,    suit, x, y, 180));
+			cards.add(new Card(Numbers.TWO,    suit, x, y, 180));
+			cards.add(new Card(Numbers.THREE,  suit, x, y, 180));
+			cards.add(new Card(Numbers.FOUR,   suit, x, y, 180));
+			cards.add(new Card(Numbers.FIVE,   suit, x, y, 180));
+			cards.add(new Card(Numbers.SIX,    suit, x, y, 180));
+			cards.add(new Card(Numbers.SEVEN,  suit, x, y, 180));
+			cards.add(new Card(Numbers.EIGHT,  suit, x, y, 180));
+			cards.add(new Card(Numbers.NINE,   suit, x, y, 180));
+			cards.add(new Card(Numbers.TEN,    suit, x, y, 180));
+			cards.add(new Card(Numbers.JACK,   suit, x, y, 180));
+			cards.add(new Card(Numbers.QUEEN,  suit, x, y, 180));
+			cards.add(new Card(Numbers.KING,   suit, x, y, 180));
+		}
+	}
+}

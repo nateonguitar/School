@@ -1,0 +1,35 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head> 
+ <meta http-equiv="content-type" content="text/html;charset=utf-8">
+ <title>jQuery Example</title>
+ 
+ <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+ <script type="text/javascript">
+		function ajax(){
+				$.ajax({
+					url: "minilab17ajaxServer.html",
+					type: "POST",
+					data: ({
+						myfirstparam: 11,
+						mysecondparam: 'helloworld'
+					}),
+					dataType: "json",
+					error: function(XMLHttpRequest, textStatus, errorThrown){
+						alert("Request failed: " + textStatus);
+					},
+					success: function(response){
+						alert("success!");
+						alert("Hello " + response.firstname + " " + response.lastname)
+					}
+				});
+		}
+ </script>
+</head>
+<body bgcolor="beige" >
+ 
+<input type="button" value="Make Ajax jQuery Request" onclick="ajax()">
+
+</body>
+</html>

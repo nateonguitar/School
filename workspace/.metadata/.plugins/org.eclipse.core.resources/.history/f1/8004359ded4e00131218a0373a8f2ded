@@ -1,0 +1,44 @@
+/*****************************************************
+* Nathan Brooks
+* CS 1400
+* 
+* 
+* 
+*
+*****************************************************/
+
+import java.util.ArrayList;
+
+public class Bookstore
+{
+
+      //builds the array of Books
+   private ArrayList<Book> books = new ArrayList<Book>();
+      
+   public Bookstore()
+   {
+      System.out.println();
+   }
+   
+   //******************************************************
+   
+   public void fillTheStore()
+   {
+	   books.add(new Book("Siddhartha", "Hesse", "11111"));
+	   books.add(new Book("Lolita", "Nabokov", "22222"));
+   }
+   
+   //******************************************************
+   
+   public Book getBook(String title) 
+   {
+	   if (exists)
+	   {
+		   return Book;
+	   }
+	   else
+	   {
+		   return "Sorry - book not found.";
+	   }
+   }
+} // end class Bookstore

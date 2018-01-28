@@ -1,0 +1,23 @@
+import java.applet.Applet;
+import java.awt.Color;
+import java.awt.Graphics;
+
+public class Renderer extends Applet {
+	
+	@Override
+	public void init() {
+		setSize(800, 480);
+		setBackground(Color.BLACK);
+		createTilemap();
+	}
+	
+	private void createTilemap() {
+		
+		
+	}
+
+	@Override
+	public void paint(Graphics g) {
+
+	}
+}

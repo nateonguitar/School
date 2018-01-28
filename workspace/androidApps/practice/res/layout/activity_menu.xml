@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+	android:background="#333333">
+    
+    <TextView 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="#dddddd"
+        android:textSize="25dp"
+        android:text="Practice Examples"
+        />
+    
+    <Button
+        android:id="@+id/practice01button"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:text="Practice01"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/tutorial1background"
+        />
+    
+    <Button
+        android:id="@+id/practice02button"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:text="Practice02"
+        android:textColor="#FFFFFF"
+        android:background="#222222"
+        />
+
+</LinearLayout>

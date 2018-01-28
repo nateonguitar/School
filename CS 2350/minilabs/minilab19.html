@@ -1,0 +1,67 @@
+<!doctype html>
+
+<html>
+<head>
+<title>minilab 19</title>
+<script type="text/JavaScript">
+	var car = {
+		wheels: 4,
+		speed: 80,
+		seats: 2
+	};
+	
+	console.log(car);
+	
+	function vehicle(wheels, speed, seats){	// basically making a class like in Java
+		this.wheels = wheels;
+		this.speed = speed;
+		seats = seats; // private variable without "this"
+		
+		this.getSeats = function(){
+			var numSeats = "Number of seats = " + seats;
+			return numSeats;
+		}
+		
+	}
+	
+	var viper = new vehicle(4, 200, 2);
+	
+	console.log(viper.getSeats());
+	
+	function foo(e)
+	{
+		console.log(e.id);
+	}
+	
+	var protovehicle = {
+		wheels: 4,
+		speed: 180
+	};
+	
+	var makevehicle = function(color, cost){
+		var vehicle = Object.create(protovehicle);
+		vehicle.color = color;
+		vehicle.cost = cost;
+		vehicle.features = function(){
+			var myFeatures = "My color: " + vehicle.color + "My cost: " + vehicle.cost;
+			return myFeatures;
+		}
+		return vehicle;
+	};
+	
+	var ferrari = makevehicle('red', 250000);
+	console.log(ferrari);
+
+	protovehicle.wheels = 3;
+	
+	console.log(ferrari);
+	
+	console.log(ferrari.features);
+	
+</script>
+</head>
+<body>
+
+<div id="bar" onclick="foo(this);">Click me to console log "bar"</div>
+</body>
+</html>

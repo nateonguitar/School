@@ -1,0 +1,60 @@
+package cardgame;
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.ResourceBundle;
+
+import cardgame.cards.Card;
+import cardgame.cards.Deck;
+import cardgame.cards.Numbers;
+import cardgame.cards.Suits;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.layout.AnchorPane;
+import javafx.util.Duration;
+
+public class SplashScreenController implements Initializable, ControlledScreen {
+	@FXML
+	AnchorPane CardGameMainAnchorPane;
+	
+	ScreensController myController;
+	
+	@Override
+	public void setScreenParent(ScreensController screenParent){
+        myController = screenParent;
+        
+    }
+
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		//Deck deck = new Deck();
+		//example of how to manipulate some cards!!!
+		
+		Card card1 = new Card(Numbers.ACE, Suits.DIAMONDS, -250, 165, 180);
+		Card card2 = new Card(Numbers.ACE, Suits.CLUBS, -400, 165, 180);
+		Card card3 = new Card(Numbers.ACE, Suits.HEARTS, -550, 165, 180);
+		Card card4 = new Card(Numbers.ACE, Suits.SPADES, -700, 165, 180);
+		CardGameMainAnchorPane.getChildren().addAll(card1.getFace(), card2.getFace(), card3.getFace(), card4.getFace());
+		card1.moveToRelative(430, 5, 4000, 0, false, 210 + 180);
+		card2.moveToRelative(530, -15, 4300, 0, false, 190 + 180);
+		card3.moveToRelative(630, -15, 4600, 0, false, 170 + 180);
+		card4.moveToRelative(730, 5, 4900, 500, false, 140 + 180);
+
+		Timeline fade = new Timeline(
+			new KeyFrame(new Duration(2000))
+		);
+		fade.setOnFinished(new EventHandler<ActionEvent>() { 
+		    	@Override public void handle(ActionEvent actionEvent) {
+		    		myController.setScreen(ScreensFramework.screen2ID);
+		    	} 
+		    });
+        fade.play();
+	}
+}

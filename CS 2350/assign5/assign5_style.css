@@ -1,0 +1,30 @@
+ul.external-style {
+	list-style-type:square;
+}
+
+h5.part2external  {
+	font-family:Verdana;
+			color:blue;
+			font-weight:bold;
+}
+
+#myfirstid {
+	margin:20px 0;
+	font-size:large;
+	text-decoration:underline;
+}
+
+.myfirstclass {
+	margin-left:30px;
+	text-shadow:2px 2px #aaa;
+	border:2px solid #aaa;
+}
+
+div > h6, p {
+	font-size:small;
+	color:green;
+}
+
+div + h6 {
+	color:purple;
+}

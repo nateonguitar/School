@@ -1,0 +1,92 @@
+-- 1.
+SELECT c.course_no, c.description, c.COST
+FROM course c JOIN section s
+  ON c.course_no = s.course_no
+  INNER JOIN instructor i
+    ON s.instructor_id = i.instructor_id
+WHERE i.last_name = 'Lowry'
+ORDER BY c.course_no;
+
+-- 2.
+SELECT MAX(numeric_grade) AS highest_final_grade
+FROM grade g INNER JOIN grade_type_weight gtw
+  ON g.section_id = gtw.section_id
+  INNER JOIN section s
+    ON gtw.section_id = s.section_id
+    WHERE s.course_no = 130;
+
+-- 3.
+SELECT s.first_name, s.last_name, s.phone
+FROM student s INNER JOIN zipcode z
+  ON s.zip = z.zip
+  WHERE z.city = 'New York'
+  AND z.state = 'NY'
+ORDER BY s.last_name, s.first_name; 
+
+-- 4.
+SELECT gt.grade_type_code, gt.description, gtw.number_per_section
+FROM grade_type_weight gtw INNER JOIN grade_type gt
+    ON gtw.grade_type_code = gt.grade_type_code
+    INNER JOIN section s
+      ON gtw.section_id = s.section_id
+      WHERE s.course_no = 220
+ORDER BY gt.description;
+
+-- 5.
+SELECT s.student_id, s.last_name||', '||s.first_name AS student_name
+FROM student s INNER JOIN enrollment e
+  ON s.student_id = e.student_id
+  INNER JOIN grade g
+  ON e.student_id = g.student_id
+GROUP BY s.student_id, s.last_name, s.first_name
+HAVING avg(g.numeric_grade) < 80
+ORDER BY s.last_name, s.first_name;
+
+-- 6.
+SELECT c.cost, COUNT(*) AS courses
+FROM course c INNER JOIN section s
+  ON c.course_no = s.course_no
+GROUP BY c.cost
+HAVING count(*) > 2
+ORDER BY c.cost;
+
+-- 7.
+SELECT c.course_no, count(*) AS enrolled
+FROM course c INNER JOIN section s
+  ON c.course_no = s.course_no
+  INNER JOIN enrollment e
+    ON s.section_ID = e.section_ID
+WHERE prerequisite IS NULL
+GROUP BY c.course_no
+ORDER BY enrolled asc;
+
+-- 8.
+SELECT distinct s.first_name, s.last_name, TO_CHAR(e.enroll_date, 'DD-MON-YYYY HH:MI AM')
+FROM student s INNER JOIN enrollment e
+  ON s.student_id = e.student_id
+  INNER JOIN zipcode z
+    ON s.zip = z.zip
+WHERE z.state = 'CT'
+  AND z.city = 'Stamford'
+  AND e.enroll_date > to_date('02/19/2007 10:20am', 'MM/DD/YYYY HH:MIAM')
+ORDER BY s.last_name, s.first_name;
+
+-- 9.
+SELECT c.course_no, c.description
+FROM course c INNER JOIN section s
+  ON c.course_no = s.course_no
+  INNER JOIN grade_type_weight gtw
+  ON s.section_id = gtw.section_id
+  INNER JOIN grade_type gt
+  ON gtw.grade_type_code = gt.grade_type_code
+WHERE gt.description = 'Project'
+ORDER BY c.course_no;
+
+-- 10.
+SELECT c1.course_no, c1.prerequisite, c2.description
+FROM course c1, course c2
+WHERE c1.course_no >= 300 
+  AND c1.course_no <= 399
+  AND c1.prerequisite IS NOT NULL
+  AND c1.prerequisite = c2.course_no
+ORDER BY c1.course_no;

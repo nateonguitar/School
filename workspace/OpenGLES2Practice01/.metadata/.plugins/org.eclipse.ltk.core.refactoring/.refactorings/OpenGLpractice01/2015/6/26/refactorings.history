@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;OpenGLpractice01/res/layout/activity_main.xml&apos; to &apos;gamelayout.xml&apos;" description="Rename resource &apos;activity_main.xml&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="res/layout/activity_main.xml" name="gamelayout.xml" stamp="1434951274857" updateReferences="true"/>
+</session>

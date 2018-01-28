@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.effect.Reflection?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="CardGameMainAnchorPane" fx:id="CardGameMainAnchorPane" prefHeight="600.0" prefWidth="800.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cardgame.SplashScreenController">
+   <children>
+      <Label id="labelCardGameSuite" fx:id="labelCardGameSuite" layoutX="138.0" layoutY="74.0" text="Card Game Suite">
+         <effect>
+            <Reflection topOffset="-10.0" topOpacity="0.42" />
+         </effect>
+      </Label>
+      <AnchorPane id="pane" layoutX="30.0" layoutY="267.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="300.0">
+         <children>
+            <Label layoutX="227.0" layoutY="106.0" style="-fx-font-size: 20pt;" text="CS 3230 Spring 2016">
+               <effect>
+                  <Glow level="0.49" />
+               </effect></Label>
+            <Label layoutX="261.0" layoutY="46.0" style="-fx-font-size: 20pt;" text="Nathan Brooks">
+               <effect>
+                  <Glow level="0.49" />
+               </effect></Label>
+            <Label layoutX="224.0" layoutY="166.0" style="-fx-font-size: 20pt;" text="Due: Apr 25 by 10pm">
+               <effect>
+                  <Glow level="0.49" />
+               </effect></Label>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

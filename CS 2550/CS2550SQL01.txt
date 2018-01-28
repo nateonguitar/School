@@ -1,0 +1,66 @@
+-- CS2550 Assignment #1
+-- Nathan Brooks
+
+-- 1.
+SELECT First_name, Last_name
+FROM Instructor
+ORDER BY last_name, first_name;
+
+-- 2.
+SELECT Location
+FROM Section
+ORDER BY Location;
+
+-- 3.
+SELECT First_Name, Last_Name
+FROM Instructor
+WHERE Last_Name LIKE 'W%';
+
+-- 4. 
+SELECT Phone, First_Name||' '||Last_Name as "full_name", Employer
+FROM Student
+WHERE Last_Name = 'Miller'
+ORDER BY Phone;
+
+-- 5. 
+SELECT Course_No, Description
+FROM Course
+WHERE prerequisite = 20
+ORDER BY Course_No;
+
+-- 6.
+SELECT Course_no, Cost, description
+FROM Course
+WHERE 
+    Course_no < 300 
+    AND Course_no > 199 
+    AND Cost < 1100
+ORDER BY Course_No;
+
+-- 7.
+SELECT Course_no, Section_ID
+FROM Section
+WHERE Course_no < 200
+    AND Course_No > 99
+    AND (Location = 'L211'
+    OR Location = 'L214')
+ORDER BY Course_no;
+
+-- 8.
+SELECT Course_No, Section_ID
+FROM Section
+WHERE Capacity IN (10, 12)
+ORDER BY Course_No, Section_ID;
+
+--9.
+SELECT Student_ID, Numeric_Grade
+FROM Grade
+WHERE Section_ID = 147
+    AND Grade_Type_Code = 'FI'
+ORDER BY Student_ID, Numeric_Grade;
+
+-- 10.
+SELECT Course_No, Description
+FROM Course
+WHERE Course_no >= 200 AND Course_No < 300 AND Prerequisite IS NOT NULL
+ORDER BY Description;

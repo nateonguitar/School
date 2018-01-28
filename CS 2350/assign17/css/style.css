@@ -1,0 +1,74 @@
+hr {
+	width:120%;
+	margin-left:-10%;
+	margin-top:30px;
+	margin-bottom:30px;
+}
+
+#wrapper {
+	width:70%;
+	margin-right:auto;
+	margin-left:auto;
+}
+
+#progressBar {
+	width:300px;
+	height:25px;
+}
+
+	#progressBar  > div {
+		background:green;
+	}
+	
+	#red, #green, #blue {
+		float: left;
+		clear: left;
+		width: 300px;
+		margin: 15px;
+	}
+		
+	#swatch {
+		width: 120px;
+		height: 100px;
+		margin-top: 18px;
+		margin-left: 350px;
+		background-image: none;
+	}
+		
+		
+		#red .ui-slider-range { background: #ef2929; }
+		#red .ui-slider-handle { border-color: #ef2929; }
+		#green .ui-slider-range { background: #8ae234; }
+		#green .ui-slider-handle { border-color: #8ae234; }
+		#blue .ui-slider-range { background: #729fcf; }
+		#blue .ui-slider-handle { border-color: #729fcf; }
+		
+
+#draggable {
+	width: 150px;
+	height: 150px;
+	padding: 0.5em;
+}
+
+.toggler {
+	width: 500px;
+	height: 200px;
+	position: relative;
+}
+
+#button {
+	padding: .5em 1em;
+	text-decoration: none;
+}
+#effect {
+	width: 240px;
+	height: 135px;
+	padding: 0.4em;
+	position: relative;
+	background: #fff;
+}
+#effect h3 {
+	margin: 0;
+	padding: 0.4em;
+	text-align: center;
+}

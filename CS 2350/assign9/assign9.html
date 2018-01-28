@@ -1,0 +1,169 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+     <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+     <title>Layout,w/Presidents</title>
+	 <link rel="icon" href="../favicon.ico" type="image/x-icon" />
+	<style type="text/css">
+	html, body {
+		width:100%;
+		height:100%;
+	}
+	
+	div.container {
+		position:relative;
+		border:1px solid #aaa;
+		margin:0 1% 1% 0;
+	}
+
+	div.header{
+		position:relative;
+		top:0;
+		height:30px;
+		background-color:#aaa;
+		border:1px solid black;
+		padding:20px;
+		
+	}
+
+	div.footer{
+		position:relative;
+		top:0;
+		background-color:#aaa;
+		border:1px solid black;
+	}
+
+
+
+	div.left{
+	float:left;
+	width:225px;
+	padding:0 0 25px 25px;
+	height:400px;
+	}
+
+	div.content{
+	/*the overflow:auto is needed. otherwise the floated presidents inside this element won't be contained by it. this in turn
+	corrupts any borders one might try to put on this element.  For a demo see:
+	http://icarus.cs.weber.edu/~lfernandez/Lesson_6/overflow.html
+	*/
+	overflow:auto;
+	margin-left:400px;
+	border-left:2px solid #555;
+	padding:25px 0 0 25px;
+	}
+
+	/* Begin: styles the list so its horizontal */
+	ul{
+		position:relative;
+		text-align:center;
+		margin-top:1px;
+		padding-left:0;
+	}
+
+	li{
+		
+		display:inline;
+	}
+
+	li a {
+		background-color:#777;
+		color:#eee;
+		text-decoration:none;
+		font-size:18pt;
+		padding:11px 50px 11px 50px;
+	}
+		
+		li a:hover {
+			background-color:brown;
+		}
+		
+	/* End: styles the list so its horizontal */
+
+	#gallery{
+		width:575px;
+	}
+
+	.pres {
+		width:180px;
+		background-color:#33FFFF;
+		position:relative;
+		float:left;
+		padding:25px 25px 10px 25px;
+		margin:0 25px 25px 0;
+		
+	}
+
+	.presImg{ 
+		position:relative;
+		text-align:center;
+	}
+	.presImg img{
+			border:1px solid black;
+			width:95%;
+	}
+
+	.presName{
+		width:100%;
+		text-align:center;
+	}
+
+
+	</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <ul>
+		  <li><a href="#home">Home</a></li>
+          <li><a href="#presidents">Presidents</a></li>
+          <li><a href="#veeps">Veeps</a></li>
+          <li><a href="#secretaries">Secretaries</a></li>
+       </ul>
+    </div>
+    <div class="left">
+       <p>Four presidents of the United States</p>
+	</div>
+    <div class="content">
+		<div id="gallery">
+			<div class="pres">
+			   <div class="presImg">
+				  <img src="washington.gif" alt="Washington">
+			   </div>
+			   <div class="presName">Washington</div>
+		   </div>
+		   <div class="pres">
+			  <div class="presImg">
+				 <img src="madison.gif" alt="Madison">
+			  </div>
+			  <div class="presName">Madison</div>
+		   </div>
+		   <div class="pres">
+			  <div class="presImg">
+				  <img src="jefferson.gif" alt="Jefferson">
+			  </div>
+			  <div class="presName">Jefferson</div>
+		   </div>
+		   <div class="pres">
+			 <div class="presImg">
+				  <img src="jadams.gif" alt="Adams">
+			 </div>
+			 <div class="presName">Adams</div>
+		   </div>
+		   
+		</div>
+    </div>
+    <div class="footer">Creative Commons Copyright 2012</div>
+</div>
+<p>
+<a href="http://jigsaw.w3.org/css-validator/check/referer">
+    <img style="border:0;width:88px;height:31px"
+        src="http://jigsaw.w3.org/css-validator/images/vcss-blue"
+        alt="Valid CSS!" />
+</a>
+</p>
+</body>
+</html>

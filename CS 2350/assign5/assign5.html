@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+	<link rel="stylesheet" type="text/css" href="assign5_style.css" />
+	<link rel="icon" href="../favicon.ico" type="image/x-icon" />
+    <title>CSS Intro - Nate Brooks</title>
+	<style type="text/css">
+		ol.internal-style li {
+			display:inline; <!-- Changes the list from vertical to horizontal -->
+		}
+		
+		ul.bullets-are-images {
+			list-style-image: URL('blue-star.jpg');
+		}
+		
+		h4.part2internal {
+			font-family:Courier;
+			color:red;
+			font-weight:bold;
+			text-decoration:line-through;
+		}
+	</style>
+  </head>
+  
+  <body>
+  
+    <h1>Assignment 5 Part 1</h1>
+  
+    <h2>Turning a vertical list into a horizontal list</h2>
+    <ol class="internal-style">
+      <li>aaa</li>
+      <li>bbb</li>
+    </ol>
+    
+    <h2>Styling a list so that the bullets are different shapes</h2>
+    <ul class="external-style">
+      <li>aaa</li>
+      <li>bbb</li>
+    </ul>
+    
+    <h2>Styling a list so that the bullets are images</h2>
+    <ul class="bullets-are-images">
+      <li>aaa</li>
+      <li>bbb</li>
+    </ul>
+    
+    <h1>Assignment 5 Part 2</h1>
+    
+    <h3 style="font-family:Georgia; color:#aaa; font-style:italic;">Here is some text that has been styled with an inline style</h3>
+    
+    <h4 class="part2internal">Here is some text that has been styled with an internal style sheet</h4>
+    
+    <h5 class="part2external">Here is some text that has been styled with an external style sheet</h5>
+    
+    <h1>Assignment 5 (For your own learning -- no credit)</h1>
+    
+    <h6 class="myfirstclass" >Here is some text that has been styled using a class</h6>
+    
+    <h6 id="myfirstid" >Here is some text that has been styled using an id</h6>
+    
+    <div>
+         <h6>Here is some text that has been styled using a child selector</h6>
+    </div>
+    
+    <div>
+         <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br />
+			Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.<br />
+			Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.<br />
+			Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br />
+            <span>Here is some text that has been styled using a descendent selector</span>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br />
+			Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.<br />
+			Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.<br />
+			Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+         </p>
+    </div>
+    
+    <h6>Here is some text that has been styled using an adjacent sibling selector</h6>
+    
+	<hr width="90%" />
+	
+	<p>
+		<a href="../index.html">- Home -</a><br />
+		<a href="../assignments.html">- Assignments -</a>
+	</p>
+	
+		<!-- Validator link -->
+			<p>
+				<a href="http://validator.w3.org/check?uri=referer">
+					<img src="http://www.w3.org/Icons/valid-xhtml10" alt="Valid XHTML 1.0 Transitional" height="31" width="88" />
+				</a>
+			</p>
+    
+  </body>
+</html>

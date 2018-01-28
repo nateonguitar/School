@@ -1,0 +1,39 @@
+1460427371901	Rename package 'blackjack.model'
+1460497585821	Rename package 'cards'
+1460497598423	Rename package 'blackjack'
+1460497609549	Rename package 'blackjack.util'
+1460497641707	Move elements
+1460497649086	Delete element
+1460498672857	Rename resource 'StartCardGame.fxml.fxml'
+1460498999099	Delete element
+1460505419437	Delete element
+1460512465266	Move folder
+1460577272514	Delete element
+1460599262600	Rename resource 'SplashPage.fxml'
+1460604911787	Delete element
+1460606568624	Move compilation unit
+1460606572370	Move compilation unit
+1460606575865	Move compilation unit
+1460606593942	Move compilation unit
+1460606597333	Move compilation unit
+1460606980374	Move files
+1460606985446	Delete element
+1460606988635	Delete element
+1460606991400	Delete element
+1460607000242	Delete element
+1460607002699	Delete element
+1460607009140	Delete element
+1460607011245	Delete element
+1460607120508	Rename resource 'NamePlayers.fxml'
+1460607199984	Rename resource 'Menu.fxml'
+1460607255116	Delete element
+1460607263366	Delete element
+1460607299475	Delete element
+1460607445547	Rename resource 'BlackJackSetup.fxml'
+1460607467539	Delete element
+1460607505004	Rename type 'NamePlayersController'
+1460607598562	Delete element
+1460607615691	Rename type 'MenuController'
+1460607864945	Delete element
+1460609095384	Move files
+1460609101114	Delete element

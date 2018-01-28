@@ -1,0 +1,552 @@
+package cardgame;
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.ResourceBundle;
+
+import cardgame.cards.Card;
+import cardgame.cards.Comparer;
+import cardgame.cards.Dealer;
+import cardgame.cards.GroupOfCards;
+import cardgame.cards.Hand;
+import cardgame.cards.Player;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.util.Duration;
+
+public class WarController implements Initializable, ControlledScreen {
+	ScreensController myController;
+	Comparer comparer;
+	Dealer dealer;
+	Boolean someoneWon = false;
+	int numRoundsPlayed = 0;
+	Pile pileHolding;
+	Pile pileTempOpponent;
+	Pile pileTempPlayer;
+	ArrayList<String> names = new ArrayList<>();
+	int cardTransitionTime = 500;
+	Timeline wait;
+	int warCardsDealtCounter = 0;
+	boolean gameEnded = false;
+	
+	
+	
+	@FXML
+	AnchorPane CardGameMainAnchorPane;
+	
+	@FXML
+	Pane scoresPane;
+	
+	@FXML
+	Pane gameOverPane;
+	
+	@FXML
+	Button button_PlayAgain;
+	
+	@FXML
+	Button button_Ready;
+	
+	@FXML
+	Button button_Play;
+	
+	@FXML
+	Label label_GameOverDisplayWinner;
+	
+	@FXML
+	Label label_OpponentName;
+	
+	@FXML
+	Label label_PlayerName;
+	
+	@FXML
+	Label label_OpponentCards;
+	
+	@FXML
+	Label label_PlayerCards;
+	
+	@FXML
+	Label label_HoldingPile;
+	
+	
+	
+	//--------------------------------------------------------------------------------------------
+	
+	public void startWar(){		
+		try{
+			label_OpponentName.setText(Game.players.get(0).getName());
+			label_PlayerName.setText(Game.players.get(1).getName());
+		}catch(Exception e){}
+		
+		label_OpponentCards.setText("Cards: ");
+		label_PlayerCards.setText("Cards: ");
+		
+		button_Ready.setVisible(false);
+		
+		// clear the names array then add them back in
+		// this helps to keep the names array from growing between each game
+		names.clear();
+		names.add(Game.players.get(0).getName());
+		names.add(Game.players.get(1).getName());
+		
+		// reset the players back to default using the stored names
+		Game.players.clear();
+		Game.players.add(new Player(names.get(0)));
+		Game.players.add(new Player(names.get(1)));
+		
+		dealer = new Dealer(1);
+		dealer.getDeck().shuffle();
+		
+		for(int i=0; i<dealer.getDeck().getSize(); i++){
+			CardGameMainAnchorPane.getChildren().add(dealer.getDeck().getCards().get(i).getFace());
+		}
+		
+		// move all the players to the correct positions
+		dealer.setX(400);
+		dealer.setY(100);
+		
+		Game.players.get(0).setX(100);
+		Game.players.get(0).setY(150);
+		
+		Game.players.get(1).setX(100);
+		Game.players.get(1).setY(350);
+		
+		while(dealer.getDeck().getSize() > 0){
+			dealCard(Game.players.get(0), dealer.getDeck().getSize() - 1);
+			dealCard(Game.players.get(1), dealer.getDeck().getSize() - 1);
+		}
+		
+		label_OpponentCards.setText("Cards: " + Game.players.get(0).getHand().getSize());
+		label_PlayerCards.setText("Cards: " + Game.players.get(1).getHand().getSize());
+		
+		// wait for the cards to move to the player then show the play button
+		wait = new Timeline(
+			new KeyFrame(new Duration(cardTransitionTime * 2.5))
+		);
+		wait.setOnFinished(new EventHandler<ActionEvent>() { 
+	    	@Override public void handle(ActionEvent actionEvent) {
+	    		button_Play.setVisible(true);
+	    	} 
+	    });
+		wait.play();
+	}
+	//--------------------------------------------------------------------------------------------
+	
+	public void play(){
+		button_Play.setDisable(true);
+		
+		playerPresentCard(Game.players.get(0), pileTempOpponent);
+		playerPresentCard(Game.players.get(1), pileTempPlayer);
+		resetScoreLabels();
+	}
+	
+	//--------------------------------------------------------------------------------------------
+	
+	public void playerPresentCard(Player player, Pile pile){
+		player.getHand().dealCard(pile);
+		CardGameMainAnchorPane.getChildren().remove(pile.getCards().getLast().getFace());
+		CardGameMainAnchorPane.getChildren().add(pile.getCards().getLast().getFace());
+		
+		// moves the player's final card (the one that the player just recieved) to the player's area
+		pile.getCards().getLast().moveTo(
+			pile.getX(), 
+			pile.getY(), 
+			cardTransitionTime, 
+			0,
+			true,
+			360
+		);
+		
+		// wait for the cards to move to the presentation piles
+		wait = new Timeline(
+			new KeyFrame(new Duration(cardTransitionTime + 1200))
+		);
+		wait.setOnFinished(new EventHandler<ActionEvent>() { 
+	    	@Override public void handle(ActionEvent actionEvent) {
+	    		if(Game.players.get(0).getHand().getSize() == 0 || Game.players.get(1).getHand().getSize() == 0){
+	    			// end the game, someone won!!!
+	    			if(!gameEnded){
+	    				endTheGame();
+	    			}
+	    		}
+	    		else{
+		    		if(player == Game.players.get(0)){
+			    		int compareValue = comparer.compare(
+			    			pileTempOpponent.getCards().get(0).getNumber().number(), 
+			    			pileTempPlayer.getCards().get(0).getNumber().number()
+			    		);
+			    		
+			    		// compareValue == 1 means Player won
+			    		// compareValue == -1 means Opponent won
+			    		// compareValue == 0 means WAR!!!!			    		
+			    		if(compareValue == 1){
+			    			givePresentPilesToPlayer(Game.players.get(1));
+			    			Game.players.get(1).getHand().shuffle();
+			    			for(Card card : Game.players.get(1).getHand().getCards()){
+			    				CardGameMainAnchorPane.getChildren().remove(Game.players.get(1).getHand().getCards().getLast().getFace());
+			    				CardGameMainAnchorPane.getChildren().add(Game.players.get(1).getHand().getCards().getLast().getFace());
+			    			}
+			    		}
+			    		else if(compareValue == -1){
+			    			givePresentPilesToPlayer(Game.players.get(0));
+			    			Game.players.get(0).getHand().shuffle();
+			    			for(Card card : Game.players.get(0).getHand().getCards()){
+			    				CardGameMainAnchorPane.getChildren().remove(Game.players.get(0).getHand().getCards().getLast().getFace());
+			    				CardGameMainAnchorPane.getChildren().add(Game.players.get(0).getHand().getCards().getLast().getFace());
+			    			}
+			    		}
+	
+	
+			    		if(compareValue != 0){
+			    			wait = new Timeline(
+		    					new KeyFrame(new Duration(cardTransitionTime + 500))
+		    				);
+		    				wait.setOnFinished(new EventHandler<ActionEvent>() { 
+		    			    	@Override public void handle(ActionEvent actionEvent) {
+		    			    		button_Play.setDisable(false);
+		    			    		play();
+		    			    	}
+		    				});
+		    				wait.play();
+			    		}
+			    		else{
+			    			war();
+			    		}
+			    		
+			    		resetScoreLabels();
+		    		}
+	    		}
+	    	} 
+	    });
+		wait.play();
+	}
+	
+	//--------------------------------------------------------------------------------------------
+	
+	public void war(){
+		wait = new Timeline(
+			new KeyFrame(new Duration(cardTransitionTime))
+		);
+		wait.setOnFinished(new EventHandler<ActionEvent>() { 
+	    	@Override public void handle(ActionEvent actionEvent) {
+		    	if(warCardsDealtCounter < 3){
+		    		
+		    		warCardsDealtCounter++;
+		    		try{
+		    			pileTempOpponent.getCards().get(0).flip();
+		    		}catch(Exception e){}
+		    		try{
+		    			pileTempPlayer.getCards().get(0).flip();
+		    		}catch(Exception e){}
+		    		
+		    		pileTempOpponent.giveAllCardsToAPile(pileHolding);
+		    		pileTempPlayer.giveAllCardsToAPile(pileHolding);
+		    		Game.players.get(0).getHand().dealCard(pileHolding);
+		    		Game.players.get(1).getHand().dealCard(pileHolding);
+		    		
+		    		for(Card card : pileHolding.getCards()){
+		    			CardGameMainAnchorPane.getChildren().remove(card.getFace());
+		    			CardGameMainAnchorPane.getChildren().add(card.getFace());
+		    			card.moveTo(pileHolding.getX(), pileHolding.getY(), cardTransitionTime, 0, false, 180);
+		    		}
+		    		
+		    		label_HoldingPile.setText("Holding Pile: " + pileHolding.getSize());
+		    		
+		    		resetScoreLabels();
+		    		if(Game.players.get(0).getHand().getSize() == 0 || Game.players.get(1).getHand().getSize() == 0){
+		    			if(!gameEnded){
+		    				endTheGame();
+		    			}
+		    		}
+		    		else{
+		    			war();
+		    		}
+		    		
+		    	}
+		    	else{
+		    		warCardsDealtCounter = 0;
+		    		playerPresentCard(Game.players.get(0), pileTempOpponent);
+		    		playerPresentCard(Game.players.get(1), pileTempPlayer);
+		    	}
+	    	}
+		});
+		wait.play();
+	}
+	
+	//--------------------------------------------------------------------------------------------
+	
+	public void endTheGame(){
+		gameEnded = true;
+		
+		// player won
+		if(Game.players.get(0).getHand().getSize() == 0){
+			giveAllCardsInGameToAPlayer(Game.players.get(1));
+			label_GameOverDisplayWinner.setText(Game.players.get(1).getName() + " Wins!!");
+		}
+		// opponent won
+		else{
+			giveAllCardsInGameToAPlayer(Game.players.get(0));
+			label_GameOverDisplayWinner.setText(Game.players.get(0).getName() + " Wins!!");
+		}
+		
+		wait = new Timeline(
+			new KeyFrame(new Duration(cardTransitionTime))
+		);
+		wait.setOnFinished(new EventHandler<ActionEvent>() { 
+	    	@Override public void handle(ActionEvent actionEvent) {
+			    CardGameMainAnchorPane.getChildren().add(gameOverPane);
+	    	}
+	    	
+		});
+		wait.play();
+	}
+	
+	//--------------------------------------------------------------------------------------------
+	
+	public void giveAllCardsInGameToAPlayer(Player player){
+		pileHolding.giveAllCardsToAHand(player.getHand());
+		
+		pileTempOpponent.getCards().get(0).flip();
+		pileTempOpponent.giveAllCardsToAHand(player.getHand());
+		
+		pileTempPlayer.getCards().get(0).flip();
+		pileTempPlayer.giveAllCardsToAHand(player.getHand());
+		
+		for(Card card : Game.players.get(1).getHand().getCards()){
+			CardGameMainAnchorPane.getChildren().remove(player.getHand().getCards().getLast().getFace());
+			CardGameMainAnchorPane.getChildren().add(player.getHand().getCards().getLast().getFace());
+			card.moveTo(
+				player.getX(),
+				player.getY(),
+				cardTransitionTime,
+				0,
+				false,
+				360
+			);
+		}
+	}
+	
+	public void resetScoreLabels(){
+		label_OpponentCards.setText("Cards: " + Game.players.get(0).getHand().getSize());
+		label_PlayerCards.setText("Cards: " + Game.players.get(1).getHand().getSize());
+	}
+	
+	//--------------------------------------------------------------------------------------------
+	
+	public void givePresentPilesToPlayer(Player player){
+		pileTempOpponent.giveAllCardsToAHand(player.getHand());
+		
+		player.getHand().getCards().getFirst().flip();
+		player.getHand().getCards().getFirst().moveTo(
+			player.getX(),
+			player.getY(),
+			cardTransitionTime,
+			0,
+			false,
+			360
+		);
+		
+		pileTempPlayer.giveAllCardsToAHand(player.getHand());
+		
+		for(Card card : player.getHand().getCards()){
+			CardGameMainAnchorPane.getChildren().remove(card.getFace());
+			CardGameMainAnchorPane.getChildren().add(card.getFace());
+		}
+		
+		player.getHand().getCards().getFirst().flip();
+		player.getHand().getCards().getFirst().moveTo(
+			player.getX(),
+			player.getY(),
+			cardTransitionTime,
+			0,
+			false,
+			360
+		);
+		
+		pileHolding.giveAllCardsToAHand(player.getHand());
+		for(Card card : player.getHand().getCards()){
+			card.moveTo(
+				player.getX(),
+				player.getY(),
+				cardTransitionTime,
+				0,
+				false,
+				360
+			);
+		}
+		
+		label_HoldingPile.setText("");
+	}
+	//--------------------------------------------------------------------------------------------
+	
+	public void dealCard(Player player, int index){
+		// give ownership of the top card to the player
+		dealer.dealCard(player, index);
+		
+		// removing then adding makes the card stay on top of everything else
+		CardGameMainAnchorPane.getChildren().remove(player.getHand().getCards().getLast().getFace());
+		CardGameMainAnchorPane.getChildren().add(player.getHand().getCards().getLast().getFace());
+		
+		// moves the player's final card (the one that the player just recieved) to the player's area
+		player.getHand().getCards().getLast().moveTo(
+			player.getX(), 
+			player.getY(), 
+			cardTransitionTime * 2, 
+			0,
+			false,
+			360
+		);
+	}
+
+	//--------------------------------------------------------------------------------------------
+	
+	public void closeProgram(){
+		Platform.exit();
+	}
+	
+	//--------------------------------------------------------------------------------------------
+	
+	@Override
+	public void setScreenParent(ScreensController screenParent){
+        myController = screenParent;
+    }
+	
+	//--------------------------------------------------------------------------------------------
+	
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		init();
+	}
+	
+	//--------------------------------------------------------------------------------------------
+	
+	class Pile extends GroupOfCards{
+		
+		private int x;
+		private int y;
+		
+		Pile(int x, int y){
+			super();
+			this.x = x;
+			this.y = y;
+		}
+		
+		public int getX(){
+			return this.x;
+		}
+		
+		public int getY(){
+			return this.y;
+		}
+		// sticks cards at the end of the hand
+		public void giveAllCardsToAHand(Hand hand){
+			int runTimes = cards.size();
+			
+			for(int i=0; i<runTimes; i++){
+				Card temp = cards.getFirst();
+				cards.removeFirst();
+				hand.getCards().add(0, temp);
+			}
+		}
+		
+		public void giveAllCardsToAPile(Pile pile){
+			int runTimes = cards.size();
+			
+			for(int i=0; i<runTimes; i++){
+				Card temp = cards.getFirst();
+				cards.removeFirst();
+				pile.getCards().add(0, temp);
+			}
+		}
+	}
+	
+	//--------------------------------------------------------------------------------------------
+	
+	public void init(){
+		// remove the gameOverPane so we don't see it anymore, will bring it back when game is over
+		CardGameMainAnchorPane.getChildren().remove(gameOverPane);
+		
+		label_OpponentCards.setText("");
+		label_PlayerCards.setText("");
+		
+		label_OpponentName.setText("");
+		label_PlayerName.setText("");
+		
+		label_HoldingPile.setText("");
+
+		button_Ready.setVisible(true);
+		button_Play.setVisible(false);
+		
+		comparer = (x, y) -> {
+			if(x > y){
+				return -1;
+			}
+			else if(x < y){
+				return 1;
+			}
+			else{
+				return 0;
+			}
+		};
+		
+		pileHolding = new Pile(400, 250);
+		
+		pileTempOpponent = new Pile(250, 150);
+		pileTempPlayer = new Pile(250, 350);
+	}
+	
+	public void playAgain(){
+		
+		// remove ALL CARDS IN THE GAME
+		for(Card card : dealer.getDeck().getCards()){
+			CardGameMainAnchorPane.getChildren().remove(card);
+		}
+		dealer.getDeck().getCards().clear();
+		
+		for(Card card : dealer.getHand().getCards()){
+			CardGameMainAnchorPane.getChildren().remove(card);
+		}
+		dealer.getHand().getCards().clear();
+		
+		for(Player player : Game.players){
+			for(Card card : player.getHand().getCards()){
+				CardGameMainAnchorPane.getChildren().remove(card);
+			}
+			player.getHand().getCards().clear();
+		}
+		
+		for(Card card : pileHolding.getCards()){
+			CardGameMainAnchorPane.getChildren().remove(card);
+		}
+		pileHolding.getCards().clear();
+		
+		for(Card card : pileTempOpponent.getCards()){
+			CardGameMainAnchorPane.getChildren().remove(card);
+		}
+		pileTempOpponent.getCards().clear();
+		
+		for(Card card : pileTempPlayer.getCards()){
+			CardGameMainAnchorPane.getChildren().remove(card);
+		}
+		pileTempPlayer.getCards().clear();
+		
+		
+		
+		
+		
+		
+		
+		CardGameMainAnchorPane.getChildren().remove(gameOverPane);
+		init();
+		startWar();
+	}
+}

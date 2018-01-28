@@ -1,0 +1,169 @@
+package cardgame.cards;
+
+
+import javafx.animation.ParallelTransition;
+import javafx.animation.ScaleTransition;
+import javafx.animation.SequentialTransition;
+import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
+
+public class Card {
+	private Numbers number;
+	private Suits suit;
+	Node face;
+	Node trueFace;
+	String frontImageString;
+	String backImageString = "back.png";
+	String sourcePath = "/resources/";
+	Image image;
+	boolean facingFront = false;
+	final int CARD_WIDTH = 100;
+	ImageView imageViewFront;
+	ImageView imageViewBack;
+	
+	//-----------------------------------------------------------------------------
+	
+	public Card(Numbers num, Suits suit){
+		this.number = num;
+		this.suit = suit;
+		
+		// build the string to it's image		
+		switch(suit){
+		case HEARTS:
+			this.frontImageString = "H";
+			break;
+		case DIAMONDS:
+			this.frontImageString = "D";
+			break;
+		case SPADES:
+			this.frontImageString = "S";
+			break;
+		case CLUBS:
+			this.frontImageString = "C";
+			break;
+		default:
+			break;
+		}
+		this.frontImageString += this.getNumber().value() + ".png";
+		
+		
+		imageViewFront = new ImageView(sourcePath + this.frontImageString);
+    	imageViewFront.setFitWidth(CARD_WIDTH);
+    	imageViewFront.setPreserveRatio(true);
+    	imageViewFront.setSmooth(false);
+    	imageViewFront.setCache(true);
+    	
+    	
+		imageViewBack = new ImageView(sourcePath + this.backImageString);
+		imageViewBack.setFitWidth(CARD_WIDTH);
+		imageViewBack.setPreserveRatio(true);
+		imageViewBack.setSmooth(false);
+		imageViewBack.setCache(true);
+		
+	    this.face = shadowRoundedNode(imageViewBack);
+		
+		// add click listener
+		this.face.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+		     @Override
+		     public void handle(MouseEvent event) {
+		         flip();
+		         event.consume();
+		     }
+		});
+	}
+	
+	//-----------------------------------------------------------------------------
+	
+	public Numbers getNumber(){
+		return this.number;
+	}
+	
+	//-----------------------------------------------------------------------------
+	
+	public Suits getSuit(){
+		return this.suit;
+	}
+	
+	public Node getFace(){
+		return this.face;
+	}
+	
+	public void flip(){
+		if(!facingFront){
+			ScaleTransition st1 = new ScaleTransition(Duration.millis(200));
+			st1.setToX(0);
+			st1.setCycleCount(1);
+			st1.setAutoReverse(false);
+			
+			st1.setOnFinished(new EventHandler<ActionEvent>() {
+
+			    @Override
+			    public void handle(ActionEvent event) {
+		        	face = shadowRoundedNode(imageViewFront);
+			    }
+			});
+			
+			ScaleTransition st2 = new ScaleTransition(Duration.millis(200));
+			st2.setToX(1);
+			st2.setCycleCount(1);
+			st2.setAutoReverse(false);
+			
+			SequentialTransition st = new SequentialTransition(this.face, st1, st2);
+			
+			st.play();
+			
+			facingFront = !facingFront;
+		}
+	}
+	
+	
+	
+	// how to move the card outside this class
+    // moves the card up the moveAmount over 200ms
+    // card.moveTo(card.getFace().getTranslateX(), card.getFace().getTranslateY() - moveAmount, 200);
+	public void moveTo(double d, double e, int time){
+		TranslateTransition tt = new TranslateTransition(new Duration(time));
+		tt.setFromX(this.face.getTranslateX());
+		tt.setFromY(this.face.getTranslateY());
+		tt.setToX(d);
+		tt.setToY(e);
+		tt.setCycleCount(1);
+		tt.setAutoReverse(true);
+	 
+	    ParallelTransition pt = new ParallelTransition(this.face, tt);
+	    pt.play();
+	}
+	
+	private Group shadowRoundedNode(Node inputNode) {
+		final Rectangle clip = new Rectangle();
+		clip.arcWidthProperty().bind(clip.heightProperty().divide(8));
+		clip.arcHeightProperty().bind(clip.heightProperty().divide(8));
+		clip.setWidth(inputNode.getLayoutBounds().getWidth());
+		clip.setHeight(inputNode.getLayoutBounds().getHeight());
+		inputNode.setClip(clip);
+		
+		DropShadow dropShadow = new DropShadow();
+		dropShadow.setRadius(2.0);
+		dropShadow.setOffsetX(4.0);
+		dropShadow.setOffsetY(2.0);
+		dropShadow.setColor(Color.rgb(10,10,10));
+		dropShadow.setBlurType(BlurType.GAUSSIAN);
+		dropShadow.setRadius(10);
+	 
+		Group group = new Group(inputNode);
+		group.setEffect(dropShadow);
+		return group;
+	}
+}

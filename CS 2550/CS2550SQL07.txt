@@ -1,0 +1,77 @@
+-- 1.
+SELECT i.last_name, i.first_name
+FROM instructor i
+WHERE i.instructor_id NOT IN
+(SELECT i.instructor_id
+  FROM instructor i INNER JOIN section se
+    ON i.instructor_id = se.instructor_id
+    INNER JOIN grade_type_weight gtw
+    ON se.section_id = gtw.section_id
+    WHERE gtw.grade_type_code = 'PJ'
+  GROUP BY i.instructor_id, gtw.grade_type_code)
+ORDER BY i.last_name, i.first_name;
+
+-- 2.
+SELECT count(*) AS below_average
+FROM student st INNER JOIN enrollment en
+  ON st.student_id = en.student_id
+  INNER JOIN grade gr
+  ON en.student_id = gr.student_id
+  AND en.section_id = gr.section_id
+WHERE en.section_id = 86
+  AND gr.grade_type_code = 'FI'
+  AND gr.numeric_grade < 
+  (SELECT AVG(gr.numeric_grade)
+FROM student st INNER JOIN enrollment en
+  ON st.student_id = en.student_id
+  INNER JOIN grade gr
+  ON en.student_id = gr.student_id
+  AND en.section_id = gr.section_id
+WHERE en.section_id = 86
+  AND gr.grade_type_code = 'FI');
+
+-- 3.
+SELECT DISTINCT zc.city, zc.state AS st
+FROM zipcode zc
+WHERE zc.city =
+(SELECT zc.city
+  FROM student st INNER JOIN zipcode zc
+    ON st.zip = zc.zip
+  GROUP BY zc.city
+  HAVING COUNT(*) = 
+    (SELECT MAX(num_in_city)
+      FROM (SELECT zc.city, COUNT(*) AS num_in_city
+      FROM student st INNER JOIN zipcode zc
+        ON st.zip = zc.zip
+      GROUP BY zc.city)));
+
+-- 4.
+SELECT st.student_id, st.first_name, st.last_name, gr.numeric_grade
+FROM student st INNER JOIN enrollment en
+  ON st.student_id = en.student_id
+  INNER JOIN grade gr
+  ON en.section_id = gr.section_id
+    AND en.student_id = gr.student_id
+WHERE gr.grade_type_code = 'FI'
+  AND gr.section_id = 81
+  AND gr.numeric_grade = 
+    (SELECT MIN(numeric_grade)
+      FROM
+        (SELECT numeric_grade
+          FROM grade
+          WHERE grade_type_code = 'FI'
+            AND section_id = 81
+          GROUP BY numeric_grade));
+
+-- 5.
+SELECT student_id, last_name, first_name
+FROM student
+WHERE student_id IN 
+  (SELECT st.student_id
+    FROM student st INNER JOIN enrollment en
+      ON st.student_id = en.student_id
+      INNER JOIN section se
+      ON en.section_id = se.section_id
+    GROUP BY se.course_no, st.student_id
+    HAVING count(*) > 1)
+ORDER BY student_id;

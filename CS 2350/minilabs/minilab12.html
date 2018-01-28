@@ -1,0 +1,38 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+<title>Page title</title>
+<script language="JavaScript" type="text/javascript">
+  function checkAll(checkboxesform){
+		for (var i=0; i<document.myform.players.length; i++)
+		{
+			checkboxesform.players[i].checked = true;
+		}
+  }
+  function uncheckAll(){
+		for (var i=0; i<document.myform.players.length; i++)
+		{
+			document.myform.players[i].checked = false;
+		}
+  }
+</script>
+
+</head>
+<body>
+  <form name="myform" action="http://somesite.org" onsubmit="checkAll(this); return false;" method="GET">
+    Pick your favorite tennis players:<br /><br />
+    <input type="checkbox" name="players" value="sampras" />Pete Sampras<br />
+    <input type="checkbox" name="players" value="aggasi" />Andre Aggasi<br />
+    <input type="checkbox" name="players" value="federer" />Roger Federer<br />
+    <input type="checkbox" name="players" value="nadal" />Rafa Nadal<br />
+    <input type="checkbox" name="players" value="djokovic" />Novak Djokovic<br />
+    <input type="checkbox" name="players" value="murray" />Andy Murray<br />
+    <br />
+    <input type="submit">
+    <input type="button" value="Check All" onclick="checkAll();">
+    <input type="button" value="Un-check all" onclick="uncheckAll();">
+  </form>
+</body>
+</html>

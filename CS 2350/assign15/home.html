@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+	<title>Nate Brooks's Home Page</title>
+	<link rel="icon" href="../favicon.ico" type="image/x-icon" />
+	<link href='http://fonts.googleapis.com/css?family=Muli' rel='stylesheet' type='text/css' />
+	<link rel="stylesheet" type="text/css" href="stylesheets/styles.css" />
+	<script src="js/main.js" type="text/JavaScript"></script>
+</head>
+<body onload="showDivs();">
+	<div id="wrapper">
+		<img id="neckImg" src="images/nateUpCloseNeck.jpg" alt="neck" />
+		
+		<div id="navMenu">
+			<ul>
+				<li onclick="hideMainPageForRedirect('http://nateonguitar.com/portfolio/index.php');">
+					<a href="http://nateonguitar.com/portfolio/index.php" onmouseover="showMenuImg('menuImg1');" onmouseout="hideMenuImg('menuImg1');" target="_blank">
+						MY PORTFOLIO
+					</a>
+				</li>
+				<li>
+					<a href="#contact">
+						CONTACT
+					</a>
+				</li>
+				<li onclick="hideMainPageForRedirect('https://www.youtube.com/watch?v=bJbK-owdmjI');">
+					<a href="https://www.youtube.com/watch?v=bJbK-owdmjI" onmouseover="showMenuImg('menuImg2');" onmouseout="hideMenuImg('menuImg2');" target="_blank">
+						YOUTUBE
+					</a>
+				</li>
+				<li onclick="hideMainPageForRedirect('http://www.facebook.com/NateBrooksMusic');">
+					<a href="http://www.facebook.com/NateBrooksMusic" onmouseover="showMenuImg('menuImg3');" onmouseout="hideMenuImg('menuImg3');" target="_blank">
+						FACEBOOK
+					</a>
+				</li>
+			</ul>
+				<!-- popup images -->
+			<img id="menuImg1" src="images/menuImg1.png" alt="menu image 1" />
+			<img id="menuImg2" src="images/menuImg2.png" alt="menu image 2" />
+			<img id="menuImg3" src="images/menuImg3.png" alt="menu image 3" />
+		</div><!-- close navMenu -->
+		<hr />
+		<h2>A little about Nate:</h2>
+		<hr />
+			 
+		<p>
+			He began exploring music from a young age, learning piano at home and playing saxophone in his school band. As he developed his own musical style, he discovered his love for the guitar.
+		</p>
+		<p>
+			Nate started guitar lessons at the age of 14 with Local Utah musician, <a href="http://www.terencehansen.com/" target="_blank">Terence Hansen</a>, who remains to be one of Nate's biggest musical influences.
+		</p>
+		
+		<img src="images/nate_holding_guitar_like_a_boss.jpg" id="likeABoss" alt="nate holding guitar like a boss" />
+		
+		<p style="clear:left;">
+			Dedicated to perfecting his skill, Nate continued lessons, and by 16 he ventured into teaching guitar lessons himself, and now has 12 years teaching experience.
+		</p>
+		<p>
+			In High School he studied in AP music theory classes and played in various groups. After graduation he also studied music at the University of Utah. He has had many side projects from being a solo composer, playing for bands, he has also been a featured artist on a music writing software program.
+		</p>
+		
+		<hr style="width:45%; margin-left:5%;" />
+		
+		
+		<p>
+			"I am studying computer science and I have leveraged my programming abilities to write web applications to help students while they learn and to help myself teach.
+		</p>
+		
+		<p>
+			I have a unique style of teaching. I provide a fun, laid-back learning environment for students of all ages, and help to guide them in  their own musical style, whether it's Rock, Country, Jazz, Classical, etc.
+		</p>
+		
+		<p>
+			I have no set curriculum. I work with every student to create a customized music workbook that I fill with playing exercises and music they choose to learn each lesson." - Nate Brooks
+		</p>
+		
+		<hr style="clear:right;" />
+		<a name="contact"></a>
+		<h2 style="text-align:center;">
+			Contact Nate Brooks
+		</h2>
+		<hr style="width:45%;" />
+		<div id="contactForm">
+			<form id ="form" onsubmit="return validate(this);" enctype="text/plain" method="get" action="mail.php" > 
+				<p>
+					First name: <input type = "text" id = "firstName" name = "firstName" placeholder="First" /><br />
+					
+					Last name: <input type = "text" id = "lastName" name = "lastName" placeholder="Last" /><br />
+					
+					Phone #:   <input type = "text" id = "phoneNumber" name = "phoneNumber" placeholder="123-456-7890" /><br />
+					
+					Email:   <input type = "text" id = "email" name = "email" placeholder="example@example.com" /><br />
+					
+					<h3>Message: </h3><textarea name="body" cols="50" rows="6" placeholder="optional..." ></textarea><br />
+					
+					<input type="submit" value="Send" />
+				</p>
+			</form>
+		</div>
+		<div id="errorsBox">
+		
+		</div>
+		
+	
+		<div id="footer">
+			<p>
+				Copyright 2014<br />
+				developed by Nate Brooks
+			</p>
+		</div><!-- close footer -->
+	</div><!-- close wrapper -->
+	
+	
+	<div id="topBox">
+		<div id="menu">
+			<h1>- Official Home Page -</h1>
+		</div><!-- close menu -->
+	</div><!-- close topBox -->
+</body>
+</html>

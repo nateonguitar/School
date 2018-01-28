@@ -1,0 +1,65 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Game
+{
+	public int PLAYERS = 4;
+	private Deck deck = new Deck(PLAYERS);
+	private Hand player1 = new Hand(1, 13);
+    private Hand player2 = new Hand(2, 13);
+    private Hand player3 = new Hand(3, 13);
+    private Hand player4 = new Hand(4, 13);
+	
+	private ArrayList<Trick> tricks = new ArrayList<>();
+	private int numberOfTricks = 0;
+	private boolean hearts = false;
+	private boolean queenOfSpades = false;
+
+	//*************************************************
+
+	public void playAGame()
+	{
+		deck.shuffle();
+			// Deal all the cards to the 4 players.
+		while (deck.getCurrentSize() > 0)
+		{
+			player1.addCard(deck.dealCard());
+		    player2.addCard(deck.dealCard());
+		    player3.addCard(deck.dealCard());
+		    player4.addCard(deck.dealCard());		    
+		}
+		displayPlayer(player1);
+		player1.sort();
+		//player2.sort();
+		//player3.sort();
+		//player4.sort();
+		
+		displayPlayer(player1);
+		//displayPlayer(player2);
+		//displayPlayer(player3);
+		//displayPlayer(player4);
+	} // end playAGame
+	
+	//*************************************************
+	
+	public void updateHeartsAndQueens(Card card)
+	{
+		
+	}
+	
+	//*************************************************
+	
+	private int computePoints(int playerNum)
+	{
+		return 0;
+	}
+	
+	public void displayPlayer(Hand player)
+	{
+		System.out.println("Player " + player.getNUM() + " - - -\tNUM\tSUIT");
+		for (int i=0; i<13; i++)
+		{
+			System.out.println("\t\t" + player.getCards().get(i).getNum() + "\t" + player.getCards().get(i).getSuit());
+		}
+	}
+} // end Game

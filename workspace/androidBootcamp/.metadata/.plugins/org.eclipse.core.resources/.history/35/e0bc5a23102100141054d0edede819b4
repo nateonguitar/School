@@ -1,0 +1,29 @@
+public class SarahsFirst
+{
+	public static void main(String args[])
+	{
+		int count;
+		
+		count = 200;
+		
+		
+		
+		System.out.println("hello world!");
+		System.out.println("hello world!");
+		System.out.println("hello world!");
+		System.out.println(count * count);
+		System.out.println("hello world!");
+		System.out.println("hello world!");
+		System.out.println("hello world!");
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	}
+}

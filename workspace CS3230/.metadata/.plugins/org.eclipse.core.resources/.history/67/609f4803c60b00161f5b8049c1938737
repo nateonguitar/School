@@ -1,0 +1,242 @@
+package cardgame.cards;
+
+
+import javafx.animation.ParallelTransition;
+import javafx.animation.RotateTransition;
+import javafx.animation.ScaleTransition;
+import javafx.animation.SequentialTransition;
+import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Point2D;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.util.Duration;
+
+public class Card {
+	private Numbers number;
+	private Suits suit;
+	ImageView face;
+	String frontImageString;
+	String backImageString = "backRounded.png";
+	String sourcePath = "/resources/";
+	Image image;
+	boolean facingFront = false;
+	
+	//-----------------------------------------------------------------------------
+	
+	public Card(Numbers num, Suits suit, int startPosX, int startPosY, int rotation){
+		this.number = num;
+		this.suit = suit;
+		this.face = new ImageView();
+		
+		// build the string to it's image		
+		switch(suit){
+		case HEARTS:
+			this.frontImageString = "H";
+			break;
+		case DIAMONDS:
+			this.frontImageString = "D";
+			break;
+		case SPADES:
+			this.frontImageString = "S";
+			break;
+		case CLUBS:
+			this.frontImageString = "C";
+			break;
+		default:
+			break;
+		}
+		this.frontImageString += this.getNumber().number() + ".png";
+		
+		this.face.setImage(new Image(sourcePath + this.backImageString));
+		
+		this.face.setFitWidth(80);
+		this.face.setPreserveRatio(true);
+		this.face.setSmooth(false);
+		this.face.setCache(true);
+		
+		this.face.setX(startPosX);
+		this.face.setY(startPosY);
+		this.face.setRotate(rotation);
+		
+		DropShadow dropShadow = new DropShadow();
+		dropShadow.setRadius(2.0);
+		dropShadow.setOffsetX(4.0);
+		dropShadow.setOffsetY(2.0);
+		dropShadow.setColor(Color.rgb(10,10,10));
+		dropShadow.setBlurType(BlurType.GAUSSIAN);
+		dropShadow.setRadius(7);
+		this.face.setEffect(dropShadow);
+		
+		// add click listener
+		/*
+		 * uncomment this part if you want to be able to click on the cards to flip them
+		 * 
+		 * 
+		 * 
+		this.face.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+		     @Override
+		     public void handle(MouseEvent event) {
+		         flip();
+		         event.consume();
+		     }
+		});
+		*/
+	}
+	
+	//-----------------------------------------------------------------------------
+	
+	public Numbers getNumber(){
+		return this.number;
+	}
+	
+	//-----------------------------------------------------------------------------
+	
+	public Suits getSuit(){
+		return this.suit;
+	}
+	
+	public ImageView getFace(){
+		return this.face;
+	}
+	
+	public void flip(){
+		
+		ScaleTransition st1 = new ScaleTransition(Duration.millis(200));
+		st1.setToX(0);
+		st1.setCycleCount(1);
+		st1.setAutoReverse(false);
+		st1.setOnFinished(setImageToReverse());
+		ScaleTransition st2 = new ScaleTransition(Duration.millis(300));
+		st2.setToX(1);
+		st2.setCycleCount(1);
+		st2.setAutoReverse(false);
+		
+		SequentialTransition st = new SequentialTransition(this.face, st1, st2);
+		
+		st.play();
+		
+		facingFront = !facingFront;
+	}
+	
+	private EventHandler<ActionEvent> setImageToReverse() {
+    	return (event) -> {
+    		if(facingFront){
+    			this.face.setImage(new Image(this.sourcePath + this.frontImageString));
+    		}
+    		else{
+    			this.face.setImage(new Image(this.sourcePath + this.backImageString));
+    		}
+    	};
+	}
+	
+	public void moveToRelative(double x, double y, int time, int delay){
+		TranslateTransition tt = new TranslateTransition(new Duration(time));
+		tt.setFromX(this.face.getTranslateX());
+		tt.setFromY(this.face.getTranslateY());
+		tt.setToX(x);
+		tt.setToY(y);
+		tt.setCycleCount(1);
+		tt.setAutoReverse(true);
+	 
+	    ParallelTransition pt = new ParallelTransition(this.face, tt);
+	    
+	    if(delay > 0){
+			pt.setDelay(new Duration(delay));
+		}
+	    pt.play();
+	}
+	
+	public void moveToRelative(double d, double e, int time, int delay, boolean flip, int angle){
+		TranslateTransition tt = new TranslateTransition(new Duration(time));
+		tt.setFromX(this.face.getTranslateX());
+		tt.setFromY(this.face.getTranslateY());
+		tt.setToX(d);
+		tt.setToY(e);
+		tt.setCycleCount(1);
+		tt.setAutoReverse(true);
+		
+		ParallelTransition pt;
+		// don't even process rotating while moving if angle is set to 0
+		if(angle != 0){
+			RotateTransition rt = new RotateTransition(new Duration(time));
+			rt.setAutoReverse(false);
+			rt.setToAngle(angle);
+			rt.setCycleCount(1);
+		 
+		    pt = new ParallelTransition(this.face, tt, rt);
+		}
+		else{
+			pt = new ParallelTransition(this.face, tt);
+		}
+	    
+		
+		// if flip == true, when animation finishes, flip over!
+		if(flip){
+		    pt.setOnFinished(new EventHandler<ActionEvent>() { 
+		    	@Override public void handle(ActionEvent actionEvent) {
+		    		flip();
+		    	} 
+		    });
+		}
+		
+		if(delay > 0){
+			pt.setDelay(new Duration(delay));
+		}
+		
+	    pt.play();
+	}
+	
+	public void moveTo(double x, double y, int time, int delay, boolean flip, int angle){
+		TranslateTransition tt = new TranslateTransition(new Duration(time));
+		tt.setFromX(this.face.getTranslateX());
+		tt.setFromY(this.face.getTranslateY());
+		
+		// this setToX will move RELATIVELY a set number of pixels in the x direction
+		// for example: card is at (200, 200), setToX(100) will move the card to (300, 200)
+		//
+		// need to make it explicit.
+		// for example: card is at (200, 200), setToX(100) will move it to (100, 200) exactly
+		
+		tt.setToX(x - this.face.getX());
+		tt.setToY(y - this.face.getY());
+		tt.setCycleCount(1);
+		tt.setAutoReverse(true);
+		
+		ParallelTransition pt;
+		// don't even process rotating while moving if angle is set to 0
+		if(angle != 0){
+			RotateTransition rt = new RotateTransition(new Duration(time));
+			rt.setAutoReverse(false);
+			rt.setToAngle(angle);
+			rt.setCycleCount(1);
+		 
+		    pt = new ParallelTransition(this.face, tt, rt);
+		}
+		else{
+			pt = new ParallelTransition(this.face, tt);
+		}
+	    
+		
+		// if flip == true, when animation finishes, flip over!
+		if(flip){
+		    pt.setOnFinished(new EventHandler<ActionEvent>() { 
+		    	@Override public void handle(ActionEvent actionEvent) {
+		    		flip();
+		    	} 
+		    });
+		}
+		
+		if(delay > 0){
+			pt.setDelay(new Duration(delay));
+		}
+		
+	    pt.play();
+	}
+}

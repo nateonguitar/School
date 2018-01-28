@@ -1,0 +1,68 @@
+--Re-Creating sp_AverageReviews
+-- check to see if sp_AverageReviews exists and drop it if it does
+IF EXISTS(SELECT * FROM INFORMATION_SCHEMA.ROUTINES WHERE SPECIFIC_NAME = 'sp_AverageReviews')
+	DROP PROCEDURE sp_AverageReviews;
+GO
+
+--Create sp_AverageReviews with no inputs
+CREATE PROCEDURE sp_AverageReviews
+AS
+BEGIN
+	DECLARE @Average	float
+	DECLARE @5star		int
+	DECLARE @4star		int
+	DECLARE @3star		int
+	DECLARE @2star		int
+	DECLARE @1star		int
+
+	SET @Average = 
+	(SELECT CAST(Avg(CAST(ReviewRating AS Decimal(2,1))) AS Decimal(4,2))
+	FROM Review
+	WHERE Flag !='L')
+
+	SET @1star = 
+	( SELECT COUNT(*)
+	  FROM Review
+	  WHERE Flag != 'L'
+		AND ReviewRating = 1 )
+
+	SET @2star = 
+	( SELECT COUNT(*)
+	  FROM Review
+	  WHERE Flag != 'L'
+		AND ReviewRating = 2 )
+
+	SET @3star = 
+	( SELECT COUNT(*)
+	  FROM Review
+	  WHERE Flag != 'L'
+		AND ReviewRating = 3)
+
+	SET @4star = 
+	( SELECT COUNT(*)
+	  FROM Review
+	  WHERE Flag != 'L'
+		AND ReviewRating = 4 )
+
+	SET @5star = 
+	( SELECT COUNT(*)
+	  FROM Review
+	  WHERE Flag != 'L'
+		AND ReviewRating = 5 )		
+
+	PRINT 'Not considering reviews that have yet to be looked into, '
+	PRINT 'the average review for SUPRA is: ' + CONVERT(varchar, @Average) + '.'
+	PRINT ''
+
+
+	PRINT 'There are ' 
+	PRINT CONVERT(varchar, @5star) + ' five star reviews,'
+	PRINT CONVERT(varchar, @4star) + ' four star reviews,'
+	PRINT CONVERT(varchar, @3star) + ' three star reviews,'
+	PRINT CONVERT(varchar, @2star) + ' two star reviews, and' 
+	PRINT CONVERT(varchar, @1star) + ' one star reviews.'
+END
+
+GO
+
+EXEC sp_AverageReviews

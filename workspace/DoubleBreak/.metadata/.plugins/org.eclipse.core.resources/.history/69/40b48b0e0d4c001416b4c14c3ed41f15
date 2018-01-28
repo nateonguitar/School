@@ -1,0 +1,16 @@
+package com.natebrooks.doublebreak;
+
+import com.natebrooks.framework.Screen;
+import com.natebrooks.framework.implementation.AndroidGame;
+
+public class DoubleBreakerGame extends AndroidGame {
+    @Override
+    public Screen getInitScreen() {
+        return new LoadingScreen(this); 
+    }
+    
+    @Override
+    public void onBackPressed() {
+    	getCurrentScreen().backButton();
+    }
+}

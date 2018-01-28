@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.effect.Bloom?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane id="CardGameMainAnchorPane" fx:id="CardGameMainAnchorPane" prefHeight="600.0" prefWidth="800.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cardgame.BlackjackSetupController">
+   <children>
+      <Label id="labelBlackjack" layoutX="214.0" layoutY="85.0" stylesheets="@style.css" text="BlackJack">
+         <effect>
+            <Bloom />
+         </effect>
+      </Label>
+      <Pane id="pane" layoutX="287.0" layoutY="309.0" prefHeight="318.0" prefWidth="680.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0">
+         <children>
+            <Button id="startButton" layoutX="287.0" layoutY="215.0" mnemonicParsing="false" onAction="#goToBlackjackNamePlayers" onMouseReleased="#goToBlackjackNamePlayers" text="Start" />
+            <Slider fx:id="sliderPlayers" blockIncrement="1.0" layoutX="274.0" layoutY="107.0" majorTickUnit="1.0" max="4.0" min="1.0" minorTickCount="0" showTickMarks="true" snapToTicks="true" value="2.0" />
+            <Label fx:id="labelPlayersCount" layoutX="422.0" layoutY="104.0" text="2" />
+            <Label layoutX="212.0" layoutY="103.0" text="Players:" />
+            <Slider fx:id="sliderDecks" blockIncrement="1.0" layoutX="274.0" layoutY="165.0" majorTickUnit="1.0" max="10.0" min="1.0" minorTickCount="0" showTickMarks="true" snapToTicks="true" value="1.0" />
+            <Label layoutX="216.0" layoutY="162.0" text="Decks:" />
+            <Label fx:id="labelDecksCount" layoutX="423.0" layoutY="162.0" text="1" />
+            <Label id="labelSetupANewGame" fx:id="labelSetupANewGame" layoutX="224.0" layoutY="37.0" style="-fx-font-size: 20pt;" text="Setup a New Game" />
+         </children>
+      </Pane>
+      <MenuBar layoutX="10.0" layoutY="10.0" styleClass="menubar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <menus>
+            <Menu mnemonicParsing="false" text="File">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#backToMenu" text="Back to Menu" />
+                  <MenuItem mnemonicParsing="false" onAction="#closeProgram" text="Exit" />
+               </items>
+            </Menu>
+         </menus>
+      </MenuBar>
+   </children>
+</AnchorPane>

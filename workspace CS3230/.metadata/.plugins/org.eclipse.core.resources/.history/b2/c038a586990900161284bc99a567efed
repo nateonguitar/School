@@ -1,0 +1,609 @@
+package cardgame;
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.ResourceBundle;
+
+import javax.xml.stream.events.Namespace;
+
+import cardgame.cards.Card;
+import cardgame.cards.Dealer;
+import cardgame.cards.GroupOfCards;
+import cardgame.cards.Numbers;
+import cardgame.cards.Player;
+import cardgame.cards.Comparer;
+import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.util.Duration;
+
+public class BlackjackController implements Initializable, ControlledScreen {
+	ScreensController myController;
+	Comparer comparer;
+	int aceCount = 0;
+	int highestScore = 0;
+	int currentPlayerInGameArray = 0;
+	ArrayList<Label> scoreLabels = new ArrayList<>();
+	Timeline fade;
+	Timeline waitBetweenTurns;
+	Timeline endTheGameTimer;
+	Dealer dealer;
+	int cardTransitionTime = 1500;
+	Label label_Busted;
+	DropShadow dropShadow;
+	FadeTransition bustedFadeTransition;
+	boolean gotToEndOfAlternateTracker;
+	int numberOfWinners = 0;
+	int showDeckCardsMoved = 0;
+	
+	@FXML
+	Pane gameOverPane;
+	
+	@FXML
+	Pane scoresPane;
+	
+	@FXML
+	Button button_Ready;
+	
+	@FXML
+	Button button_StartPlayerTurn;
+	
+	@FXML
+	Button button_Hit;
+	
+	@FXML
+	Button button_Stay;
+	
+	@FXML
+	Button button_PlayAgain;
+	
+	@FXML
+	AnchorPane CardGameMainAnchorPane;
+	
+	@FXML
+	Label label_DealerOnBoard;
+	
+	@FXML
+	Label label_PlayerOnBoard;
+	
+	@FXML
+	Label label_Dealer;
+	
+	@FXML
+	Label label_Player1;
+	
+	@FXML
+	Label label_Player2;
+	
+	@FXML
+	Label label_Player3;
+	
+	@FXML
+	Label label_Player4;
+	
+	@FXML
+	Label label_GameOverDisplayWinner;
+	
+	//--------------------------------------------------------------------------------------------
+	
+	public void startBlackjack(){
+		button_Ready.setVisible(false);	
+		
+		// remove all the cards from the screen
+		for(Card card : dealer.getHand().getCards()){
+			CardGameMainAnchorPane.getChildren().remove(card);
+		}
+		
+		for(Card card : dealer.getDeck().getCards()){
+			CardGameMainAnchorPane.getChildren().remove(card);
+		}
+		
+		for(Player player : Game.players){
+			for(Card card : player.getHand().getCards()){
+				CardGameMainAnchorPane.getChildren().remove(card);
+			}
+		}
+		
+		// reset players back to initial, works for restarting the game too
+		for(Player player : Game.players){
+			player = new Player(player.getName());
+		}
+		
+		
+				
+		label_DealerOnBoard.setText("Dealer:");
+		
+		for(int i=0; i<Game.players.size(); i++){
+			scoreLabels.get(i).setText(Game.players.get(i).getName() + ": ");
+		}
+		
+		try{
+			Game.players.remove(dealer);
+		}
+		catch(Exception e){
+			// basically.......just move on
+		}
+		
+		// make a new dealer with the correct number of decks
+		dealer = new Dealer(Game.blackjackDecks);
+		dealer.setName("Dealer");
+		dealer.getDeck().shuffle();
+		
+		for(int i=0; i<dealer.getDeck().getSize(); i++){
+			CardGameMainAnchorPane.getChildren().add(dealer.getDeck().getCards().get(i).getFace());
+		}
+		
+		// move all the players to the correct positions
+		dealer.setX(400);
+		dealer.setY(100);
+		
+		for(Player player : Game.players){
+			player.setX(400);
+			player.setY(300);
+		}
+		
+		bustedFadeTransition = new FadeTransition(Duration.millis(1000), label_Busted);
+		bustedFadeTransition.setFromValue(0.0);
+		bustedFadeTransition.setToValue(1.0);
+		bustedFadeTransition.setCycleCount(2);
+		bustedFadeTransition.setAutoReverse(true);
+		
+		CardGameMainAnchorPane.getChildren().addAll(label_Busted, gameOverPane);
+		gameOverPane.getChildren().removeAll(label_GameOverDisplayWinner, button_PlayAgain);
+		gameOverPane.getChildren().addAll(label_GameOverDisplayWinner, button_PlayAgain);
+		gameOverPane.setVisible(false);
+		
+		
+		showDeck();
+	}
+
+	//--------------------------------------------------------------------------------------------
+	
+	public void dealToDealer(){
+		if(getPlayerScore(dealer) < 17){
+			dealCard(dealer, dealer.getDeck().getSize() - 1);
+			fade = new Timeline(
+				new KeyFrame(new Duration(2000))
+			);
+			fade.setOnFinished(new EventHandler<ActionEvent>() { 
+		    	@Override public void handle(ActionEvent actionEvent) {
+		    		label_DealerOnBoard.setText("Dealer: " + getPlayerScore(dealer));
+		    		dealToDealer();
+		    	} 
+		    });
+			fade.play();
+		}
+		else{
+			// done dealing to the dealer
+			label_DealerOnBoard.setText("Dealer: " + getPlayerScore(dealer));
+			label_Dealer.setText("Dealer: " + getPlayerScore(dealer));
+			
+			if(getPlayerScore(dealer) > 21){
+				bustedFadeTransition.play();
+			}
+			
+			// allow the player to hit
+			button_StartPlayerTurn.setText("Start " + Game.players.get(currentPlayerInGameArray).getName() + "'s Turn");
+			button_StartPlayerTurn.setVisible(true);
+		}
+	}
+	
+	//--------------------------------------------------------------------------------------------
+	
+	public void showDeck(){
+		if(showDeckCardsMoved < dealer.getDeck().getSize()){
+			dealer.getDeck().getCards().get(showDeckCardsMoved).moveTo(30, 250, 1500, 0, false, 0);
+			fade = new Timeline(
+				new KeyFrame(new Duration(50))
+			);
+			fade.setOnFinished(new EventHandler<ActionEvent>() { 
+		    	@Override public void handle(ActionEvent actionEvent) {
+		    		showDeckCardsMoved++;
+		    		showDeck();
+		    	} 
+		    });
+			fade.play();
+		}
+		else{
+			fade = new Timeline(
+				new KeyFrame(new Duration(1500))
+			);
+			fade.setOnFinished(new EventHandler<ActionEvent>() { 
+		    	@Override public void handle(ActionEvent actionEvent) {
+		    		showDeckCardsMoved = 0;
+					dealToDealer();
+		    	} 
+		    });
+			fade.play();
+		}
+	}
+	
+	//--------------------------------------------------------------------------------------------
+	
+	
+	public void startPlayerTurn(){
+		label_PlayerOnBoard.setText(Game.players.get(currentPlayerInGameArray).getName() + ":");
+		button_StartPlayerTurn.setVisible(false);
+		
+		button_Hit.setVisible(true);
+		button_Stay.setVisible(true);
+		label_PlayerOnBoard.setVisible(true);
+	}
+	
+	//--------------------------------------------------------------------------------------------
+	
+	public void playAgain(){
+		gameOverPane.setVisible(false);
+		button_Hit.setVisible(false);
+		button_PlayAgain.setVisible(false);
+		button_StartPlayerTurn.setVisible(false);
+		button_Stay.setVisible(false);
+		
+		label_DealerOnBoard.setText("");
+		label_PlayerOnBoard.setText("");
+		
+		button_Ready.setVisible(true);
+		
+		CardGameMainAnchorPane.getChildren().removeAll(label_Busted, gameOverPane);
+		
+		
+	}
+	
+	//--------------------------------------------------------------------------------------------
+	
+	
+	//--------------------------------------------------------------------------------------------
+	
+	public void hit(){
+		dealCard(Game.players.get(currentPlayerInGameArray), dealer.getDeck().getSize() - 1);
+		
+		fade = new Timeline(
+			new KeyFrame(new Duration(1500))
+		);
+		fade.setOnFinished(new EventHandler<ActionEvent>() { 
+	    	@Override public void handle(ActionEvent actionEvent) {
+	    		label_PlayerOnBoard.setText(
+	    			Game.players.get(currentPlayerInGameArray).getName() + ": " 
+	    			+ getPlayerScore(Game.players.get(currentPlayerInGameArray))
+	    		);
+	    		if(getPlayerScore(Game.players.get(currentPlayerInGameArray)) > 21){
+	    			endTurn();
+	    			label_PlayerOnBoard.setVisible(false);
+	    		}
+	    	} 
+	    });
+		fade.play();
+	}
+	
+	//--------------------------------------------------------------------------------------------
+	
+	public void stay(){
+		endTurn();
+	}
+	
+	//--------------------------------------------------------------------------------------------
+	
+	public void endTurn(){
+		scoreLabels.get(currentPlayerInGameArray).setText(Game.players.get(currentPlayerInGameArray).getName() + ": " + Game.players.get(currentPlayerInGameArray).getScore());
+		
+		if(getPlayerScore(Game.players.get(currentPlayerInGameArray)) > 21){
+			bustedFadeTransition.play();
+		}
+		
+		for(Card card : Game.players.get(currentPlayerInGameArray).getHand().getCards()){
+			card.flip();
+			card.moveTo(400, 650, 2000, 0, true, 180);
+		}
+		
+		waitBetweenTurns = new Timeline(
+			new KeyFrame(new Duration(1000))
+		);
+		waitBetweenTurns.setOnFinished(new EventHandler<ActionEvent>() { 
+	    	@Override public void handle(ActionEvent actionEvent) {
+				// if we haven't reached the end of the players array yet
+				// start the next player's turn
+				if(currentPlayerInGameArray + 1 < Game.players.size()){
+					currentPlayerInGameArray++;
+					
+					button_StartPlayerTurn.setText("Start " + Game.players.get(currentPlayerInGameArray).getName() + "'s Turn");
+					button_StartPlayerTurn.setVisible(true);
+					button_Hit.setVisible(false);
+					button_Stay.setVisible(false);
+					
+					
+					label_PlayerOnBoard.setText(Game.players.get(currentPlayerInGameArray).getName() + ": ");
+				}
+				else{
+					endTheGame();
+				}
+	    	}
+		});
+		waitBetweenTurns.play();
+	}
+	
+	//--------------------------------------------------------------------------------------------
+	
+	public void endTheGame(){
+		endTheGameTimer = new Timeline(
+			new KeyFrame(new Duration(1500))
+		);
+		endTheGameTimer.setOnFinished(new EventHandler<ActionEvent>() { 
+	    	@Override public void handle(ActionEvent actionEvent) {
+	    		// move the dealer's cards off screen
+	    		for(Card card : dealer.getHand().getCards()){
+	    			card.flip();
+	    			card.moveTo(-200, 400, 2000, 0, false, 0);
+	    		}
+	    		
+	    		label_GameOverDisplayWinner.setText("");
+	    		
+				button_StartPlayerTurn.setVisible(false);
+				button_Hit.setVisible(false);
+				button_Stay.setVisible(false);
+				
+				gameOverPane.setVisible(true);
+				
+				// put the dealer in the players array so it's easier to compute who won
+				Game.players.add(dealer);
+					
+				// find out what  the highest score was
+				highestScore = 0;
+				for(Player player : Game.players){
+					if(player.getScore() < 22 && player.getScore() > highestScore){
+						highestScore = player.getScore();
+					}
+					else{
+						player.setScore(0);
+					}
+				}
+				
+				
+				// all could have busted
+				if(highestScore == 0){
+					label_GameOverDisplayWinner.setText("Nobody wins, everyone busted");
+				}
+				else{
+					// find out which players had the highest score
+					// if you didn't have the high score, set your score to zero
+					for(Player player : Game.players){
+						if(player.getScore() != highestScore){
+							player.setScore(0);
+						}
+					}
+					
+					// find out how many winners
+					for(Player player : Game.players){
+						if(player.getScore() == highestScore){
+							numberOfWinners++;
+						}
+					}
+					
+					// single winner
+					if(numberOfWinners == 1){
+						for(Player player : Game.players){
+							if(player.getScore() != 0){
+								label_GameOverDisplayWinner.setText(label_GameOverDisplayWinner.getText() + player.getName());
+							}
+						}
+					}
+					
+					// tie
+					else{
+						label_GameOverDisplayWinner.setText("Tie between: ");
+						
+						for(Player player : Game.players){
+							if(player.getScore() != 0){
+								label_GameOverDisplayWinner.setText(label_GameOverDisplayWinner.getText() + player.getName() + " - ");
+							}
+							else{
+								label_GameOverDisplayWinner.setText(label_GameOverDisplayWinner.getText() + player.getName());
+							}
+							
+						}
+					}
+					
+					label_GameOverDisplayWinner.setText(label_GameOverDisplayWinner.getText() + " Wins!!");
+				}
+	    	} 
+	    });
+		endTheGameTimer.play();
+	}
+	
+	//--------------------------------------------------------------------------------------------
+	
+	//--------------------------------------------------------------------------------------------
+	
+	public int getPlayerScore(Player player){
+		aceCount = 0;
+		player.resetAlternateTracker();
+		
+		// count number of aces this player has
+		// set to alternate to get highest score possible to begin with
+		for(int i=0; i<player.getHand().getCards().size(); i++){
+			if(player.getHand().getCards().get(i).getNumber() == Numbers.ACE){
+				aceCount++;
+				player.getAlternateTracker().set(i, true);
+			}
+		}
+		player.setScore(0); // start from 0
+		
+		for(int i=0; i<player.getHand().getCards().size(); i++){
+			if(player.getAlternateTracker().get(i) == true){
+				player.setScore(player.getScore() + player.getHand().getCards().get(i).getNumber().alternate());
+			}
+			else{
+				player.setScore(player.getScore() + player.getHand().getCards().get(i).getNumber().value());
+			}
+		}
+		
+		while(comparer.compare(player.getScore(), 21) == 1){
+			if(aceCount > 0) {
+			//		comparer will return:
+			//		 1 if over 21     -- bust
+			//		 0 if exactly 21
+			//		-1 if less than 21
+				gotToEndOfAlternateTracker = false;
+				
+				for(int i=0; i<player.getAlternateTracker().size(); i++){
+					// on the first true we find
+					// set it to false and stop looping
+					if(player.getAlternateTracker().get(i) == true){
+						player.getAlternateTracker().set(i, false);
+						break;
+					}
+					
+					if(i == player.getAlternateTracker().size() - 1){
+						gotToEndOfAlternateTracker = true;
+					}
+				}
+				
+				// get the player's full score
+				if(gotToEndOfAlternateTracker){
+					break;
+				}
+			}
+			else{
+				break;
+			}
+		}
+		
+		if(comparer.compare(player.getScore(), 21) == 1){
+			player.setScore(0); // start from 0
+			
+			for(int i=0; i<player.getHand().getCards().size(); i++){
+				if(player.getAlternateTracker().get(i) == true){
+					player.setScore(player.getScore() + player.getHand().getCards().get(i).getNumber().alternate());
+				}
+				else{
+					player.setScore(player.getScore() + player.getHand().getCards().get(i).getNumber().value());
+				}
+			}
+		}
+		
+		return player.getScore();
+	}
+	
+	//--------------------------------------------------------------------------------------------
+	
+	
+	public void dealCard(Player player, int index){
+		// give ownership of the top card to the player
+		dealer.dealCard(player, index);
+		
+		// removing then adding makes the card stay on top of everything else
+		CardGameMainAnchorPane.getChildren().remove(player.getHand().getCards().getLast().getFace());
+		CardGameMainAnchorPane.getChildren().add(player.getHand().getCards().getLast().getFace());
+		
+		// moves the player's final card (the one that the player just recieved) to the player's area
+		player.getHand().getCards().getLast().flip();
+		player.getHand().getCards().getLast().moveTo(
+			player.getX() - player.getHand().getSize() * 30, 
+			player.getY() - player.getHand().getSize() * 5, 
+			cardTransitionTime, 
+			0,
+			false,
+			31 - player.getHand().getSize() * 10
+		);
+	}
+	
+	//--------------------------------------------------------------------------------------------
+	
+	
+	//--------------------------------------------------------------------------------------------
+	
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		scoreLabels.add(label_Player1);
+		scoreLabels.add(label_Player2);
+		scoreLabels.add(label_Player3);
+		scoreLabels.add(label_Player4);
+		
+		// anything built in Scene Biulder is below what has been inserted after
+		// so all cards, or anything would be on top of the gameOverPane if we didn't remove it now
+		// will be added back to the scene when the game ends
+		// this will put the gameOverPane on top of everything
+		CardGameMainAnchorPane.getChildren().remove(gameOverPane);
+		
+		dropShadow = new DropShadow();
+		dropShadow.setRadius(2.0);
+		dropShadow.setOffsetX(4.0);
+		dropShadow.setOffsetY(2.0);
+		dropShadow.setColor(Color.rgb(10,10,10));
+		dropShadow.setBlurType(BlurType.GAUSSIAN);
+		dropShadow.setRadius(7);
+		
+		// create the label_Busted so it can show later if someone busts
+		label_Busted = new Label();
+		label_Busted.setText("BUSTED!!");
+		label_Busted.relocate(100,  100);
+		label_Busted.setVisible(true);
+		label_Busted.setStyle("-fx-font-size: 70pt; -fx-opacity: 0.0;");
+		label_Busted.setEffect(dropShadow);
+		
+		///////////////////////////////////////////////////////////////////////////////////
+		// can be used to compare any two values
+		//
+		// comparing "x" to "y = 21" is a way to see if someone needs to hit,
+		/////////////////////////////////////////////////////////////////////////////////// lost,
+		/////////////////////////////////////////////////////////////////////////////////// or
+		/////////////////////////////////////////////////////////////////////////////////// won
+		// 1 means they went over 21, possible loss
+		// 0 means exactly 21
+		// -1 means they're under 21
+		comparer = (x, y) -> {
+			if (x < y) {
+			return -1;
+			} else if (x > y) {
+			return 1;
+			} else {
+			return 0;
+			}
+		};
+		///////////////////////////////////////////////////////////////////////////////////
+	}
+	
+	
+	//--------------------------------------------------------------------------------------------
+	
+	@Override
+	public void setScreenParent(ScreensController screenParent){
+        myController = screenParent;
+    }
+	
+	//--------------------------------------------------------------------------------------------
+	
+	public void closeProgram(){
+		Platform.exit();
+	}
+	
+	//--------------------------------------------------------------------------------------------
+	
+	
+	public void backToMenu(){
+		button_Ready.setVisible(true);
+		for(int i=0; i<Game.players.size(); i++){
+			scoreLabels.get(i).setText("");
+		}
+		
+		myController.setScreen(ScreensFramework.screen2ID);
+	}
+
+	public void backToSetup(){
+		myController.setScreen(ScreensFramework.screen3ID);
+	}
+	
+
+}

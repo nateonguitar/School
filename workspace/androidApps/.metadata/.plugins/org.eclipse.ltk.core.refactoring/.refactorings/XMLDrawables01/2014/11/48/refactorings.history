@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Rename resource &apos;XMLDrawables01/res/drawable-hdpi/gray.xml&apos; to &apos;graybutton.xml&apos;" description="Rename resource &apos;gray.xml&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="res/drawable-hdpi/gray.xml" name="graybutton.xml" stamp="1417044203541" updateReferences="true"/>&#x0A;<refactoring comment="Rename resource &apos;XMLDrawables01/res/drawable-hdpi/green.xml&apos; to &apos;greenbutton.xml&apos;" description="Rename resource &apos;green.xml&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="res/drawable-hdpi/green.xml" name="greenbutton.xml" stamp="1417044211665" updateReferences="true"/>
+</session>

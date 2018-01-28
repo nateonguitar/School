@@ -1,0 +1,86 @@
+//***************************************************************************************
+//***************************************************************************************
+
+public interface ILambda {
+	void sayHello();
+}
+
+//--------------------------------------------------------------------------------------
+
+public class Test {
+	public static void main(String[] args) {
+		ILambda iLambda = new ILambda(){
+
+			@Override
+			public void sayHello() {
+				System.out.println("Hello from  inner anonymous class");
+			}
+		};
+		iLambda.sayHello();
+		
+		
+		
+		ILambda iLambda2 = () -> System.out.println("Hello from labmda");
+		iLambda2.sayHello();
+	}
+}
+
+
+//***************************************************************************************
+//***************************************************************************************
+
+public interface ILambda {
+	void sayHello(int x);
+}
+
+//--------------------------------------------------------------------------------------
+
+public class Test {
+	public static void main(String[] args) {
+		ILambda iLambda = new ILambda(){
+
+			@Override
+			public void sayHello(int x) {
+				System.out.println("Hello from  inner anonymous class " + x);
+			}
+		};
+		iLambda.sayHello(12);
+		
+		
+		
+		
+		ILambda iLambda2 = (x) -> System.out.println("Hello from labmda" + x);
+		iLambda2.sayHello(44);
+	}
+}
+
+//***************************************************************************************
+//***************************************************************************************
+
+public interface ILambda {
+	int add(int x, int y);
+}
+
+//--------------------------------------------------------------------------------------
+
+public class Test {
+	public static void main(String[] args) {
+		ILambda iLambda = new ILambda(){
+
+			@Override
+			public int add(int x, int y) {
+				return x + y;
+			}
+		};
+		System.out.println(iLambda.add(12,  1));
+		
+		
+		
+		
+		ILambda iLambda2 = (x, y) -> x + y;
+		System.out.println(iLambda2.add(44, 2));
+	}
+}
+
+//***************************************************************************************
+//***************************************************************************************

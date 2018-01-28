@@ -1,0 +1,72 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head> 
+ <meta http-equiv="content-type" content="text/html;charset=utf-8">
+ <title>jQuery Proctor Example</title>
+ <style type="text/css">
+      body {text-align:center;}
+      table {border:2px solid black;padding:2px; margin:2px;width:600px;}
+      td{text-align:center;border:2px solid black;padding:2px; margin:2px}
+      .odd{background-color:aqua;}
+      #tests{width:600px;margin:auto;}
+  </style>
+
+ 
+ <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+ <script type="text/javascript">
+		function getTests(testparam)
+		{
+				$.ajax({
+					url: "testsJSON.php",
+					type: "POST",
+					dataType: "json",
+          data: ({
+					testname: testparam
+				}),
+				error: function(XMLHttpRequest, textStatus, errorThrown){
+						document.getElementById('tests').innerHTML = "No text results returned";
+				},
+				success: function(response){
+					var isIE = /msie/gi.test(navigator.userAgent);
+			  if (isIE == false){
+					  console.log(response);
+					}
+					parseAndOutputResponse(response);
+				}
+			});
+		}
+		
+		function parseAndOutputResponse(tests){
+        console.log(tests);
+        if (tests == null)
+		{
+          document.getElementById('tests').innerHTML="No test results returned";
+        }
+		else
+		{
+  			var testsString = "";
+  		    for(x=0;x<tests.length;x++)
+			{
+              if (x%2 == 0)
+			  {
+                //var newDate = new Date(tests.datetaken[x]);
+                testsString = testsString + "<tr class=\"even\"><td class=col1>" + tests[x].testname + "</td><td class=col2> " + tests[x].date + "</td><td class=col3> " + tests[x].timeelapsed + "</td></tr>";
+              }
+			  else
+              {
+                testsString = testsString + "<tr class=\"odd\"><td class=col1>" + tests[x].testname +  "</td><td class=col2> " + tests[x].date + "</td><td class=col3> " + tests[x].timeelapsed + "</td></tr>";
+              }
+              
+  			}	
+          document.getElementById('tests').innerHTML="<table><tr><td>Name</td><td>When Taken</td><td>Time Elapsed</td></tr>" + testsString + "</table>";	
+        }			
+	}
+ </script>
+</head>
+<body bgcolor="white" >
+<input type="text" id='testname'>
+<input type="button" value="Type in 'CSS' or 'XHTML' to get test results" onclick="getTests(document.getElementById('testname').value)">
+<div id="tests"></div>
+</body>
+</html>

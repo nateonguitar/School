@@ -1,0 +1,20 @@
+import android.content.Context;
+import android.opengl.GLSurfaceView;
+import android.opengl.GLSurfaceView.Renderer;
+
+class MyGLSurfaceView extends GLSurfaceView {
+
+    private final Renderer mRenderer;
+
+    public MyGLSurfaceView(Context context){
+        super(context);
+
+        // Create an OpenGL ES 2.0 context
+        setEGLContextClientVersion(2);
+
+        mRenderer = new Renderer();
+
+        // Set the Renderer for drawing on the GLSurfaceView
+        setRenderer(mRenderer);
+    }
+}

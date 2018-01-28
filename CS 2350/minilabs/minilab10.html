@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+	<link rel="icon" href="../favicon.ico" type="image/x-icon" />
+	<title>minilab 10</title>
+	<style type="text/CSS">
+		input {
+			padding:10px;
+			border-radius:10px;
+			background-color:beige;
+		}
+		
+		div {
+			height:30px;
+			padding:40px;
+			border-top:1px dashed black;
+			border-bottom:1px dashed black;
+			margin:10px 0 10px 0;
+			width: 200px;
+		}
+	</style>
+	
+	<script type="text/JavaScript">
+		function copy_func()
+		{
+			document.getElementById('paste_div').innerHTML = document.copy_form.copy_field.value;
+			
+			document.paste_form.paste_field.value = document.copy_form.copy_field.value;
+			return false;
+		}
+	</script>
+</head>
+
+<body>
+	<form name="copy_form" onsubmit="return copy_func()" >
+		Name: <input type="text" name="copy_field" id="copy_field" size="12" />
+	</form>
+
+<div id="paste_div">
+ 
+</div>
+<form name="paste_form">
+	Name copy: <input type="text" name="paste_field" id="paste_field" size="12" />
+</form>
+</body>
+</html>

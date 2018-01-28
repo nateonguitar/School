@@ -1,0 +1,112 @@
+#CardGameMainAnchorPane{
+	-fx-background-image:url("../resources/Felt-Green.jpg");
+}
+
+#labelCardGameSuite{
+	-fx-font-size: 50pt;
+	-fx-font-family: " Zapf-Chancery";
+	-fx-text-fill: white;
+	-fx-font-style: italic;
+	-fx-font-weight: 900;
+	-fx-opacity: 1;
+}
+
+#labelChooseAGame{
+	-fx-font-size: 35pt;
+	-fx-font-family: " Zapf-Chancery";
+	-fx-text-fill: white;
+	-fx-font-style: italic;
+	-fx-font-weight: 900;
+	-fx-opacity: 1;
+	-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.2), 2, 0.0 , 4, 5);
+}
+
+#labelBlackjack{
+	-fx-font-size: 60pt;
+	-fx-font-family: " Zapf-Chancery";
+	-fx-text-fill: white;
+	-fx-font-style: italic;
+	-fx-font-weight: 900;
+	-fx-opacity: 1;
+	-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.2), 2, 0.0 , 4, 5);
+}
+
+#labelWar{
+	-fx-font-size: 60pt;
+	-fx-font-family: " Zapf-Chancery";
+	-fx-text-fill: white;
+	-fx-font-style: italic;
+	-fx-font-weight: 900;
+	-fx-opacity: 1;
+	-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.2), 2, 0.0 , 4, 5);
+}
+
+#bigHeader{
+	-fx-font-size: 35pt;
+	-fx-font-family: " Zapf-Chancery";
+	-fx-text-fill: white;
+	-fx-font-style: italic;
+	-fx-font-weight: 900;
+	-fx-opacity: 1;
+	-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.2), 2, 0.0 , 4, 5);
+}
+
+#playerOrOpponent{
+	-fx-font-size: 20pt;
+	-fx-font-family: " Zapf-Chancery";
+	-fx-underline: true;
+	-fx-text-fill: white;
+	-fx-font-weight: 900;
+	-fx-opacity: 1;
+	-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.2), 2, 0.0 , 4, 5);
+}
+
+.label {
+	-fx-font-size: 11pt;
+	-fx-font-family: "Segoe UI Semibold";
+	-fx-text-fill: white;
+	-fx-DropShadow: "gaussian", #888888, 4px 1px 1px;
+}
+
+#pane{
+	-fx-background-color:  rgba(0, 0, 0, 0.2);
+	-fx-border-color: rgb(210, 0, 0);
+	-fx-border-width: 2px;
+	-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.2), 2, 0.0 , 4, 5);
+
+}
+
+#gameOverPane{
+	-fx-background-color:  rgba(0, 0, 0, 0.5);
+	-fx-border-color: rgb(210, 0, 0);
+	-fx-border-width: 2px;
+	-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.2), 2, 0.0 , 4, 5);
+
+}
+
+.button{
+	-fx-background-color: 
+        #ff5400,
+        linear-gradient(#ff5400, #be1d00);
+    -fx-background-insets: 0,1,2,3;
+    -fx-background-radius: 3,2,2,2;
+    -fx-padding: 12 30 12 30;
+    -fx-text-fill: white;
+    -fx-font-size: 22px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.2), 2, 0.0 , 4, 5);
+}
+
+.button:hover{
+	-fx-background-color: 
+        #ff5400;
+}
+
+.text-field{
+	-fx-padding:12px 20px
+}
+
+.menu .label
+{
+    -fx-text-fill: black;
+}

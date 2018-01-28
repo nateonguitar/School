@@ -1,0 +1,98 @@
+-- 1.
+SELECT inst.first_name, inst.last_name, sections
+FROM instructor inst
+LEFT JOIN
+(SELECT instructor_id, COUNT(*) AS sections
+  FROM section
+  GROUP BY instructor_id) inst2
+ON inst.instructor_id = inst2.instructor_id
+ORDER BY inst.last_name, inst.first_name;
+
+-- 2.
+SELECT t1.course_no
+FROM 
+  (SELECT course_no, gr.grade_type_code
+  FROM section se INNER JOIN grade_type_weight gtw
+    ON se.section_id = gtw.section_id
+    INNER JOIN grade gr
+    ON gtw.section_id = gr.section_id
+  GROUP BY course_no, gr.grade_type_code) t1
+GROUP BY t1.course_no
+HAVING count(*) =
+  (SELECT count(*)
+    FROM grade_type)
+ORDER BY course_no;
+
+-- 3.
+SELECT z.zip, NVL(t1.students, 0) as students
+FROM zipcode z
+LEFT JOIN
+  (SELECT zip, count(*) as students
+    FROM 
+    (SELECT zc.zip, st.student_id, count(*) AS students
+      FROM zipcode zc INNER JOIN student st
+        ON zc.zip = st.zip
+        INNER JOIN enrollment en
+        ON st.student_id = en.student_id
+      WHERE zc.city = 'Flushing'
+      GROUP BY zc.zip, st.student_id)
+      GROUP BY zip) t1
+  ON z.zip = t1.zip
+WHERE z.city = 'Flushing'
+ORDER BY z.zip;
+
+-- 4.
+SELECT co.course_no, co.description, nvl(enrollments, 0) AS enrollments
+FROM course co
+    LEFT JOIN
+      (SELECT co.course_no, co.description, count(*) AS enrollments
+        FROM course co
+          JOIN section se
+            ON co.course_no = se.course_no
+          JOIN enrollment en
+            ON se.section_id = en.section_id
+        WHERE LOWER(co.description) LIKE '%java%'
+      GROUP BY co.course_no, co.description) rt
+    ON co.course_no = rt.course_no
+WHERE LOWER(co.description) LIKE '%java%'
+ORDER BY course_no;
+
+-- 5.
+SELECT st.student_id, st.first_name, st.last_name, NVL(enrollments, 'none') AS enrollments
+FROM student st
+LEFT JOIN 
+(SELECT en.student_id, TO_CHAR(COUNT(*)) AS enrollments
+FROM enrollment en
+  INNER JOIN student st
+  ON en.student_id = st.student_id
+GROUP BY en.student_id) t1
+ON st.student_id = t1.student_id
+WHERE st.phone LIKE '617%'
+ORDER BY st.last_name, st.first_name;
+
+-- 6. I collaborated with Jordan Stong, Mike Shaw, Jackie  We did this together in class on Monday
+SELECT t1.course_no
+FROM
+(SELECT course_no, count(*) AS grades_given
+  FROM
+    (SELECT course_no, gtw.grade_type_code
+    FROM section se INNER JOIN grade_type_weight gtw
+      ON se.section_id = gtw.section_id
+      INNER JOIN grade gr
+      ON gtw.section_id = gr.section_id
+      AND gtw.grade_type_code = gr.grade_type_code
+    GROUP BY course_no, gtw.grade_type_code)
+  GROUP BY course_no
+  ORDER BY course_no) t1
+INNER JOIN
+  (SELECT course_no, count(*) AS grades_offered
+  FROM
+    (SELECT course_no, grade_type_code
+      FROM section se INNER JOIN grade_type_weight gtw
+      ON se.section_id = gtw.section_id
+      GROUP BY course_no, grade_type_code) t1
+    GROUP BY course_no
+    ORDER BY course_no) t2
+  ON t1.course_no = t2.course_no
+WHERE grades_given < grades_offered
+ORDER BY t1.course_no;

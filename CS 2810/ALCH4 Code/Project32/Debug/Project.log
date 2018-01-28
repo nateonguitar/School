@@ -1,0 +1,14 @@
+﻿Build started 10/29/2014 9:43:46 AM.
+     1>Project "C:\Users\hvalle\Google Drive\Weber\CS\CS2810\Lectures\AL_ch4\Code\Project32\Project.vcxproj" on node 2 (Build target(s)).
+     1>_MASM:
+         Assembling ..\Task_4-1_BigEndian.asm...
+         cmd.exe /C "C:\Users\hvalle\AppData\Local\Temp\tmpdb9f8c2140fe48229ee305379a16a862.cmd"
+         ml.exe /c /nologo /Sg /WX /Zi /Fo"Debug\Task_4-1_BigEndian.obj" /Fl"Project.lst" /I "c:\Irvine" /W3 /errorReport:prompt  /Ta"..\Task_4-1_BigEndian.asm"
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\hvalle\Google Drive\Weber\CS\CS2810\Lectures\AL_ch4\Code\Project32\Debug\Project.exe" /NOLOGO /LIBPATH:c:\Irvine user32.lib irvine32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\hvalle\Google Drive\Weber\CS\CS2810\Lectures\AL_ch4\Code\Project32\Debug\Project.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE:NO /IMPLIB:"C:\Users\hvalle\Google Drive\Weber\CS\CS2810\Lectures\AL_ch4\Code\Project32\Debug\Project.lib" /MACHINE:X86 /SAFESEH:NO "Debug\Task_4-1_BigEndian.obj"
+         Project.vcxproj -> C:\Users\hvalle\Google Drive\Weber\CS\CS2810\Lectures\AL_ch4\Code\Project32\Debug\Project.exe
+     1>Done Building Project "C:\Users\hvalle\Google Drive\Weber\CS\CS2810\Lectures\AL_ch4\Code\Project32\Project.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.71

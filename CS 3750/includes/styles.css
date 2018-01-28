@@ -1,0 +1,177 @@
+body, html{
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family: 'Lato', sans-serif;
+  position:relative;
+}
+
+.bold{
+	font-weight:bold;
+}
+
+.error{
+	color:red;
+}
+
+.tip{
+	color:#209e8d;
+	font-size:70%;
+}
+
+	#wrapper{
+		position:relative;
+		width:75%;
+		min-width:600px;
+		overflow:auto;
+		margin-left: auto;
+		margin-right: auto;
+		min-height:500px;
+	}
+	
+	#header{
+		display:absolute;
+		top:0;
+		margin:0;
+		background-color:black;
+		color:#FFF;
+		width:100%;
+	}
+	
+	#copyright{
+		position:relative;
+		width:75%;
+		min-width:600px;
+		overflow:auto;
+		margin-left: auto;
+		margin-right: auto;
+		text-align:center;
+		font-size:small;
+		color:#333;
+		margin-top:20px;
+	}
+	
+		#headerContainer{
+			position:relative;
+			width:75%;
+			min-width:600px;
+			overflow:auto;
+			margin-left: auto;
+			margin-right: auto;
+		}
+		
+			#headerContainer a{
+				text-decoration:none;
+				color:#FFF;
+			}
+		
+			#titleInHeader{
+				float:left;
+			}
+			
+				#titleInHeader h1{
+					margin:5px 0 0 0;
+				}
+				
+			#UserAndLogInLogOutInHeader{
+				float:right;
+				list-style-type:none;
+			}
+			
+				#UserAndLogInLogOutInHeader li{
+					display:inline-block;
+					margin-left:15px;
+				}
+				
+					#UserAndLogInLogOutInHeader li a{
+						display:block;
+					}
+					
+					
+					
+					
+					
+					
+					
+					
+					
+	/***************************/
+	/* Log In Page             */
+	/***************************/
+	
+	#loginForm{
+		
+	}
+	
+		#loginForm #labels, #loginForm #fields{
+			list-style-type:none;
+			float:left;
+			margin:0;
+			padding:10px;
+		}
+			#loginForm #labels li, #loginForm #fields li{
+				margin-bottom:5px;
+			}
+			
+		#loginForm #labels{
+			width:150px;
+			text-align:right;
+		}
+			
+			#loginForm #labels li{
+				line-height:30px;
+			}
+		
+		#loginForm #fields{
+			width:250px;
+			text-align:left;
+		}
+		
+			#loginForm #fields input{
+				padding:5px;
+			}
+			
+			
+	/***************************/
+	/* Sign Up Page            */
+	/***************************/
+	
+	#signUpForm{
+		
+	}
+	
+		#signUpForm #labels, #signUpForm #fields{
+			list-style-type:none;
+			float:left;
+			margin:0;
+			padding:10px;
+		}
+		
+			#signUpForm #labels li, #signUpForm #fields li{
+				margin-bottom:5px;
+			}
+		
+		#signUpForm #labels{
+			width:150px;
+			text-align:right;
+		}
+			
+			#signUpForm #labels li{
+				line-height:30px;
+			}
+		
+		#signUpForm #fields{
+			width:250px;
+			text-align:left;
+		}
+		
+			#signUpForm #fields input{
+				padding:5px;
+			}
+			
+	#passwordRules{
+		 display:none; 
+		 margin-top:10px;
+	}

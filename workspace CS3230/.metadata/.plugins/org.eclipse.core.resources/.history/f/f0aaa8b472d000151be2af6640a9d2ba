@@ -1,0 +1,33 @@
+package brooksNathan;
+
+public class DeckDriver {
+
+	public static void main(String[] args) {
+		Deck deck = new Deck();
+		Player player1 = new Player();
+		Player player2 = new Player();
+		Player player3 = new Player();
+		Player player4 = new Player();
+		
+		
+		deck.shuffle();
+		
+		for(int i=0; i<5; i++){
+			deck.giveCard(player1.getHand());
+			deck.giveCard(player2.getHand());
+			deck.giveCard(player3.getHand());
+			deck.giveCard(player4.getHand());
+		}
+		
+		player1.getHand().orderHand();
+		player2.getHand().orderHand();
+		player3.getHand().orderHand();
+		player4.getHand().orderHand();
+		
+		System.out.println(player1.getHand().toString() + "\n");
+		System.out.println(player2.getHand().toString() + "\n");
+		System.out.println(player3.getHand().toString() + "\n");
+		System.out.println(player4.getHand().toString() + "\n");
+		
+	}
+}

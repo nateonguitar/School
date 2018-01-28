@@ -1,0 +1,13 @@
+package com.natebrooks.doublebreaker;
+
+import com.natebrooks.framework.Game;
+import com.natebrooks.framework.Graphics;
+import com.natebrooks.framework.Screen;
+import com.natebrooks.framework.Graphics;.ImageFormat;
+public class SplashLoadingScreen {
+	
+	public SplashLoadingScreen(Game game){
+		super(game);
+	}
+	long s = System.currentTimeMillis();
+}

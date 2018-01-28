@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+	<title>Nate Brooks's Home Page</title>
+	<link rel="icon" href="../favicon.ico" type="image/x-icon" />
+	<link href='http://fonts.googleapis.com/css?family=Muli' rel='stylesheet' type='text/css' />
+	<link rel="stylesheet" type="text/css" href="stylesheets/styles.css" />
+	<script src="js/main.js" type="text/JavaScript"></script>
+</head>
+<body onload="onloadOpacities();">
+	<div id="homePageWelcome">
+		<div onclick="hideEnterImage();"><h1>Welcome to the official home page of <br />
+			Nate Brooks</h1></div>
+	</div>
+	
+	<a href="#" onclick="hideEnterImage();"><img src="images/nateBlackAndWhite.jpg" id="enterImage"  alt="Enter image" /></a>
+	<div id="footerBox">
+		<div id="footer">
+			<p>- Copyright 2014 -<br />
+		developed by Nate Brooks</p>
+		</div><!-- close footer -->
+	</div>
+	
+	
+		<!-- trick to make the scroll bar on the right show up.
+			Without it, the background image resizes slightly smaller
+			for the second page, which HAS a scroll bar -->
+	<div style="position:absolute; bottom:-1px;opacity:0;">.</div>
+</body>
+</html>
